@@ -1,8 +1,8 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import Button from 'react-bootstrap/Button';
-function NavBar(){
+import { Link } from 'react-router-dom';
+function NavBar({atTop}){
     return (
        <>
       <Navbar bg="light" data-bs-theme="light">
@@ -12,8 +12,9 @@ function NavBar(){
             <Nav.Link href="">Loans</Nav.Link>
             <Nav.Link href="">Student Discounts</Nav.Link>
             <Nav.Link href="">Savings</Nav.Link>
-            <Button variant="primary" >Sign up</Button>
-            <Button variant="primary" >Login</Button>
+            <Link className='btn btn-primary' to="/user/signup">Sign up</Link>
+            <Link className='btn btn-primary' to="/user/login">Login</Link>
+            
           </Nav>
           
         </Container>

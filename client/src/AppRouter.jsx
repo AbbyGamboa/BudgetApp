@@ -1,8 +1,7 @@
 import { createBrowserRouter, RouterProvider} from "react-router-dom";
 import Layout from "./components/Layout";
 import Landing from "./components/Landing";
-import UserLogin from "./components/User/UserLogin";
-import UserSignUp from "./components/User/UserSignUp";
+import UserForm from "./components/User/UserForm";
 import { useState } from "react";
 function AppRouter(){
     const [loggedInUser, setLoggedInUser] = useState(JSON.parse(localStorage.getItem("loggedInUser")));
@@ -18,11 +17,11 @@ function AppRouter(){
                 }, 
                 {
                     path:"/user/login",
-                    element: <UserLogin></UserLogin>,
+                    element: <UserForm signup={false} ></UserForm>,
                 },
                 {
                     path:"/user/signup",
-                    element: <UserSignUp></UserSignUp>,
+                    element: <UserForm signup={true}></UserForm>,
                 },
             ],
         },
