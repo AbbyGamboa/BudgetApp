@@ -24,7 +24,7 @@ class UserJdbcClientRepositoryTest {
     @Test
     void shouldFindByEmail() throws DataAccessException {
         User actual = repository.findByEmail("a@a.com");
-        User expected = new User(1, "a@a.com", "a","aa");
+        User expected = new User(1, "a@a.com", "a");
 
         assertEquals(expected, actual);
     }
@@ -38,7 +38,7 @@ class UserJdbcClientRepositoryTest {
 
     @Test
     void shouldCreateUser() throws DataAccessException {
-        User expected = new User(3, "a@b.com", "ba", "ab");
+        User expected = new User(3, "a@b.com", "ba");
         User actual = repository.create(expected);
 
         assertEquals(expected, actual);
@@ -48,7 +48,7 @@ class UserJdbcClientRepositoryTest {
     @Test
     void shouldFindById() throws DataAccessException {
         User actual = repository.findById(1);
-        User expected = new User(1, "a@a.com", "a","aa");
+        User expected = new User(1, "a@a.com", "a");
 
         assertEquals(expected, actual);
     }
@@ -60,18 +60,5 @@ class UserJdbcClientRepositoryTest {
         assertNull(actual);
     }
 
-    @Test
-    void shouldFindByUsername() throws DataAccessException{
-        User actual = repository.findByUsername("aa");
-        User expected = new User(1, "a@a.com", "a","aa");
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    void shouldNotFindByUsername() throws DataAccessException{
-        User actual = repository.findByUsername("DFAKDLJAIE");
-        assertNull(actual);
-    }
 
 }

@@ -19,7 +19,7 @@ public class UserService {
 
     public Result<User> authenticate(String username, String proposedPassword){
         Result<User> result = new Result<>();
-        User existingUser = repository.findByUsername(username);
+        User existingUser = repository.findByEmail(username);
         if(existingUser == null){
             result.addErrorMessage("User not found", ResultType.NOT_FOUND);
             return result;
@@ -36,16 +36,16 @@ public class UserService {
 
     public Result<User> create(User user){
         Result<User> result = new Result<>();
-        if(user.getUsername().isBlank()){
-            result.addErrorMessage("Username cannot be blank", ResultType.INVALID);
+        if(user.getEmail().isBlank()){
+            result.addErrorMessage("Email cannot be blank", ResultType.INVALID);
         }
 
         if(user.getPassword().isBlank()){
             result.addErrorMessage("Password cannot be blank", ResultType.INVALID);
         }
 
-        if(repository.findByUsername(user.getUsername()) != null){
-            result.addErrorMessage("Username is already taken", ResultType.INVALID);
+        if(repository.findByEmail(user.getEmail()) != null){
+            result.addErrorMessage("Email is already taken", ResultType.INVALID);
         }
 
         if(result.isSuccess()){

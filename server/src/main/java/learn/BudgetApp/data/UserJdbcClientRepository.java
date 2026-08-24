@@ -35,7 +35,6 @@ public class UserJdbcClientRepository implements UserRepository{
         int rowsAffected = jdbcClient.sql(sql)
                 .param("email", user.getEmail())
                 .param("password", user.getPassword())
-                .param("username", user.getUsername())
                 .update(keyHolder, "userId");
 
         if(rowsAffected == 0){
@@ -54,12 +53,5 @@ public class UserJdbcClientRepository implements UserRepository{
         return jdbcClient.sql(sql).param(userId).query(User.class).optional().orElse(null);
     }
 
-    @Override
-    public User findByUsername(String username) throws DataAccessException {
-        String sql = """
-                select * from user where username =?;
-                """;
-        return jdbcClient.sql(sql).param(username).query(User.class).optional().orElse(null);
-    }
 
 }
