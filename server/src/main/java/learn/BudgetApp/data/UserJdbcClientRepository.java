@@ -26,8 +26,8 @@ public class UserJdbcClientRepository implements UserRepository{
     @Override
     public User create(User user) {
         String sql = """
-                insert into user(email, username, password) values
-                (:email, :username, :password);
+                insert into user(email, password) values
+                (:email, :password);
                 """;
 
         KeyHolder keyHolder = new GeneratedKeyHolder();

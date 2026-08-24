@@ -1,8 +1,8 @@
 use budget_app;
 
-insert into user (email, username, password) values
-        ("a@a.com", "aa","a"),
-        ("b@b.com", "bb","b");
+insert into user (email, password) values
+        ("a@a.com", "a"),
+        ("b@b.com", "b");
 
 	insert into categories (name, userId)
 		values

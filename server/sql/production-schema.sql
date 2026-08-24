@@ -5,7 +5,6 @@ use budget_app;
 create table user(
 	userId int primary key auto_increment,
 	email text not NULL , 
-	username text not null, 
 	password text not null
 );
 
@@ -84,4 +83,5 @@ create table transaction_categories(
 		foreign key (categoryId)
 		references categories(categoryId)
 );
+
 
