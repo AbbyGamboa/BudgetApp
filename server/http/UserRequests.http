@@ -1,0 +1,73 @@
+@base_url = http://localhost:8080/api/user
+
+POST {{base_url}}/login
+Content-Type: application/json
+
+{
+  "email": "a@a.com",
+  "password": "a"
+}
+
+###
+
+POST {{base_url}}/login
+Content-Type: application/json
+
+{
+  "email": "a@a.com",
+  "password": "b"
+}
+
+###
+
+POST {{base_url}}/login
+Content-Type: application/json
+
+{
+  "email": "b@a.com",
+  "password": "a"
+}
+
+###
+# create happy path
+POST {{base_url}} HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "c@c.com",
+  "password": "c"
+}
+
+###
+
+# create blank email unhappy path
+POST {{base_url}} HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "",
+  "password": "c"
+}
+
+###
+
+# create blank password unhappy path
+POST {{base_url}} HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "c@c.com",
+  "password": ""
+}
+
+
+###
+
+# create duplicate email unhappy path
+POST {{base_url}} HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "a@a.com",
+  "password": "a"
+}
