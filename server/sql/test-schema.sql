@@ -112,18 +112,18 @@ begin
 		("Gym", 2)
 		;
 	
-	insert into plaid_items(userId, accessToken, institutionName) values
-	(1, "abc123", "US Bank"),
-	(2, "xyz987", "Chase");
+	insert into plaid_items(plaidItemId, userId, accessToken, institutionName) values
+	(123, 1, "abc123", "US Bank"),
+	(987, 2, "xyz987", "Chase");
 	
-	insert into account(plaidItemId, name, subtype) values
-	(1, "usbank account", "Checkings"),
-	(2, "Chase account", "Savings");
+	insert into account(plaidAccountId, plaidItemId, name, subtype) values
+	(123, 123, "usbank account", "Checkings"),
+	(987, 987, "Chase account", "Savings");
 	
-	insert into transaction(plaidAccountId, amount, date, merchantName, description, pending) values
-	(1, 100.00, '2026-06-08 12:23:44', "Target", "Online buy", false),
-	(1, 10.00, '2026-06-09 11:10:11', "Speedway", "Gas", false),
-	(2, 300.50, '2026-08-23 14:14:14', "Ikea", "Home Improvement", true);
+	insert into transaction(plaidTransactionId, plaidAccountId, amount, date, merchantName, description, pending) values
+	(123, 123, 100.00, '2026-06-08', "Target", "Online buy", false),
+	(124, 123, 10.00, '2026-06-09', "Speedway", "Gas", false),
+	(125, 987, 300.50, '2026-08-23', "Ikea", "Home Improvement", true);
 	
 	insert into budget(userId, income) values
 	(1, 4000), 
@@ -136,8 +136,7 @@ begin
 	(2,3,10);
 	
 	insert into transaction_categories(plaidTransactionId, categoryId) values
-	(1,2),(2,1), (3,3);
-	
+	(123,2),(124,1), (125,3);
 	
 
 end //
