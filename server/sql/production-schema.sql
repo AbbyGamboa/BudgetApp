@@ -13,8 +13,6 @@ create table budget(
 	budgetId int primary key auto_increment, 
 	userId int, 
 	income decimal,
-	startDate DATETIME, 
-	endDate DATETIME,
 	 constraint fk_user_id
         foreign key (userId)
         references user(userId)
@@ -46,7 +44,7 @@ create table plaid_items(
 	plaidItemId int primary key, 
 	userId int, 
 	accessToken text, 
-	instituionName text,
+	institutionName text,
 	constraint fk_user_item_id
 		foreign key (userId)
 		references user(userId)
@@ -69,7 +67,7 @@ create table transaction(
 	date date, 
 	merchantName text, 
 	description text, 
-	pending text, 
+	pending boolean, 
 	constraint fk_plaid_account_id
 		foreign key (plaidAccountId)
 		references account(plaidAccountId)
@@ -86,3 +84,4 @@ create table transaction_categories(
 		foreign key (categoryId)
 		references categories(categoryId)
 );
+
