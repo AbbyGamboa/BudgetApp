@@ -13,7 +13,7 @@ import org.springframework.dao.DataAccessException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest
 class UserServiceTest {
     @Autowired
     UserService service;

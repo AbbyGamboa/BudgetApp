@@ -37,4 +37,5 @@ insert into user (email, password) values
 	insert into transaction_categories(plaidTransactionId, categoryId) values
 	("123",2),("124",1), ("125",3);
 	
+	select * from user;
 	
