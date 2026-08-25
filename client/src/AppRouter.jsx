@@ -5,6 +5,8 @@ import UserForm from "./components/User/UserForm";
 import { useState } from "react";
 import UserLanding from "./components/User/UserLanding";
 import UserLogout from "./components/User/UserLogout";
+import UserLayout from "./components/User/UserLayout";
+import ConnectPlaid from "./components/Plaid/ConnectPlaid";
 function AppRouter(){
     const [loggedInUser, setLoggedInUser] = useState(JSON.parse(localStorage.getItem("loggedInUser")));
 
@@ -18,21 +20,30 @@ function AppRouter(){
                     element: <Landing></Landing>,
                 }, 
                 {
-                    path:"/user/login",
-                    element: loggedInUser? <Navigate to="/user/landing"></Navigate>: <UserForm login={false} setLoggedInUser={setLoggedInUser}></UserForm>,
-                },
-                {
-                    path:"/user/signup",
-                    element: loggedInUser? <Navigate to="/user/landing"></Navigate>: <UserForm signup={true} setLoggedInUser={setLoggedInUser}></UserForm>,
-                },
-                {
-                    path:"/user/landing",
-                    element: <UserLanding></UserLanding>,
-                },
-                {
-                    path: "/user/signout",
-                    element: loggedInUser? <UserLogout setLoggedInUser={setLoggedInUser}></UserLogout>: <Navigate to="/"></Navigate>,
+                    path:"/user",
+                    element:<UserLayout loggedInUser={loggedInUser}/>,
+                    children:[{
+                        path:"login",
+                        element: loggedInUser? <Navigate to="/user/landing"></Navigate>: <UserForm login={false} setLoggedInUser={setLoggedInUser}></UserForm>,
+                    },
+                    {
+                        path:"signup",
+                        element: loggedInUser? <Navigate to="/user/landing"></Navigate>: <UserForm signup={true} setLoggedInUser={setLoggedInUser}></UserForm>,
+                    },
+                    {
+                        path:"landing",
+                        element: <UserLanding></UserLanding>,
+                    },
+                    {
+                        path: "signout",
+                        element: loggedInUser? <UserLogout setLoggedInUser={setLoggedInUser}></UserLogout>: <Navigate to="/"></Navigate>,
+                    },
+                    {
+                        path: "connect/bank", 
+                        element: loggedInUser? <ConnectPlaid></ConnectPlaid>:<Navigate to="/"></Navigate>,
+                    }]
                 }
+                
             ],
         },
     ]
