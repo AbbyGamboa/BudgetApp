@@ -13,10 +13,14 @@ function NavBar({loggedInUser}){
             <Nav.Link href="">Student Discounts</Nav.Link>
             <Nav.Link href="">Savings</Nav.Link>
             {!loggedInUser && <>
-              <Link className='btn btn-primary' to="/user/signup">Sign up</Link>
-              <Link className='btn btn-primary' to="/user/login">Login</Link>
+              <Link className='btn btn-primary m-1' to="/user/signup">Sign up</Link>
+              <Link className='btn btn-primary m-1' to="/user/login">Login</Link>
             </>}
-            {loggedInUser &&  <Link className='btn btn-primary' to="/user/signout">Logout</Link>}
+            {loggedInUser &&  <>
+            <Link className='btn btn-primary m-1' to="/user/signout">Logout</Link>
+            <Link className='btn btn-primary m-1' to="/user/connect/bank">Connect Bank</Link>
+            </>
+            }
             
             
           </Nav>
