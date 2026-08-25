@@ -30,9 +30,9 @@ public class PlaidItemJdbcClientRepository implements PlaidItemRepository{
 
     @Override
     public List<PlaidItems> findAllByUserId(int userId) {
+        final String sql = BASE_SQL + "where u.userId = ?;";
 
-
-        return List.of();
+        return jdbcClient.sql(sql).param(userId).query(new PlaidItemMapper()).list();
     }
 
     @Override
