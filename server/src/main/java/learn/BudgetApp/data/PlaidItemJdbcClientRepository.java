@@ -57,6 +57,10 @@ public class PlaidItemJdbcClientRepository implements PlaidItemRepository{
 
     @Override
     public boolean delete(String plaidItemId) {
-        return false;
+        final String sql = """
+                delete from plaid_items where plaidItemId = ?;
+                """;
+
+        return jdbcClient.sql(sql).param(plaidItemId).update() > 0;
     }
 }
