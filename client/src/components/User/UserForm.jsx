@@ -57,13 +57,11 @@ function UserForm({signup, setLoggedInUser}){
 
         const payload = await response.json()
         if (response.status >= 200 && response.status < 300) {
-            const diyJwtParts = payload.diyJwt.split("|")
-            const userJson = diyJwtParts[0]
-            const userObject = JSON.parse(userJson)
-            userObject.diyJwt = payload.diyJwt
+            const token = payload.token;
+            const loggedInUser = {email: user.email, token:token};
 
-            setLoggedInUser(userObject)
-            localStorage.setItem("loggedInUser", JSON.stringify(userObject))
+            setLoggedInUser(loggedInUser)
+            localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser))
             navigate("/user/landing")
         } else {
             setErrors(payload)
