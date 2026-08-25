@@ -40,7 +40,7 @@ create table budget_category(
 );
 
 create table plaid_items(
-	plaidItemId int primary key, 
+	plaidItemId varchar(50) primary key, 
 	userId int, 
 	accessToken text, 
 	institutionName text,
@@ -50,8 +50,8 @@ create table plaid_items(
 );
 
 create table account(
-	plaidAccountId int primary key, 
-	plaidItemId int, 
+	plaidAccountId varchar(50) primary key, 
+	plaidItemId varchar(50), 
 	name text, 
 	subtype text,
 	constraint fk_plaid_item_id
@@ -60,8 +60,8 @@ create table account(
 );
 
 create table transaction(
-	plaidTransactionId int primary key, 
-	plaidAccountId int, 
+	plaidTransactionId varchar(50) primary key, 
+	plaidAccountId varchar(50), 
 	amount decimal, 
 	date date, 
 	merchantName text, 
@@ -73,7 +73,7 @@ create table transaction(
 );
 
 create table transaction_categories(
-	plaidTransactionId int, 
+	plaidTransactionId varchar(50), 
 	categoryId int,
 	primary key (plaidTransactionId, categoryId),
 	constraint fk_plaid_transaction_id
@@ -83,5 +83,4 @@ create table transaction_categories(
 		foreign key (categoryId)
 		references categories(categoryId)
 );
-
 

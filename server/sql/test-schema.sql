@@ -5,7 +5,6 @@ use budget_app_test;
 create table user(
 	userId int primary key auto_increment,
 	email text not NULL , 
-	username text not null, 
 	password text not null
 );
 
@@ -41,7 +40,7 @@ create table budget_category(
 );
 
 create table plaid_items(
-	plaidItemId int primary key, 
+	plaidItemId varchar(50) primary key, 
 	userId int, 
 	accessToken text, 
 	institutionName text,
@@ -51,8 +50,8 @@ create table plaid_items(
 );
 
 create table account(
-	plaidAccountId int primary key, 
-	plaidItemId int, 
+	plaidAccountId varchar(50) primary key, 
+	plaidItemId varchar(50), 
 	name text, 
 	subtype text,
 	constraint fk_plaid_item_id
@@ -61,8 +60,8 @@ create table account(
 );
 
 create table transaction(
-	plaidTransactionId int primary key, 
-	plaidAccountId int, 
+	plaidTransactionId varchar(50) primary key, 
+	plaidAccountId varchar(50), 
 	amount decimal, 
 	date date, 
 	merchantName text, 
@@ -74,7 +73,7 @@ create table transaction(
 );
 
 create table transaction_categories(
-	plaidTransactionId int, 
+	plaidTransactionId varchar(50), 
 	categoryId int,
 	primary key (plaidTransactionId, categoryId),
 	constraint fk_plaid_transaction_id
@@ -101,9 +100,9 @@ begin
 	delete from user;
     alter table user auto_increment = 1;
 
-    insert into user (email, username, password) values
-        ("a@a.com", "aa","a"),
-        ("b@b.com", "bb","b");
+    insert into user (email, password) values
+        ("a@a.com","a"),
+        ("b@b.com","b");
 
 	insert into categories (name, userId)
 		values
@@ -113,17 +112,17 @@ begin
 		;
 	
 	insert into plaid_items(plaidItemId, userId, accessToken, institutionName) values
-	(123, 1, "abc123", "US Bank"),
-	(987, 2, "xyz987", "Chase");
+	("123", 1, "abc123", "US Bank"),
+	("987", 2, "xyz987", "Chase");
 	
 	insert into account(plaidAccountId, plaidItemId, name, subtype) values
-	(123, 123, "usbank account", "Checkings"),
-	(987, 987, "Chase account", "Savings");
+	("123", "123", "usbank account", "Checkings"),
+	("987", "987", "Chase account", "Savings");
 	
 	insert into transaction(plaidTransactionId, plaidAccountId, amount, date, merchantName, description, pending) values
-	(123, 123, 100.00, '2026-06-08', "Target", "Online buy", false),
-	(124, 123, 10.00, '2026-06-09', "Speedway", "Gas", false),
-	(125, 987, 300.50, '2026-08-23', "Ikea", "Home Improvement", true);
+	("123", "123", 100.00, '2026-06-08', "Target", "Online buy", false),
+	("124", "123", 10.00, '2026-06-09', "Speedway", "Gas", false),
+	("125", "987", 300.50, '2026-08-23', "Ikea", "Home Improvement", true);
 	
 	insert into budget(userId, income) values
 	(1, 4000), 
@@ -136,7 +135,7 @@ begin
 	(2,3,10);
 	
 	insert into transaction_categories(plaidTransactionId, categoryId) values
-	(123,2),(124,1), (125,3);
+	("123",2),("124",1), ("125",3);
 	
 
 end //

@@ -3,23 +3,23 @@ package learn.BudgetApp.models;
 import java.util.Objects;
 
 public class PlaidItems {
-    public int plaidItemId;
+    public String plaidItemId;
     public User user;
     public String accessToken;
     public String institutionName;
 
-    public PlaidItems(int plaidItemId, User user, String accessToken, String institutionName) {
+    public PlaidItems(String plaidItemId, User user, String accessToken, String institutionName) {
         this.plaidItemId = plaidItemId;
         this.user = user;
         this.accessToken = accessToken;
         this.institutionName = institutionName;
     }
 
-    public int getPlaidItemId() {
+    public String getPlaidItemId() {
         return plaidItemId;
     }
 
-    public void setPlaidItemId(int plaidItemId) {
+    public void setPlaidItemId(String plaidItemId) {
         this.plaidItemId = plaidItemId;
     }
 
@@ -51,7 +51,7 @@ public class PlaidItems {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         PlaidItems that = (PlaidItems) o;
-        return plaidItemId == that.plaidItemId && Objects.equals(user, that.user) && Objects.equals(accessToken, that.accessToken) && Objects.equals(institutionName, that.institutionName);
+        return Objects.equals(plaidItemId, that.plaidItemId) && Objects.equals(user, that.user) && Objects.equals(accessToken, that.accessToken) && Objects.equals(institutionName, that.institutionName);
     }
 
     @Override
