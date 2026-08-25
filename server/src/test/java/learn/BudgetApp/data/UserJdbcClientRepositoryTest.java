@@ -9,7 +9,7 @@ import learn.BudgetApp.models.User;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest
 class UserJdbcClientRepositoryTest {
 
     @Autowired
