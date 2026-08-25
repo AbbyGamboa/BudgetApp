@@ -1,8 +1,9 @@
-import { createBrowserRouter, RouterProvider} from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
 import Layout from "./components/Layout";
 import Landing from "./components/Landing";
 import UserForm from "./components/User/UserForm";
 import { useState } from "react";
+import UserLanding from "./components/User/UserLanding";
 function AppRouter(){
     const [loggedInUser, setLoggedInUser] = useState(JSON.parse(localStorage.getItem("loggedInUser")));
 
@@ -17,11 +18,15 @@ function AppRouter(){
                 }, 
                 {
                     path:"/user/login",
-                    element: <UserForm signup={false} ></UserForm>,
+                    element: loggedInUser? <Navigate to="/user/landing"></Navigate>: <UserForm login={false} setLoggedInUser={setLoggedInUser}></UserForm>,
                 },
                 {
                     path:"/user/signup",
-                    element: <UserForm signup={true}></UserForm>,
+                    element: loggedInUser? <Navigate to="/user/landing"></Navigate>: <UserForm signup={true} setLoggedInUser={setLoggedInUser}></UserForm>,
+                },
+                {
+                    path:"/user/landing",
+                    element: <UserLanding></UserLanding>,
                 },
             ],
         },
