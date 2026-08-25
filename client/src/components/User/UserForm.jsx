@@ -46,7 +46,6 @@ function UserForm({signup, setLoggedInUser}){
             localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser))
             navigate("/user/landing")
         } else{
-            const payload = await response.json()
             setErrors(payload);
         }
     }
