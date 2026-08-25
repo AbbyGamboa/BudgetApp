@@ -79,11 +79,11 @@ create procedure set_known_good_state()
 begin
 	delete from transaction_categories;
 	alter table transaction_categories auto_increment = 1;
-	delete from transactions;
-	alter table transactions auto_increment = 1;
+	delete from transaction;
+	alter table transaction auto_increment = 1;
 	delete from account;
 	alter table account auto_increment = 1;
-	delete from budget_categoryt;
+	delete from budget_category;
 	alter table budget_category auto_increment = 1;
 	delete from budget;
 	alter table budget auto_increment = 1;
