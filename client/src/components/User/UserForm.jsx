@@ -37,7 +37,13 @@ function UserForm({signup, setLoggedInUser}){
             body: JSON.stringify(user)
         })
 
+        const payload = await response.json()
         if (response.status >= 200 && response.status < 300){
+            const token = payload.token;
+            const loggedInUser = {email: user.email, token:token};
+
+            setLoggedInUser(loggedInUser)
+            localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser))
             navigate("/user/landing")
         } else{
             const payload = await response.json()
@@ -73,7 +79,10 @@ function UserForm({signup, setLoggedInUser}){
     return (
         <>
         <div className="bg-success p-4 mb-5"><h1>{signup? "User sign up page": "User login page"}</h1></div>
-        
+        <ul>
+            {errors.map((error,i) => <li key={i}>{error}</li>)}
+        </ul>
+    
 
         <div className="d-flex justify-content-center">
             <form onSubmit={signup? handleSubmitSignUp: handleSubmitLogin} className="border border-secondary w-75 p-2 d-flex flex-column align-items-center">
