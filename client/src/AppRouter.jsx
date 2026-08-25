@@ -6,7 +6,7 @@ import { useState } from "react";
 import UserLanding from "./components/User/UserLanding";
 import UserLogout from "./components/User/UserLogout";
 import UserLayout from "./components/User/UserLayout";
-import ConnectPlaid from "./components/Plaid/ConnectPlaid";
+
 function AppRouter(){
     const [loggedInUser, setLoggedInUser] = useState(JSON.parse(localStorage.getItem("loggedInUser")));
 
@@ -37,10 +37,6 @@ function AppRouter(){
                     {
                         path: "signout",
                         element: loggedInUser? <UserLogout setLoggedInUser={setLoggedInUser}></UserLogout>: <Navigate to="/"></Navigate>,
-                    },
-                    {
-                        path: "connect/bank", 
-                        element: loggedInUser? <ConnectPlaid></ConnectPlaid>:<Navigate to="/"></Navigate>,
                     }]
                 }
                 
