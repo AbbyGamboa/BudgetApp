@@ -1,6 +1,7 @@
 package learn.BudgetApp.data;
 
 import learn.BudgetApp.models.PlaidItems;
+import learn.BudgetApp.models.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,20 @@ class PlaidItemJdbcClientRepositoryTest {
 
         assertEquals(0, actual.size());
     }
+
+    @Test
+    void shouldCreatePlaidItem(){
+        PlaidItems plaidItem = new PlaidItems(
+                "456",
+                TestDataHelper.existingUser(),
+                "xyz789",
+                "Chase"
+        );
+
+        PlaidItems actual = repository.create(plaidItem);
+        assertEquals(plaidItem, actual);
+    }
+
 
 
 }

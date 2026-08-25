@@ -3,6 +3,8 @@ package learn.BudgetApp.data;
 import learn.BudgetApp.models.PlaidItems;
 import learn.BudgetApp.models.mapping.PlaidItemMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -37,7 +39,20 @@ public class PlaidItemJdbcClientRepository implements PlaidItemRepository{
 
     @Override
     public PlaidItems create(PlaidItems plaidItems) {
-        return null;
+        final String sql = """
+                insert into plaid_items(plaidItemId, userId, accessToken, institutionName) values
+                (:plaidItemId, :userId, :accessToken, :institutionName);
+                """;
+
+        jdbcClient.sql(sql)
+                .param("plaidItemId", plaidItems.getPlaidItemId())
+                .param("userId", plaidItems.getUser().getUserId())
+                .param("accessToken", plaidItems.getAccessToken())
+                .param("institutionName", plaidItems.getInstitutionName())
+                .update();
+
+
+        return plaidItems;
     }
 
     @Override
