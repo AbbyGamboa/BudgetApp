@@ -3,23 +3,23 @@ package learn.BudgetApp.models;
 import java.util.Objects;
 
 public class PlaidItems {
-    public int plaidItemId;
+    public String plaidItemId;
     public User user;
     public String accessToken;
     public String institutionName;
 
-    public PlaidItems(int plaidItemId, User user, String accessToken, String institutionName) {
+    public PlaidItems(String plaidItemId, User user, String accessToken, String institutionName) {
         this.plaidItemId = plaidItemId;
         this.user = user;
         this.accessToken = accessToken;
         this.institutionName = institutionName;
     }
 
-    public int getPlaidItemId() {
+    public String getPlaidItemId() {
         return plaidItemId;
     }
 
-    public void setPlaidItemId(int plaidItemId) {
+    public void setPlaidItemId(String plaidItemId) {
         this.plaidItemId = plaidItemId;
     }
 
