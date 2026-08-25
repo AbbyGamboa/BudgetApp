@@ -29,5 +29,12 @@ class PlaidItemJdbcClientRepositoryTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void shouldNotFindById(){
+        PlaidItems actual = repository.findById("abejoiwj192031");
+
+        assertNull(actual);
+    }
+
 
 }

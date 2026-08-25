@@ -1,6 +1,7 @@
 package learn.BudgetApp.data;
 
 import learn.BudgetApp.models.PlaidItems;
+import learn.BudgetApp.models.mapping.PlaidItemMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
@@ -16,15 +17,15 @@ public class PlaidItemJdbcClientRepository implements PlaidItemRepository{
     }
 
     private final String BASE_SQL =  """
-                select pi.plaidItemId, u.id, pi.accessToken, pi.institutionName
-                from plaid_Items pi 
-                join user u on pi.user_id = u.id
+                select pi.plaidItemId, u.userId, u.email, u.password, pi.accessToken, pi.institutionName
+                from plaid_Items pi
+                join user u on pi.userId = u.userId
                 """;
 
     @Override
-    public PlaidItems findById(String plaidItemId) {
-       final String sql = BASE_SQL + "where pi.plaidItemId = ?;";
-        return jdbcClient.sql(sql).param(plaidItemId).query(PlaidItems.class).optional().orElse(null);
+    public PlaidItems findById(String plaidItemId) throws DataAccessException{
+       final String sql = BASE_SQL + " where pi.plaidItemId = ?;";
+        return jdbcClient.sql(sql).param(plaidItemId).query(new PlaidItemMapper()).optional().orElse(null);
     }
 
     @Override

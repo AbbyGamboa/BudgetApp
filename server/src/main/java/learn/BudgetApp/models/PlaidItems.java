@@ -51,7 +51,7 @@ public class PlaidItems {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         PlaidItems that = (PlaidItems) o;
-        return plaidItemId == that.plaidItemId && Objects.equals(user, that.user) && Objects.equals(accessToken, that.accessToken) && Objects.equals(institutionName, that.institutionName);
+        return Objects.equals(plaidItemId, that.plaidItemId) && Objects.equals(user, that.user) && Objects.equals(accessToken, that.accessToken) && Objects.equals(institutionName, that.institutionName);
     }
 
     @Override
