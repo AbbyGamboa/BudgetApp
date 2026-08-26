@@ -40,7 +40,16 @@ public class BudgetJdbcClientRepository implements BudgetRepository{
 
     @Override
     public boolean update(Budget budget) {
-        return false;
+        String sql = """
+                update budget
+                set income =?
+                where budgetId = ? and userId = ?;
+                """;
+
+        return  jdbcClient.sql(sql).param(budget.getIncome())
+                .param(budget.getBudgetId())
+                .param(budget.getUser().getUserId())
+                .update() > 0;
     }
 
     @Override
