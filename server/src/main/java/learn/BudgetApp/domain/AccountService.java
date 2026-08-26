@@ -65,6 +65,12 @@ public class AccountService {
             return result;
         }
 
+        for(Account found: foundAccounts){
+            if(found.getUser().getUserId() != userId){
+                result.addErrorMessage("User does not match", ResultType.INVALID);
+            }
+        }
+
         Result<Account> resultPerEach = new Result<>();
         for (Account account: foundAccounts){
             validateAccount(resultPerEach, account);

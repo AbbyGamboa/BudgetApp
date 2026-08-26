@@ -28,10 +28,15 @@ public class AccountController {
     }
 
     @GetMapping("/{accountId}")
-    public ResponseEntity<?> findById(@PathVariable("accountId") int accountId){
+    public ResponseEntity<?> findById(@PathVariable("accountId") int accountId, Authentication authentication){
+        int userId = Integer.parseInt(authentication.getName());
         Result<Account> result = service.findById(accountId);
         if (!result.isSuccess()){
             return ErrorResponse.build(result);
+        }
+
+        if(result.getpayload().getUser().getUserId() != userId){
+            return new ResponseEntity<>(result.getpayload(), HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(result.getpayload(), HttpStatus.OK);
     }

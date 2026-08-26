@@ -4,9 +4,9 @@ import learn.BudgetApp.data.AccountRepository;
 import learn.BudgetApp.data.TestDataHelper;
 import learn.BudgetApp.data.UserRepository;
 import learn.BudgetApp.models.Account;
+import learn.BudgetApp.models.User;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -129,6 +129,22 @@ class AccountServiceTest {
             Result<List<Account>> actual = service.findByUser(1);
             Result<List<Account>> expected = new Result<>();
             expected.addErrorMessage("Subtype is required", ResultType.INVALID);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void unhappyAccountMismatchUser(){
+            User user = TestDataHelper.existingUser();
+            user.setUserId(2);
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
+            when(repository.findByUser(1)).thenReturn(List.of(
+                    new Account(1, user, "Checking")
+            ));
+
+            Result<List<Account>> actual = service.findByUser(1);
+            Result<List<Account>> expected = new Result<>();
+            expected.addErrorMessage("User does not match", ResultType.INVALID);
 
             assertEquals(expected, actual);
         }
