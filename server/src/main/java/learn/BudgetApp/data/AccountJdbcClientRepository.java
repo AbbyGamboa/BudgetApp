@@ -44,7 +44,7 @@ public class AccountJdbcClientRepository implements AccountRepository{
 
     @Override
     public List<Account> findByUser(int userId) {
-        String sql = BASE_SELECT + "where u.userId = ?;";
+        String sql = BASE_SELECT + " where u.userId = ?;";
         return jdbcClient.sql(sql).param(userId).query(new AccountMapper()).list();
     }
 }

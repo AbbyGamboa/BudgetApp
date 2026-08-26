@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -37,6 +39,24 @@ class AccountJdbcClientRepositoryTest {
             Account actual = repository.findById(99);
 
             assertNull(actual);
+        }
+    }
+
+    @Nested
+    class findByUser{
+        @Test
+        void success(){
+            List<Account> expected = List.of(new Account(1, TestDataHelper.existingUser(), "Checkings"));
+            List<Account> actual = repository.findByUser(1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void notFound(){
+            List<Account> actual = repository.findByUser(99);
+
+            assertEquals(0, actual.size());
         }
     }
 

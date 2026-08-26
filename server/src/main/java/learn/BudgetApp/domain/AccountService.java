@@ -19,16 +19,30 @@ public class AccountService {
         this.userRepository = userRepository;
     }
 
+    private void validateAccount (Result<Account> result, Account account){
+        if (account == null){
+            result.addErrorMessage("No account found", ResultType.NOT_FOUND);
+            return;
+        }
+
+        if(account.getSubtype() == null || account.getSubtype().isBlank()){
+            result.addErrorMessage("Subtype is required", ResultType.INVALID);
+        }
+
+        if(account.getUser() == null){
+            result.addErrorMessage("User is required", ResultType.INVALID);
+        }
+    }
+
     public Result<Account> findById(int accountId){
         Account found = accountRepository.findById(accountId);
         Result<Account> result = new Result<>();
 
         if(found == null){
             result.addErrorMessage("No account found", ResultType.NOT_FOUND);
-        } else{
-            result.setpayload(found);
+            return result;
         }
-
+        validateAccount(result, found);
         return result;
     }
 
