@@ -1,0 +1,4 @@
+@base_url = http://localhost:8080/api/account
+
+GET {{base_url}}/1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg3NzA3MDY0LCJleHAiOjE3ODc3MTA2NjR9.Ov8V4-2VDYwuSQbl4VSVcxksO3QXZcde-Unq8nayP3Iz5yBT9ZErdbNsVwTtTJQZ
