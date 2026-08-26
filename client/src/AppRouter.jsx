@@ -9,6 +9,7 @@ import UserLayout from "./components/User/UserLayout";
 import ViewAccount from "./components/Account/ViewAccount";
 import SingleAccount from "./components/Account/SingleAccount";
 import CreateAccount from "./components/Account/CreateAccount";
+import SingleBudget from "./components/Budget/SingleBudget";
 
 function AppRouter(){
     const [loggedInUser, setLoggedInUser] = useState(JSON.parse(localStorage.getItem("loggedInUser")));
@@ -58,6 +59,11 @@ function AppRouter(){
                     path:"/edit/account/:accountId", 
                     element: loggedInUser? <CreateAccount loggedInUser={loggedInUser}></CreateAccount>: <Navigate to="/"></Navigate>
                 }, 
+                {
+                    path:"/view/budget/:budgetId", 
+                    element: loggedInUser? <SingleBudget loggedInUser={loggedInUser}></SingleBudget>:<Navigate to="/"></Navigate>,
+                },
+                
             
                 
             ],
