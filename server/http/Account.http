@@ -4,7 +4,7 @@ GET {{base_url}}/1 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg3NzU1MDcyLCJleHAiOjE3ODc3NTg2NzJ9.IG8rTDDJga8-A29nzsnifR6otm_8BqgYj0enRQ7WQ6_90mcWxtawvwG4veCRjJwp
 ###
 
-GET {{base_url}}/full/1 HTTP/1.1
+GET {{base_url}}/myAccounts HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg3NzU1MDcyLCJleHAiOjE3ODc3NTg2NzJ9.IG8rTDDJga8-A29nzsnifR6otm_8BqgYj0enRQ7WQ6_90mcWxtawvwG4veCRjJwp
 
 ###

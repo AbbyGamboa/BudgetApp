@@ -7,6 +7,7 @@ import learn.BudgetApp.domain.UserService;
 import learn.BudgetApp.models.Account;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,8 +36,9 @@ public class AccountController {
         return new ResponseEntity<>(result.getpayload(), HttpStatus.OK);
     }
 
-    @GetMapping("/full/{userId}")
-    public ResponseEntity<?> findByUserId(@PathVariable("userId") int userId){
+    @GetMapping("/myAccounts")
+    public ResponseEntity<?> findByUserId(Authentication authentication){
+        int userId = Integer.parseInt(authentication.getName());
         Result<List<Account>> result = service.findByUser(userId);
         if (!result.isSuccess()){
             return ErrorResponse.build(result);
