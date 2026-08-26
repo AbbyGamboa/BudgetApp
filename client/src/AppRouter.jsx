@@ -6,6 +6,7 @@ import { useState } from "react";
 import UserLanding from "./components/User/UserLanding";
 import UserLogout from "./components/User/UserLogout";
 import UserLayout from "./components/User/UserLayout";
+import ViewAccount from "./components/Account/ViewAccount";
 
 function AppRouter(){
     const [loggedInUser, setLoggedInUser] = useState(JSON.parse(localStorage.getItem("loggedInUser")));
@@ -38,6 +39,10 @@ function AppRouter(){
                         path: "signout",
                         element: loggedInUser? <UserLogout setLoggedInUser={setLoggedInUser}></UserLogout>: <Navigate to="/"></Navigate>,
                     }]
+                }, 
+                {
+                    path:"/view/account", 
+                    element: loggedInUser? <ViewAccount></ViewAccount>:<Navigate to="/"></Navigate>,
                 }
                 
             ],
