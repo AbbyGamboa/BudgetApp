@@ -53,6 +53,10 @@ function AppRouter(){
                 {
                     path:"/create/account", 
                     element: loggedInUser? <CreateAccount loggedInUser={loggedInUser}></CreateAccount>: <Navigate to="/"></Navigate>
+                }, 
+                {
+                    path:"/edit/account/:accountId", 
+                    element: loggedInUser? <CreateAccount loggedInUser={loggedInUser}></CreateAccount>: <Navigate to="/"></Navigate>
                 }
 
                 
