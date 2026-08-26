@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/account")
 @CrossOrigin
@@ -27,6 +29,15 @@ public class AccountController {
     @GetMapping("/{accountId}")
     public ResponseEntity<?> findById(@PathVariable("accountId") int accountId){
         Result<Account> result = service.findById(accountId);
+        if (!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+        return new ResponseEntity<>(result.getpayload(), HttpStatus.OK);
+    }
+
+    @GetMapping("/full/{userId}")
+    public ResponseEntity<?> findByUserId(@PathVariable("userId") int userId){
+        Result<List<Account>> result = service.findByUser(userId);
         if (!result.isSuccess()){
             return ErrorResponse.build(result);
         }

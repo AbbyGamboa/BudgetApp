@@ -27,13 +27,13 @@ public class AccountJdbcClientRepository implements AccountRepository{
         return false;
     }
 
+
+    private final String BASE_SELECT = """
+            select a.accountId, a.userId, a.subtype, u.email, u.password from account a
+                inner join user u on a.userId = u.userId""";
     @Override
     public Account findById(int accountId) {
-        String sql = """
-                select a.accountId, a.userId, a.subtype, u.email, u.password from account a
-                inner join user u on a.userId = u.userId
-                where accountId = ?;
-                """;
+        String sql = BASE_SELECT + " where accountId = ?;";
         return jdbcClient.sql(sql).param(accountId).query(new AccountMapper()).optional().orElse(null);
     }
 
@@ -44,6 +44,7 @@ public class AccountJdbcClientRepository implements AccountRepository{
 
     @Override
     public List<Account> findByUser(int userId) {
-        return List.of();
+        String sql = BASE_SELECT + "where u.userId = ?;";
+        return jdbcClient.sql(sql).param(userId).query(new AccountMapper()).list();
     }
 }
