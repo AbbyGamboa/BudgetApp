@@ -1,5 +1,7 @@
 package learn.BudgetApp.models;
 
+import java.util.Objects;
+
 public class Account {
     public int accountId;
     public User user;
@@ -33,5 +35,17 @@ public class Account {
 
     public void setSubtype(String subtype) {
         this.subtype = subtype;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return accountId == account.accountId && Objects.equals(user, account.user) && Objects.equals(subtype, account.subtype);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(accountId, user, subtype);
     }
 }
