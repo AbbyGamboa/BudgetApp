@@ -29,7 +29,8 @@ public class BudgetJdbcClientRepository implements BudgetRepository{
 
     @Override
     public Budget findById(int budgetId) {
-        return null;
+        String sql = BASE_SELECT + " where b.budgetId = ?";
+        return jdbcClient.sql(sql).param(budgetId).query(new BudgetMapper()).optional().orElse(null);
     }
 
     @Override

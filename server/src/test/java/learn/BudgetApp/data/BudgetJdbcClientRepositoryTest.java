@@ -42,4 +42,22 @@ class BudgetJdbcClientRepositoryTest {
             assertEquals(0, actual.size());
         }
     }
+
+    @Nested
+    class findById{
+        @Test
+        void success(){
+           Budget actual = repository.findById(1);
+           Budget expected = new Budget(1, TestDataHelper.existingUser(), BigDecimal.valueOf(4000));
+
+           assertEquals(expected, actual);
+        }
+
+        @Test
+        void NotFoundWhenNotThere(){
+            Budget actual = repository.findById(99);
+
+            assertNull(actual);
+        }
+    }
 }
