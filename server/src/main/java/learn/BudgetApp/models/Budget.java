@@ -1,6 +1,7 @@
 package learn.BudgetApp.models;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class Budget {
     public int budgetId;
@@ -35,5 +36,17 @@ public class Budget {
 
     public void setIncome(BigDecimal income) {
         this.income = income;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Budget budget = (Budget) o;
+        return budgetId == budget.budgetId && Objects.equals(user, budget.user) && Objects.equals(income, budget.income);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(budgetId, user, income);
     }
 }
