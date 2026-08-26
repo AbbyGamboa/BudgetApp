@@ -3,6 +3,7 @@ package learn.BudgetApp.domain;
 import learn.BudgetApp.data.AccountRepository;
 import learn.BudgetApp.data.UserRepository;
 import learn.BudgetApp.models.Account;
+import learn.BudgetApp.models.User;
 import org.apache.logging.log4j.message.ReusableMessage;
 import org.springframework.stereotype.Service;
 
@@ -43,16 +44,39 @@ public class AccountService {
             return result;
         }
         validateAccount(result, found);
+        if (result.isSuccess()){
+            result.setpayload(found);
+        }
         return result;
     }
 
     public Result<List<Account>> findByUser(int userId){
-        List <Account> foundAccounts = accountRepository.findByUser(userId);
         Result<List<Account>> result = new Result<>();
+        User user = userRepository.findById(userId);
+        if (user == null){
+            result.addErrorMessage("User not found", ResultType.NOT_FOUND);
+            return result;
+        }
+
+        List <Account> foundAccounts = accountRepository.findByUser(userId);
 
         if(foundAccounts.isEmpty()){
             result.addErrorMessage("No accounts found", ResultType.NOT_FOUND);
-        } else{
+            return result;
+        }
+
+        Result<Account> resultPerEach = new Result<>();
+        for (Account account: foundAccounts){
+            validateAccount(resultPerEach, account);
+        }
+
+        if (!resultPerEach.isSuccess()){
+            for (String error: resultPerEach.getErrorMessages()){
+                result.addErrorMessage(error, ResultType.INVALID);
+            }
+        }
+
+        if (result.isSuccess()){
             result.setpayload(foundAccounts);
         }
         return result;
