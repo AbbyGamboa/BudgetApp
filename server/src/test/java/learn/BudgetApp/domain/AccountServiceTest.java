@@ -188,4 +188,58 @@ class AccountServiceTest {
         }
     }
 
+    @Nested
+    class update{
+        @Test
+        void success(){
+            Account beforeUpdate = new Account(1, TestDataHelper.existingUser(), "Checkings");
+            Account updated = new Account(1, TestDataHelper.existingUser(), "Savings");
+            when(repository.findById(1)).thenReturn(beforeUpdate);
+            when(repository.updateAccount(updated)).thenReturn(true);
+
+            Result<Account> expected = new Result<>();
+            expected.setpayload(updated);
+            Result<Account> actual = service.update(updated, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void doNotUpdateIfMisMatchUser(){
+            User user = TestDataHelper.existingUser();
+            Account original = new Account(1, user, "Checkings");
+
+            user.setUserId(2);
+            Account updated = new Account(1, user, "Savings");
+
+            when(repository.findById(1)).thenReturn(original);
+            when(repository.updateAccount(updated)).thenReturn(true);
+
+            Result<Account> expected = new Result<>();
+            expected.addErrorMessage("Cannot change ownership of an Account", ResultType.INVALID);
+
+            Result<Account> actual = service.update(updated, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void cannotUpdateToNull(){
+            User user = TestDataHelper.existingUser();
+            Account original = new Account(1, user, "Checkings");
+            Account updated = new Account(1, user, null);
+
+            when(repository.findById(1)).thenReturn(original);
+            when(repository.updateAccount(updated)).thenReturn(true);
+
+            Result<Account> expected = new Result<>();
+            expected.addErrorMessage("Subtype is required", ResultType.INVALID);
+
+            Result<Account> actual = service.update(updated, 1);
+
+            assertEquals(expected, actual);
+        }
+
+    }
+
 }

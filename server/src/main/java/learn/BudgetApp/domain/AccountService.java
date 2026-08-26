@@ -111,4 +111,40 @@ public class AccountService {
         return result;
     }
 
+    public Result<Account> update(Account account, int userId){
+        Result<Account> result = new Result<>();
+
+        if (account == null){
+            result.addErrorMessage("Account not found", ResultType.NOT_FOUND);
+            return result;
+        }
+        validateAccount(result, account);
+
+        if(account.getAccountId() <= 0){
+            result.addErrorMessage("Account id is required", ResultType.INVALID);
+        }
+
+        boolean providedUserId = account.getUser() != null;
+        Account existing = accountRepository.findById(account.getAccountId());
+
+        if (existing == null){
+            result.addErrorMessage("Account id is not found", ResultType.NOT_FOUND);
+            return result;
+        }
+
+        if(providedUserId && existing.getUser().getUserId() != userId){
+            result.addErrorMessage("Cannot change ownership of an Account", ResultType.INVALID);
+        }
+
+        if(result.isSuccess()){
+            if (accountRepository.updateAccount(account)){
+                result.setpayload(account);
+            } else {
+                result.addErrorMessage("Account id was not found", ResultType.NOT_FOUND);
+            }
+        }
+
+        return result;
+    }
+
 }
