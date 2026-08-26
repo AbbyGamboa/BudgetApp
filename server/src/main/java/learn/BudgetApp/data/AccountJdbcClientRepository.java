@@ -39,7 +39,7 @@ public class AccountJdbcClientRepository implements AccountRepository{
 
     @Override
     public boolean delete(int accountId) {
-        return false;
+       return false;
     }
 
 
@@ -54,7 +54,14 @@ public class AccountJdbcClientRepository implements AccountRepository{
 
     @Override
     public boolean updateAccount(Account account) {
-        return false;
+        String sql = """
+                update account
+                set subType =?
+                where accountId = ? and userId = ?;
+                """;
+
+       return jdbcClient.sql(sql).param(account.getSubtype())
+                .param(account.getAccountId()).param(account.getUser().getUserId()).update() > 0;
     }
 
     @Override

@@ -73,6 +73,26 @@ class AccountJdbcClientRepositoryTest {
 
     }
 
+    @Nested
+    class update{
+        @Test
+        void success(){
+            Account update = new Account(1, TestDataHelper.existingUser(), "Savings");
+            boolean actual = repository.updateAccount(update);
+
+            assertTrue(actual);
+        }
+
+        @Test
+        void cannotUpdateMisMatch(){
+            Account update = new Account(2, TestDataHelper.existingUser(), "Savings");
+            boolean actual = repository.updateAccount(update);
+
+            assertFalse(actual);
+        }
+
+    }
+
 
 
 
