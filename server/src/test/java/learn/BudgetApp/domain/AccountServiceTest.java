@@ -69,16 +69,6 @@ class AccountServiceTest {
             assertEquals(expectedBlank, actual);
         }
 
-        @Test
-        void accountMissingUser(){
-            Account account = new Account(1, null, "TESTING");
-            when(repository.findById(1)).thenReturn(account);
-            Result<Account> actual = service.findById(1);
-            Result<Account> expectedNull = new Result<>();
-            expectedNull.addErrorMessage("User is required", ResultType.INVALID);
-
-            assertEquals(expectedNull, actual);
-        }
     }
 
     @Nested

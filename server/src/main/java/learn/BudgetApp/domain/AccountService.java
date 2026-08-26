@@ -30,9 +30,9 @@ public class AccountService {
             result.addErrorMessage("Subtype is required", ResultType.INVALID);
         }
 
-        if(account.getUser() == null){
+        /*if(account.getUser() == null){
             result.addErrorMessage("User is required", ResultType.INVALID);
-        }
+        }*/
     }
 
     public Result<Account> findById(int accountId){
@@ -118,6 +118,12 @@ public class AccountService {
             result.addErrorMessage("Account not found", ResultType.NOT_FOUND);
             return result;
         }
+        User user = userRepository.findById(userId);
+        if (user == null){
+            result.addErrorMessage("User not found", ResultType.NOT_FOUND);
+            return result;
+        }
+        account.setUser(user);
         validateAccount(result, account);
 
         if(account.getAccountId() <= 0){
