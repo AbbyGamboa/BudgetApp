@@ -60,6 +60,19 @@ class AccountJdbcClientRepositoryTest {
         }
     }
 
+    @Nested
+    class create{
+
+        @Test
+        void success(){
+            Account created = new Account(3, TestDataHelper.existingUser(), "Savings");
+            Account actual = repository.create(created);
+
+            assertEquals(created, actual);
+        }
+
+    }
+
 
 
 

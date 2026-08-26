@@ -3,6 +3,8 @@ package learn.BudgetApp.data;
 import learn.BudgetApp.models.Account;
 import learn.BudgetApp.models.mapping.AccountMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,8 +20,21 @@ public class AccountJdbcClientRepository implements AccountRepository{
 
     @Override
     public Account create(Account account) {
+        String sql = """
+                insert into account (userId, subtype)
+                values (:userId, :subtype); 
+                """;
 
-        return null;
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        int rowsAffected = jdbcClient.sql(sql).param("userId", account.getUser().getUserId())
+                .param("subtype", account.getSubtype())
+                .update(keyHolder, "accountId");
+
+        if(rowsAffected == 0){
+            return null;
+        }
+        return account;
     }
 
     @Override
