@@ -1,0 +1,72 @@
+package learn.BudgetApp.data;
+
+import learn.BudgetApp.models.Account;
+import learn.BudgetApp.models.mapping.AccountMapper;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public class AccountJdbcClientRepository implements AccountRepository{
+
+    private final JdbcClient jdbcClient;
+
+    public AccountJdbcClientRepository(JdbcClient jdbcClient) {
+        this.jdbcClient = jdbcClient;
+    }
+
+    @Override
+    public Account create(Account account) {
+        String sql = """
+                insert into account (userId, subtype)
+                values (:userId, :subtype); 
+                """;
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        int rowsAffected = jdbcClient.sql(sql).param("userId", account.getUser().getUserId())
+                .param("subtype", account.getSubtype())
+                .update(keyHolder, "accountId");
+
+        if(rowsAffected == 0){
+            return null;
+        }
+        return account;
+    }
+
+    @Override
+    public boolean delete(int accountId) {
+       return false;
+    }
+
+
+    private final String BASE_SELECT = """
+            select a.accountId, a.userId, a.subtype, u.email, u.password from account a
+                inner join user u on a.userId = u.userId""";
+    @Override
+    public Account findById(int accountId) {
+        String sql = BASE_SELECT + " where accountId = ?;";
+        return jdbcClient.sql(sql).param(accountId).query(new AccountMapper()).optional().orElse(null);
+    }
+
+    @Override
+    public boolean updateAccount(Account account) {
+        String sql = """
+                update account
+                set subType =?
+                where accountId = ? and userId = ?;
+                """;
+
+       return jdbcClient.sql(sql).param(account.getSubtype())
+                .param(account.getAccountId()).param(account.getUser().getUserId()).update() > 0;
+    }
+
+    @Override
+    public List<Account> findByUser(int userId) {
+        String sql = BASE_SELECT + " where u.userId = ?;";
+        return jdbcClient.sql(sql).param(userId).query(new AccountMapper()).list();
+    }
+}
