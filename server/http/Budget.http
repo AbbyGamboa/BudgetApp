@@ -1,0 +1,4 @@
+@base_url = http://localhost:8080/api/budget
+
+GET {{base_url}}/myBudgets HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg3NzczOTA5LCJleHAiOjE3ODc3Nzc1MDl9.Kzyh8C4A74V47fjT1xy1Oo4jmKKl3KWyk79uk4C9e0s41nmy7lmyKdSl179z97gK
