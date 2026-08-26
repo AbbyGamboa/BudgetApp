@@ -5,6 +5,7 @@ import learn.BudgetApp.domain.AccountService;
 import learn.BudgetApp.domain.Result;
 import learn.BudgetApp.domain.UserService;
 import learn.BudgetApp.models.Account;
+import learn.BudgetApp.models.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -49,5 +50,18 @@ public class AccountController {
             return ErrorResponse.build(result);
         }
         return new ResponseEntity<>(result.getpayload(), HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<?> create(@RequestBody Account account, Authentication authentication){
+        int userId = Integer.parseInt(authentication.getName());
+        Result<Account> result = service.create(account, userId);
+        if (!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+
+        return new ResponseEntity<>(result.getpayload(), HttpStatus.CREATED);
+
+
     }
 }
