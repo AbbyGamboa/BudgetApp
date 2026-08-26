@@ -60,4 +60,24 @@ class BudgetJdbcClientRepositoryTest {
             assertNull(actual);
         }
     }
+
+    @Nested
+    class update{
+        @Test
+        void success(){
+            Budget update = new Budget(1, TestDataHelper.existingUser(), BigDecimal.valueOf(5000));
+            boolean actual = repository.update(update);
+
+            assertTrue(actual);
+        }
+
+        @Test
+        void failToUpdateWithIncorrectUserAndBudget(){
+            Budget update = new Budget(2, TestDataHelper.existingUser(), BigDecimal.valueOf(5000));
+            boolean actual = repository.update(update);
+
+            assertFalse(actual);
+        }
+
+    }
 }
