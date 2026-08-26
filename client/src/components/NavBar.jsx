@@ -19,7 +19,6 @@ function NavBar({loggedInUser}){
             {loggedInUser &&  <>
             <Nav.Link href="/view/accounts">Account</Nav.Link>
             <Link className='btn btn-primary m-1' to="/user/signout">Logout</Link>
-            <Link className='btn btn-primary m-1' to="/user/connect/bank">Connect Bank</Link>
             </>
             }
             

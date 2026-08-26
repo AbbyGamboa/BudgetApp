@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import Account from "./Account";
+import { Link } from "react-router-dom";
 
 function ViewAccount({loggedInUser}){
     const[accounts, setAccounts] = useState([])
@@ -23,6 +24,7 @@ function ViewAccount({loggedInUser}){
         <>
         <h1>Accounts: </h1>
         {accounts.map((account,i) => <Account key ={i} accountId={account.accountId} subtype={account.subtype}/>)}
+        <Link to="/create/account" className="btn btn-success m-1">Create Account</Link>
         </>
     
 
