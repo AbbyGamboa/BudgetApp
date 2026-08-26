@@ -88,4 +88,25 @@ public class AccountService {
         return result;
     }
 
+    public Result<Account> create(Account account){
+        Result<Account> result = new Result<>();
+
+        if (account == null){
+            result.addErrorMessage("Account not found", ResultType.NOT_FOUND);
+            return result;
+        }
+
+        validateAccount(result, account);
+        User user = userRepository.findById(account.getUser().getUserId());
+        if (user == null){
+            result.addErrorMessage("User not found", ResultType.NOT_FOUND);
+            return result;
+        }
+        if (result.isSuccess()){
+            result.setpayload(accountRepository.create(account));
+        }
+
+        return result;
+    }
+
 }
