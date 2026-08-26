@@ -33,7 +33,7 @@ function SingleAccount({loggedInUser}){
             <>
                 <p>Account ID: {account.accountId}</p>
                 <p>Type: {account.subtype}</p>
-                <ViewBudgets loggedInUser={loggedInUser}></ViewBudgets>
+                
             </>
         )}
         </>

@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function SingleBudget({loggedInUser}){
     const {budgetId} = useParams()
@@ -17,7 +18,7 @@ function SingleBudget({loggedInUser}){
                 }
             })
             if (response.status === 401 || response.status === 404){
-                navigate("/view/accounts")
+                navigate("/view/budgets")
                 return;
             } 
             const payload = await response.json();
@@ -34,6 +35,7 @@ function SingleBudget({loggedInUser}){
             <>
                 <p>Budget ID: {budget.budgetId}</p>
                 <p>Total income: {budget.income}</p>
+                <Link className="btn btn-warning" to="/view/budgets">View all Budgets</Link>
             </>
         )}
         </>
