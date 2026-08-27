@@ -86,6 +86,35 @@ public class BudgetService {
         return result;
     }
 
+    public Result<Budget> create(Budget budget, int userId){
+        Result<Budget> result = new Result<>();
+
+        if (budget == null){
+            result.addErrorMessage("Budget not found", ResultType.NOT_FOUND);
+            return result;
+        }
+        User user = userRepository.findById(userId);
+        if (user == null){
+            result.addErrorMessage("User not found", ResultType.NOT_FOUND);
+            return result;
+        }
+        if (!user.equals(budget.getUser())){
+            result.addErrorMessage("Cannot create a budget for another user", ResultType.INVALID);
+            return result;
+        }
+        budget.setUser(user);
+        validate(result, budget);
+
+        if (result.isSuccess()){
+            validateIncome(result, budget.getIncome());
+            if (result.isSuccess()){
+                result.setpayload(repository.create(budget));
+            }
+        }
+
+        return result;
+    }
+
     public void validate(Result<Budget> result, Budget budget){
         if (budget.getUser() == null){
             result.addErrorMessage("User is required", ResultType.INVALID);
@@ -114,7 +143,7 @@ public class BudgetService {
             results.addErrorMessage("Income must be higher than 0", ResultType.INVALID);
         }
 
-        if (income.scale() != 2){
+        if (income.scale() > 2){
             results.addErrorMessage("Income must have 2 decimal places", ResultType.INVALID);
         }
 

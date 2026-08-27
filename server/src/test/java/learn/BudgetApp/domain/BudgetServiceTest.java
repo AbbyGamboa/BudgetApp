@@ -148,4 +148,95 @@ class BudgetServiceTest {
             assertEquals(expected, actual);
         }
     }
+
+    @Nested
+    class create{
+        @Test
+        void success(){
+            Budget create = new Budget(3, TestDataHelper.existingUser(), BigDecimal.valueOf(75.50));
+
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
+            when(repository.create(create)).thenReturn(create);
+            Result<Budget> actual = service.create(create, 1);
+
+            Result<Budget> expected = new Result<>();
+            expected.setpayload(create);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenUserIsIncorrect(){
+            User differentUser = TestDataHelper.existingUser();
+            differentUser.setUserId(2);
+            Budget create = new Budget(3, TestDataHelper.existingUser(), BigDecimal.valueOf(75.50));
+
+            when(userRepository.findById(2)).thenReturn(TestDataHelper.existingUser());
+            when(repository.create(create)).thenReturn(create);
+            Result<Budget> actual = service.create(create, 2);
+
+            Result<Budget> expected = new Result<>();
+            expected.addErrorMessage("Cannot create a budget for another user", ResultType.INVALID);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenUserDoesNotExist(){
+            User doesNotExist = TestDataHelper.existingUser();
+            doesNotExist.setUserId(999);
+            Budget create = new Budget(3, doesNotExist, BigDecimal.valueOf(75.50));
+
+            when(userRepository.findById(999)).thenReturn(null);
+            when(repository.create(create)).thenReturn(create);
+            Result<Budget> actual = service.create(create, 99);
+
+            Result<Budget> expected = new Result<>();
+            expected.addErrorMessage("User not found", ResultType.NOT_FOUND);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenIncomeZero(){
+            Budget create = new Budget(3, TestDataHelper.existingUser(), BigDecimal.ZERO);
+
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
+            when(repository.create(create)).thenReturn(create);
+            Result<Budget> actual = service.create(create, 1);
+
+            Result<Budget> expected = new Result<>();
+            expected.addErrorMessage("Income must be higher than 0", ResultType.INVALID);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenIncomeNegative(){
+            Budget create = new Budget(3, TestDataHelper.existingUser(), BigDecimal.valueOf(-1));
+
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
+            when(repository.create(create)).thenReturn(create);
+            Result<Budget> actual = service.create(create, 1);
+
+            Result<Budget> expected = new Result<>();
+            expected.addErrorMessage("Income must be higher than 0", ResultType.INVALID);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenIncomeHasTooManyDecimalPlaces(){
+            Budget create = new Budget(3, TestDataHelper.existingUser(), BigDecimal.valueOf(10.00012));
+
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
+            when(repository.create(create)).thenReturn(create);
+            Result<Budget> actual = service.create(create, 1);
+
+            Result<Budget> expected = new Result<>();
+            expected.addErrorMessage("Income must have 2 decimal places", ResultType.INVALID);
+
+            assertEquals(expected, actual);
+        }
+    }
 }
