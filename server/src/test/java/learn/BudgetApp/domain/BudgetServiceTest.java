@@ -4,6 +4,7 @@ import learn.BudgetApp.data.BudgetRepository;
 import learn.BudgetApp.data.TestDataHelper;
 import learn.BudgetApp.data.UserRepository;
 import learn.BudgetApp.models.Budget;
+import learn.BudgetApp.models.User;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,57 @@ class BudgetServiceTest {
 
             assertEquals(expected, actual);
         }
+    }
 
+    @Nested
+    class update{
+        @Test
+        void success(){
+            Budget updated = new Budget(1, TestDataHelper.existingUser(), BigDecimal.valueOf(4500));
+
+            when(repository.findById(1)).thenReturn(updated);
+            when(repository.update(updated)).thenReturn(true);
+
+            Result<Budget> actual = service.update(updated, 1);
+
+            Result<Budget> expected = new Result<>();
+            expected.setpayload(updated);
+
+            assertEquals(expected, actual);
+
+        }
+
+        @Test
+        void cannotUpdateAnotherUserBudget(){
+            User user = TestDataHelper.existingUser();
+            user.setUserId(2);
+            Budget original = new Budget(1, TestDataHelper.existingUser(), BigDecimal.valueOf(4000));
+            Budget updated = new Budget(1, user, BigDecimal.valueOf(5000));
+
+            when(repository.findById(1)).thenReturn(original);
+
+            Result<Budget> actual = service.update(updated, 2);
+
+            Result<Budget> expected = new Result<>();
+            expected.addErrorMessage("Cannot change ownership of a Budget", ResultType.INVALID);
+
+            assertEquals(expected, actual);
+
+        }
+
+        @Test
+        void cannotMakeIncomeNegative(){
+            Budget updated = new Budget(1, TestDataHelper.existingUser(), BigDecimal.valueOf(-4500));
+
+            when(repository.findById(1)).thenReturn(updated);
+            when(repository.update(updated)).thenReturn(true);
+
+            Result<Budget> actual = service.update(updated, 1);
+
+            Result<Budget> expected = new Result<>();
+            expected.addErrorMessage("Income must be higher than 0", ResultType.INVALID);
+
+            assertEquals(expected, actual);
+        }
     }
 }

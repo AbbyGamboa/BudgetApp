@@ -2,9 +2,12 @@ package learn.BudgetApp.domain;
 
 import learn.BudgetApp.data.BudgetRepository;
 import learn.BudgetApp.data.UserRepository;
+import learn.BudgetApp.models.Account;
 import learn.BudgetApp.models.Budget;
+import learn.BudgetApp.models.User;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -44,6 +47,42 @@ public class BudgetService {
 
     }
 
+    public Result<Budget> update(Budget budget, int userId){
+        Result<Budget> result = new Result<>();
+        if (budget == null){
+            result.addErrorMessage("Budget not found", ResultType.NOT_FOUND);
+            return result;
+        }
+
+        validate(result, budget);
+        if(budget.getBudgetId() <= 0){
+            result.addErrorMessage("Budget id is required", ResultType.INVALID);
+        }
+
+        boolean providedUserId = budget.getUser() != null;
+        Budget existing = repository.findById(budget.getBudgetId());
+
+        if (existing == null){
+            result.addErrorMessage("Budget id is not found", ResultType.NOT_FOUND);
+            return result;
+        }
+
+        if(providedUserId && existing.getUser().getUserId() != userId){
+            result.addErrorMessage("Cannot change ownership of a Budget", ResultType.INVALID);
+        }
+
+        validateIncome(result, budget.getIncome());
+        if (result.isSuccess()){
+            if (repository.update(budget)){
+                result.setpayload(budget);
+            } else {
+                result.addErrorMessage("Budget id was not found", ResultType.NOT_FOUND);
+            }
+        }
+
+        return result;
+    }
+
     public void validate(Result<Budget> result, Budget budget){
         if (budget.getUser() == null){
             result.addErrorMessage("User is required", ResultType.INVALID);
@@ -60,6 +99,12 @@ public class BudgetService {
 
         if(budget.getIncome() == null){
             result.addErrorMessage("Income is required", ResultType.INVALID);
+        }
+    }
+
+    private void validateIncome(Result<Budget> results, BigDecimal income){
+        if(income.signum() != 1){
+            results.addErrorMessage("Income must be higher than 0", ResultType.INVALID);
         }
     }
 
