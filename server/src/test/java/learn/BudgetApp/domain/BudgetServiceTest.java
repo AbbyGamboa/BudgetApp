@@ -116,5 +116,20 @@ class BudgetServiceTest {
 
             assertEquals(expected, actual);
         }
+
+        @Test
+        void cannotMakeIncomeZero(){
+            Budget updated = new Budget(1, TestDataHelper.existingUser(), BigDecimal.ZERO);
+
+            when(repository.findById(1)).thenReturn(updated);
+            when(repository.update(updated)).thenReturn(true);
+
+            Result<Budget> actual = service.update(updated, 1);
+
+            Result<Budget> expected = new Result<>();
+            expected.addErrorMessage("Income must be higher than 0", ResultType.INVALID);
+
+            assertEquals(expected, actual);
+        }
     }
 }
