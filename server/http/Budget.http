@@ -11,6 +11,6 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg3ODQwMDUxLCJleHAiOjE3ODc4NDM2NTF9.pEGkRgD2usCb5Z-3WCQ703sn0T0BTlaydTcH4MFaGR332jlV7VqdFAtHQ_4Z3zz6
 
 {
-  "income": 5000
+  "income": 5000.00
 }
 

@@ -6,6 +6,7 @@ import learn.BudgetApp.models.User;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.Nullable;
 
+import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -22,7 +23,7 @@ public class BudgetMapper implements RowMapper<Budget> {
         return new Budget(
                 rs.getInt("budgetId"),
                 user,
-                rs.getBigDecimal("income")
+                rs.getBigDecimal("income").setScale(2, RoundingMode.DOWN)
         );
     }
 }

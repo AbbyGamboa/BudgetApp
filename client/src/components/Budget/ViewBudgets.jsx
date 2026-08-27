@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import Budget from "./Budget"
+import { Link } from "react-router-dom"
 
 function ViewBudgets({loggedInUser}){
     const[budgets, setBudgets] = useState([])
@@ -20,7 +21,8 @@ function ViewBudgets({loggedInUser}){
     return(
         <>
         <h1>Budgets: </h1>
-        {budgets.map((budget, i) => <Budget key={i} income={budget.income} budgetId={budget.budgetId}></Budget>)}
+        {budgets.map((budget, i) => <Budget key={i} income={Number(budget.income).toFixed(2)} budgetId={budget.budgetId}></Budget>)}
+        <Link to={"/add/budget"} className="btn btn-primary">Add budget</Link>
         </>
     
     );

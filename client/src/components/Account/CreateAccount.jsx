@@ -72,7 +72,7 @@ function CreateAccount({loggedInUser}){
 
     return(
         <form onSubmit={handleSubmit}>
-            <h1>Create Account</h1>
+            <h1>{accountId ? "Update" : "Create"} Account</h1>
              {errors.length > 0 ?
                     <ul>{errors.map(error => <li key={error}>{error}</li>)}</ul>
                     : null

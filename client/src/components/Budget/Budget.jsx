@@ -5,6 +5,7 @@ function Budget({income, budgetId}){
             <h3>Budget {budgetId}: </h3>
             Start total: ${income}
             <Link className="btn btn-primary m-1" to={`/view/budget/${budgetId}`}>View</Link>
+            <Link className="btn btn-primary m-1" to={`/edit/budget/${budgetId}`}>Edit</Link>
         </div>
     );
 }

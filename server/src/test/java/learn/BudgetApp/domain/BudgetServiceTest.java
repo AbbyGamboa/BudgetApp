@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -128,6 +129,21 @@ class BudgetServiceTest {
 
             Result<Budget> expected = new Result<>();
             expected.addErrorMessage("Income must be higher than 0", ResultType.INVALID);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void updateToIncomeWithChange(){
+            Budget updated = new Budget(1, TestDataHelper.existingUser(), BigDecimal.valueOf(4500.06).setScale(2, RoundingMode.DOWN));
+
+            when(repository.findById(1)).thenReturn(updated);
+            when(repository.update(updated)).thenReturn(true);
+
+            Result<Budget> actual = service.update(updated, 1);
+
+            Result<Budget> expected = new Result<>();
+            expected.setpayload(updated);
 
             assertEquals(expected, actual);
         }

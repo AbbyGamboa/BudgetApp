@@ -8,6 +8,7 @@ import learn.BudgetApp.models.User;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 @Service
@@ -105,9 +106,19 @@ public class BudgetService {
     }
 
     private void validateIncome(Result<Budget> results, BigDecimal income){
+        if (income == null){
+            return;
+        }
+
         if(income.signum() != 1){
             results.addErrorMessage("Income must be higher than 0", ResultType.INVALID);
         }
+
+        if (income.scale() != 2){
+            results.addErrorMessage("Income must have 2 decimal places", ResultType.INVALID);
+        }
+
+
     }
 
 }

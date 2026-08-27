@@ -34,3 +34,4 @@ insert into user (email, password) values
 	(1,2),(2,1), (3,3);
 	
 	select * from user;
+select * from budget;
