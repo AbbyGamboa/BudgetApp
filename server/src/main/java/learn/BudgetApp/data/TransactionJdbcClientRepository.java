@@ -1,6 +1,7 @@
 package learn.BudgetApp.data;
 
 import learn.BudgetApp.models.Transaction;
+import learn.BudgetApp.models.mapping.TransactionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
@@ -17,9 +18,16 @@ public class TransactionJdbcClientRepository implements TransactionRepository{
         this.jdbcClient = jdbcClient;
     }
 
+    private final String BASE_SELECT = """
+            select t.transactionId, t.accountId, t.amount, t.date, t.merchantName,
+            t.description, a.userId, a.subtype, u.email, u.password
+            from transaction t inner join account a on t.accountId = a.accountId
+            inner join user u on a.userId = u.userId
+            """;
     @Override
     public Transaction findById(int transactionId) {
-        return null;
+        final String sql = BASE_SELECT + " where t.transactionId = ?;";
+        return jdbcClient.sql(sql).param(transactionId).query(new TransactionMapper()).optional().orElse(null);
     }
 
     @Override

@@ -1,6 +1,12 @@
 package learn.BudgetApp.data;
 
+import learn.BudgetApp.models.Account;
+import learn.BudgetApp.models.Transaction;
 import learn.BudgetApp.models.User;
+import org.junit.jupiter.api.Test;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class TestDataHelper {
 
@@ -17,5 +23,13 @@ public class TestDataHelper {
         User user = userToCreate();
         user.setUserId(3);
         return user;
+    }
+
+    public static Account existingAccount(){
+        return new Account(1, TestDataHelper.existingUser(), "Checkings");
+    }
+
+    public static Transaction firstTransaction(){
+        return new Transaction(1, existingAccount(), BigDecimal.valueOf(100), LocalDate.of(2026, 6, 8), "Target", "Online buy");
     }
 }
