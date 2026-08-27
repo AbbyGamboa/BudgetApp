@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useParams,useNavigate} from "react-router-dom"
-import ViewBudgets from "../Budget/ViewBudgets";
+import { Link } from "react-router-dom";
 
 function SingleAccount({loggedInUser}){
     const {accountId} = useParams();
@@ -33,6 +33,8 @@ function SingleAccount({loggedInUser}){
             <>
                 <p>Account ID: {account.accountId}</p>
                 <p>Type: {account.subtype}</p>
+                <h2>Transactions: </h2>
+                
                 
             </>
         )}
