@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/transaction")
 @CrossOrigin
@@ -30,6 +32,16 @@ public class TransactionController {
             return ErrorResponse.build(result);
         }
         return new ResponseEntity(result, HttpStatus.OK);
-
     }
-}
+
+    @GetMapping("/account/{accountId}")
+    public ResponseEntity<?> findByAccount(@PathVariable int accountId, Authentication authentication){
+        int userid = Integer.parseInt(authentication.getName());
+
+        Result<List<Transaction>> result = service.findByAccount(accountId, userid);
+        if (!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+ }
