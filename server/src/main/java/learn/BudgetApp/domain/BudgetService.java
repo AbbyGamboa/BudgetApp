@@ -98,10 +98,7 @@ public class BudgetService {
             result.addErrorMessage("User not found", ResultType.NOT_FOUND);
             return result;
         }
-        if (!user.equals(budget.getUser())){
-            result.addErrorMessage("Cannot create a budget for another user", ResultType.INVALID);
-            return result;
-        }
+
         budget.setUser(user);
         validate(result, budget);
 

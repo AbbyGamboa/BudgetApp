@@ -58,5 +58,16 @@ public class BudgetController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PostMapping
+    public ResponseEntity<?> create(@RequestBody Budget budget, Authentication authentication){
+        int userId = Integer.parseInt(authentication.getName());
+        Result<Budget> result = service.create(budget, userId);
+        if (!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+
+        return new ResponseEntity<>(result.getpayload(), HttpStatus.CREATED);
+    }
+
 
 }
