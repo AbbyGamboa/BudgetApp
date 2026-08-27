@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,6 +41,24 @@ class TransactionJdbcClientRepositoryTest {
             Transaction actual = repository.findById(99);
 
             assertNull(actual);
+        }
+    }
+
+    @Nested
+    class findByAccount{
+        @Test
+        void success(){
+            List<Transaction> expected = TestDataHelper.allAccountOneTransactions();
+            List<Transaction> actual = repository.findByAccount(1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWithAccountNotInDB(){
+            List<Transaction> actual = repository.findByAccount(99);
+
+            assertEquals(0, actual.size());
         }
     }
 }

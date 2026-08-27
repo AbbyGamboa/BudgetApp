@@ -32,7 +32,9 @@ public class TransactionJdbcClientRepository implements TransactionRepository{
 
     @Override
     public List<Transaction> findByAccount(int accountId) {
-        return List.of();
+        final String sql = BASE_SELECT + " where a.accountId = ?;";
+
+        return jdbcClient.sql(sql).param(accountId).query(new TransactionMapper()).list();
     }
 
     @Override
