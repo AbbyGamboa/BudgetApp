@@ -1,6 +1,7 @@
 package learn.BudgetApp.data;
 
 import learn.BudgetApp.models.Budget;
+import learn.BudgetApp.models.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -80,4 +81,16 @@ class BudgetJdbcClientRepositoryTest {
         }
 
     }
+
+    @Nested
+    class create{
+        @Test
+        void success(){
+            Budget create = new Budget(3, TestDataHelper.existingUser(), BigDecimal.valueOf(950.40));
+            Budget actual = repository.create(create);
+
+            assertEquals(create, actual);
+        }
+    }
+
 }

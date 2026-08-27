@@ -3,6 +3,8 @@ package learn.BudgetApp.data;
 import learn.BudgetApp.models.Budget;
 import learn.BudgetApp.models.mapping.BudgetMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -35,7 +37,22 @@ public class BudgetJdbcClientRepository implements BudgetRepository{
 
     @Override
     public Budget create(Budget budget) {
-        return null;
+        String sql = """
+                insert into budget (userId, income) 
+                values (:userId, :income);
+                """;
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        int rowsAffected = jdbcClient.sql(sql)
+                .param("userId", budget.getUser().getUserId())
+                .param("income", budget.getIncome())
+                .update(keyHolder, "budgetId");
+
+        if(rowsAffected == 0){
+            return null;
+        }
+        return budget;
     }
 
     @Override
