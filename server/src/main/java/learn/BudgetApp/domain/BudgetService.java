@@ -54,7 +54,6 @@ public class BudgetService {
             return result;
         }
 
-        validate(result, budget);
         if(budget.getBudgetId() <= 0){
             result.addErrorMessage("Budget id is required", ResultType.INVALID);
         }
@@ -70,6 +69,9 @@ public class BudgetService {
         if(providedUserId && existing.getUser().getUserId() != userId){
             result.addErrorMessage("Cannot change ownership of a Budget", ResultType.INVALID);
         }
+        budget.setUser(existing.getUser());
+        validate(result, budget);
+
 
         validateIncome(result, budget.getIncome());
         if (result.isSuccess()){

@@ -3,6 +3,7 @@ package learn.BudgetApp.controller;
 import learn.BudgetApp.Security.JwtService;
 import learn.BudgetApp.domain.BudgetService;
 import learn.BudgetApp.domain.Result;
+import learn.BudgetApp.models.Account;
 import learn.BudgetApp.models.Budget;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class BudgetController {
     }
 
     @GetMapping("/{budgetId}")
-    public ResponseEntity<?> findByUserId(@PathVariable int budgetId,Authentication authentication){
+    public ResponseEntity<?> findById(@PathVariable int budgetId,Authentication authentication){
         int userId = Integer.parseInt(authentication.getName());
 
         Result<Budget> result = service.findById(budgetId, userId);
@@ -42,6 +43,19 @@ public class BudgetController {
             return ErrorResponse.build(result);
         }
         return new ResponseEntity<>(result.getpayload(), HttpStatus.OK);
+    }
+
+    @PutMapping("/edit/{budgetId}")
+    public ResponseEntity<?> update(@PathVariable int budgetId, @RequestBody Budget budget, Authentication authentication){
+        budget.setBudgetId(budgetId);
+        int userId = Integer.parseInt(authentication.getName());
+
+        Result<Budget> result = service.update(budget, userId);
+        if(!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
