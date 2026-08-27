@@ -6,6 +6,7 @@ import learn.BudgetApp.models.User;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -31,14 +32,23 @@ public class TestDataHelper {
     }
 
     public static Transaction firstTransaction(){
-        return new Transaction(1, existingAccount(), BigDecimal.valueOf(100), LocalDate.of(2026, 6, 8), "Target", "Online buy");
+        return new Transaction(1, existingAccount(), BigDecimal.valueOf(100).setScale(2, RoundingMode.DOWN), LocalDate.of(2026, 6, 8), "Target", "Online buy");
+    }
+
+    public static Account secondAccount(){
+        return  new Account(2, secondUser(), "Savings");
     }
 
     public static List<Transaction> allAccountOneTransactions(){
-        return List.of(firstTransaction(), new Transaction(2, existingAccount(), BigDecimal.TEN, LocalDate.of(2026, 6,9), "Speedway", "Gas"));
+        return List.of(firstTransaction(), new Transaction(2, existingAccount(), BigDecimal.TEN.setScale(2, RoundingMode.DOWN), LocalDate.of(2026, 6,9), "Speedway", "Gas"));
     }
 
     public static List<Account> allUserOneAccounts(){
         return List.of(new Account(1, TestDataHelper.existingUser(), "Checkings"));
+    }
+
+    public static List<Transaction> allInDate(){
+        return List.of(firstTransaction(), new Transaction(2, existingAccount(), BigDecimal.TEN.setScale(2, RoundingMode.DOWN), LocalDate.of(2026, 6,9), "Speedway", "Gas"),
+                new Transaction(3,secondAccount(), BigDecimal.valueOf(300.50).setScale(2, RoundingMode.DOWN), LocalDate.of(2026, 8, 23), "Ikea", null));
     }
 }

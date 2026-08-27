@@ -54,6 +54,10 @@ public class TransactionJdbcClientRepository implements TransactionRepository{
 
     @Override
     public List<Transaction> findByDate(LocalDate start, LocalDate end) {
-        return List.of();
+        String sql = BASE_SELECT + " where t.date >= :start and t.date <= :end;";
+        return jdbcClient.sql(sql).param("start", start)
+                .param("end", end)
+                .query(new TransactionMapper())
+                .list();
     }
 }
