@@ -37,4 +37,8 @@ public class TestDataHelper {
     public static List<Transaction> allAccountOneTransactions(){
         return List.of(firstTransaction(), new Transaction(2, existingAccount(), BigDecimal.TEN, LocalDate.of(2026, 6,9), "Speedway", "Gas"));
     }
+
+    public static List<Account> allUserOneAccounts(){
+        return List.of(new Account(1, TestDataHelper.existingUser(), "Checkings"));
+    }
 }

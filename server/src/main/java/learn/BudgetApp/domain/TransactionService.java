@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class TransactionService {
@@ -35,13 +36,40 @@ public class TransactionService {
             Account accountFound = accountRepository.findById(found.getAccount().getAccountId());
 
             if(accountFound.getUser().getUserId() != userId){
-                result.addErrorMessage("Cannot access other's transactions", ResultType.INVALID);
+                result.addErrorMessage("Cannot access other user's transactions", ResultType.INVALID);
             }
 
             if(result.isSuccess()){
                 result.setpayload(found);
             }
         }
+
+        return result;
+    }
+
+    public Result<List<Transaction>> findByAccount(int accountId, int userId){
+        Result<List<Transaction>> result = new Result<>();
+        Account found = accountRepository.findById(accountId);
+        if(found == null){
+            result.addErrorMessage("Account not found", ResultType.NOT_FOUND);
+            return result;
+        }
+
+        List<Account> usersAccounts = accountRepository.findByUser(userId);
+        if(!usersAccounts.contains(found)){
+            result.addErrorMessage("Cannot access other user's accounts", ResultType.INVALID);
+        }
+
+        if(result.isSuccess()){
+            List<Transaction> transactions = repository.findByAccount(accountId);
+
+            if (transactions.isEmpty()){
+                result.addErrorMessage("Account has no transactions", ResultType.NOT_FOUND);
+            } else{
+                result.setpayload(transactions);
+            }
+        }
+
 
         return result;
     }
