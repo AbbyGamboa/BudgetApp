@@ -17,5 +17,5 @@ public interface TransactionRepository {
 
     boolean deleteById(int transactionId);
 
-    List<Transaction> findByDate(LocalDate start, LocalDate end);
+    List<Transaction> findByDate(int accountId, LocalDate start, LocalDate end);
 }

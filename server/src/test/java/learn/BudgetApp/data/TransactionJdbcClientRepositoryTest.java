@@ -65,15 +65,15 @@ class TransactionJdbcClientRepositoryTest {
     class findByDate{
         @Test
         void success(){
-            List<Transaction> expected =TestDataHelper.allInDate();
-            List<Transaction> actual = repository.findByDate(LocalDate.of(2025, 1,1), LocalDate.of(2027,1,1));
+            List<Transaction> expected =TestDataHelper.allAccountOneTransactions();
+            List<Transaction> actual = repository.findByDate(1, LocalDate.of(2025, 1,1), LocalDate.of(2027,1,1));
 
             assertEquals(expected, actual);
         }
 
         @Test
         void nothingFound(){
-            List<Transaction> actual = repository.findByDate(LocalDate.now(), LocalDate.now());
+            List<Transaction> actual = repository.findByDate(1, LocalDate.now(), LocalDate.now());
             assertEquals(0, actual.size());
         }
     }
