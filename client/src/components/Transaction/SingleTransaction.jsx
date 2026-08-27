@@ -1,5 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import Transaction from "./Transaction";
 
 function SingleTransaction({loggedInUser}){
     const {transactionId} = useParams()
@@ -20,7 +22,7 @@ function SingleTransaction({loggedInUser}){
                 return;
             } 
             const payload = await response.json();
-            setTransaction(payload)
+            setTransaction(payload.payload)
             
         }
         doFetch()
@@ -31,9 +33,10 @@ function SingleTransaction({loggedInUser}){
          <h1>Viewing Transaction:</h1>
         {transaction && (
             <>
-                <p>Transaction ID: {transaction.transactionId}</p>
+                <Transaction transaction={transaction}></Transaction>
                 
-                <Link className="btn btn-warning" to="/view/budgets">View all Transactions for this Account</Link>
+                <Link className="btn btn-warning m-1" to={`/view/account/${transaction.account.accountId}`}>View all Transactions for this Account</Link>
+                <Link className="btn btn-primary m-1" to="/edit/transaction">Edit</Link>
             </>
         )}
         </>
