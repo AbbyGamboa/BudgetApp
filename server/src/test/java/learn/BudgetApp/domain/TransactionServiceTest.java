@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -59,7 +60,7 @@ class TransactionServiceTest {
             when(repository.findById(1)).thenReturn(TestDataHelper.firstTransaction());
             when(accountRepository.findById(1)).thenReturn(TestDataHelper.existingAccount());
             Result<Transaction> expected = new Result<>();
-            expected.addErrorMessage("Cannot access other's transactions", ResultType.INVALID);
+            expected.addErrorMessage("Cannot access other user's transactions", ResultType.INVALID);
 
             Result<Transaction> actual = service.findById(1,99);
 
@@ -116,6 +117,86 @@ class TransactionServiceTest {
             Result<List<Transaction>> expected = new Result<>();
             expected.addErrorMessage("Account has no transactions", ResultType.NOT_FOUND);
             Result<List<Transaction>> actual = service.findByAccount(1, 1);
+
+            assertEquals(expected, actual);
+        }
+    }
+
+    @Nested
+    class findByDate{
+        @Test
+        void success(){
+            when(accountRepository.findById(1)).thenReturn(TestDataHelper.existingAccount());
+            when(accountRepository.findByUser(1)).thenReturn(TestDataHelper.allUserOneAccounts());
+            when(repository.findByDate(1,
+                    LocalDate.of(2025, 1, 1),
+                    LocalDate.of(2027, 1, 1))).thenReturn(TestDataHelper.allAccountOneTransactions());
+            Result<List<Transaction>> expected = new Result<>();
+            expected.setpayload(TestDataHelper.allAccountOneTransactions());
+
+            Result<List<Transaction>> actual = service.findByDate(1,
+                    LocalDate.of(2025, 1, 1),
+                    LocalDate.of(2027, 1, 1),1);
+        }
+
+        @Test
+        void failsWhenADifferentUserTriesToAccess(){
+            when(accountRepository.findById(1)).thenReturn(TestDataHelper.existingAccount());
+            when(accountRepository.findByUser(2)).thenReturn(List.of());
+
+            Result<List<Transaction>> expected = new Result<>();
+            expected.addErrorMessage("Cannot access other user's accounts", ResultType.INVALID);
+            Result<List<Transaction>> actual = service.findByDate(1, LocalDate.now(), LocalDate.now(),2);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenAccountNotFound(){
+            when(accountRepository.findById(1)).thenReturn(null);
+
+            Result<List<Transaction>> expected = new Result<>();
+            expected.addErrorMessage("Account not found", ResultType.NOT_FOUND);
+            Result<List<Transaction>> actual = service.findByDate(1, LocalDate.now(), LocalDate.now(),1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenNoTransactionsAreFound(){
+            when(accountRepository.findById(1)).thenReturn(TestDataHelper.existingAccount());
+            when(accountRepository.findByUser(1)).thenReturn(TestDataHelper.allUserOneAccounts());
+            when(repository.findByAccount(1)).thenReturn(List.of());
+
+
+            Result<List<Transaction>> expected = new Result<>();
+            expected.addErrorMessage("Account has no transactions within those dates", ResultType.NOT_FOUND);
+            Result<List<Transaction>> actual = service.findByDate(1,
+                    LocalDate.of(2025,1,1),
+                    LocalDate.of(2025,1,1),1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenDatesAreIncorrect(){
+            Result<List<Transaction>> expected = new Result<>();
+            expected.addErrorMessage("Start date cannot be after end date", ResultType.INVALID);
+            Result<List<Transaction>> actual = service.findByDate(1,
+                    LocalDate.of(2025,1,1),
+                    LocalDate.of(2024,1,1),1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenDatesAreInTheFuture(){
+            Result<List<Transaction>> expected = new Result<>();
+            expected.addErrorMessage("Start date cannot be after today's date", ResultType.INVALID);
+            expected.addErrorMessage("End date cannot be after today's date", ResultType.INVALID);
+            Result<List<Transaction>> actual = service.findByDate(1,
+                    LocalDate.of(2027,1,1),
+                    LocalDate.of(2027,1,1),1);
 
             assertEquals(expected, actual);
         }
