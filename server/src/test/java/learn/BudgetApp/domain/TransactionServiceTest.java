@@ -274,4 +274,74 @@ class TransactionServiceTest {
         }
     }
 
+    @Nested
+    class update{
+        @Test
+        void success(){
+            Transaction update = TestDataHelper.firstTransaction();
+            update.setAmount(BigDecimal.valueOf(50.45));
+
+            when(accountRepository.findById(1)).thenReturn(TestDataHelper.existingAccount());
+            when(accountRepository.findByUser(1)).thenReturn(TestDataHelper.allUserOneAccounts());
+            when(repository.update(update)).thenReturn(true);
+
+            Result<Transaction> expected = new Result<>();
+            expected.setpayload(update);
+
+            Result<Transaction> actual = service.update(update, 1,1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenAccountAndUserAreWrong(){
+            Transaction update = TestDataHelper.firstTransaction();
+            update.setAccount(TestDataHelper.secondAccount());
+
+            when(accountRepository.findById(2)).thenReturn(TestDataHelper.secondAccount());
+            when(accountRepository.findByUser(1)).thenReturn(TestDataHelper.allUserOneAccounts());
+            when(repository.update(update)).thenReturn(true);
+
+            Result<Transaction> expected = new Result<>();
+            expected.addErrorMessage("Cannot access other user's accounts", ResultType.INVALID);
+
+            Result<Transaction> actual = service.update(update, 2,1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenTransactionDoesNotExist(){
+            Transaction update = TestDataHelper.firstTransaction();
+            update.setTransactionId(0);
+
+            when(accountRepository.findById(1)).thenReturn(TestDataHelper.existingAccount());
+            when(accountRepository.findByUser(1)).thenReturn(TestDataHelper.allUserOneAccounts());
+
+            Result<Transaction> expected = new Result<>();
+            expected.addErrorMessage("Transaction is required", ResultType.NOT_FOUND);
+
+            Result<Transaction> actual = service.update(update, 1,1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenTransactionIdIsWrong(){
+            Transaction update = TestDataHelper.firstTransaction();
+            update.setTransactionId(99);
+
+            when(accountRepository.findById(1)).thenReturn(TestDataHelper.existingAccount());
+            when(accountRepository.findByUser(1)).thenReturn(TestDataHelper.allUserOneAccounts());
+            when(repository.update(update)).thenReturn(false);
+
+            Result<Transaction> expected = new Result<>();
+            expected.addErrorMessage("Transaction cannot be updated", ResultType.INVALID);
+
+            Result<Transaction> actual = service.update(update, 1,1);
+
+            assertEquals(expected, actual);
+        }
+    }
+
 }

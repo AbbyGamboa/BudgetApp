@@ -119,6 +119,40 @@ public class TransactionService {
         return result;
     }
 
+    public Result<Transaction> update(Transaction transaction, int accountId, int userId){
+        Result<Transaction> result = new Result<>();
+        if (transaction == null){
+            result.addErrorMessage("Transaction not found", ResultType.NOT_FOUND);
+            return result;
+        }
+        Account account = accountRepository.findById(accountId);
+        if (account == null){
+            result.addErrorMessage("Account not found", ResultType.NOT_FOUND);
+            return result;
+        }
+        transaction.setAccount(account);
+
+        validateTransaction(result, transaction);
+        if(!result.isSuccess()){
+            return result;
+        }
+        assureCorrectAccountAndUser(result, transaction.getAccount().getAccountId(), userId);
+
+        if (transaction.getTransactionId() <= 0){
+            result.addErrorMessage("Transaction is required", ResultType.NOT_FOUND);
+        }
+
+        if(result.isSuccess()){
+            boolean updated = repository.update(transaction);
+            if(updated){
+                result.setpayload(transaction);
+            } else{
+                result.addErrorMessage("Transaction cannot be updated", ResultType.INVALID);
+            }
+        }
+        return result;
+    }
+
     private void assureCorrectAccountAndUser(Result<?> result, int accountId, int userId){
         Account found = accountRepository.findById(accountId);
         if(found == null){
