@@ -1,7 +1,7 @@
 import { useParams, useNavigate} from "react-router-dom";
 import { useState, useEffect } from "react";
 
-function TransactionForm({loggedInUser, transactionId}){
+function TransactionForm({loggedInUser, transactionId, setActiveModalItem}){
     const navigate = useNavigate();
 
     const{accountId} = useParams();
@@ -17,13 +17,14 @@ function TransactionForm({loggedInUser, transactionId}){
     const [errors, setErrors] = useState([]);
 
     useEffect(()=> {
+        console.log(transactionId)
         if (transactionId === undefined){
             setTransaction(initialTransaction)
             return;
         }
 
         const prepopulate = async function(){
-            const response = await fetch("http://localhost:8080/api/transaction/" + accountId,{
+            const response = await fetch("http://localhost:8080/api/transaction/" + transactionId,{
                 headers:{
                     "Authorization": `Bearer ${loggedInUser.token}`
                 }
@@ -36,7 +37,7 @@ function TransactionForm({loggedInUser, transactionId}){
 
             const payload = await response.json();
 
-            setTransaction(payload)
+            setTransaction(payload.payload)
         }
         prepopulate()
     }, [transactionId])
@@ -64,8 +65,8 @@ function TransactionForm({loggedInUser, transactionId}){
             },
             body: JSON.stringify(transaction)
         })
-        console.log(response);
         if (response.status >= 200 && response.status < 300) {
+            setActiveModalItem(null)
             navigate(`/view/account/${accountId}`)
         } else {
             const payload = await response.json()
@@ -78,7 +79,6 @@ function TransactionForm({loggedInUser, transactionId}){
         <form action="" className="flex-column align-content-center" onSubmit={handleSubmit}>
             <h1>{transactionId? "Update": "Create"} Transaction: </h1>
 
-            
             <label htmlFor="amount">*Amount: </label>
             <input type="text" name="amount" id="amount" value={transaction.amount} onChange={handleChange} required/>
 
@@ -86,10 +86,10 @@ function TransactionForm({loggedInUser, transactionId}){
             <input type="date" name="date" id="date" value={transaction.date} onChange={handleChange} required/>
 
             <label htmlFor="merchantName">Merchant Name: </label>
-            <input type="text" name="merchantName" id="merchantName" value={transaction.merchantName} onChange={handleChange}/>
+            <input type="text" name="merchantName" id="merchantName" value={transaction.merchantName? transaction.merchantName : " "} onChange={handleChange}/>
 
             <label htmlFor="amount">Description: </label>
-            <input type="description" name="description" id="description" value={transaction.description} onChange={handleChange}/>
+            <input type="description" name="description" id="description" value={transaction.description? transaction.description: " "} onChange={handleChange}/>
 
             <button type="submit" className="btn btn-primary">{transactionId? "Update": "Create"}</button>
         </form>

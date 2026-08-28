@@ -1,12 +1,10 @@
 @base_url = http://localhost:8080/api/transaction
 
 GET {{base_url}}/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg3ODU0ODU5LCJleHAiOjE3ODc4NTg0NTl9._O6n4rVY_YXYadhmGNKgm34SjpJZj2mLLHhEAxyWAoNmFbfHJ6kAsfQBl0lOh6zZ
-
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg3OTQ3ODE1LCJleHAiOjE3ODc5NTE0MTV9.Nlve7RZVvkYwUJICXpzs08D7IsrojutIaGXZ0kHCuxtqTdYIdQWCnCsS2tFi4m1E
 ###
 GET {{base_url}}/account/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg3ODU0ODU5LCJleHAiOjE3ODc4NTg0NTl9._O6n4rVY_YXYadhmGNKgm34SjpJZj2mLLHhEAxyWAoNmFbfHJ6kAsfQBl0lOh6zZ
-
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg3OTQ3ODE1LCJleHAiOjE3ODc5NTE0MTV9.Nlve7RZVvkYwUJICXpzs08D7IsrojutIaGXZ0kHCuxtqTdYIdQWCnCsS2tFi4m1E
 ###
 GET {{base_url}}/date/1?start=2025-01-01&end=2026-08-01 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg3OTI3MDc0LCJleHAiOjE3ODc5MzA2NzR9.LSChE-BPJS6LqsXN-grIcFYVgcoaEI6jV7BlY_e9z4gmxTlHmZ-0qU-CGWyw2ubj
