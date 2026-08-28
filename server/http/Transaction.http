@@ -21,3 +21,14 @@ Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tI
   "amount": 10.90,
   "date": "2026-08-28"
 }
+
+###
+PUT {{base_url}}/1/edit/1 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg3OTQ2MzExLCJleHAiOjE3ODc5NDk5MTF9.ZNLD7KN3sfi-bqFgq4JmFqO4IpzLUXk9am3iUWs_Xgz_zFd3NcQCo09M1sJx7_FQ
+
+{
+  "transactionId": 1,
+  "amount": 10.90,
+  "date": "2026-08-28"
+}

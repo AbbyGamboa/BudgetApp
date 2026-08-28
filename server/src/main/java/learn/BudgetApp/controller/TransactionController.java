@@ -68,4 +68,23 @@ public class TransactionController {
 
         return new ResponseEntity<>(result.getpayload(), HttpStatus.CREATED);
     }
+
+    @PutMapping("{accountId}/edit/{transactionId}")
+    public ResponseEntity<?> update(@PathVariable int accountId, @PathVariable int transactionId, @RequestBody Transaction transaction, Authentication authentication){
+        int userId = Integer.parseInt(authentication.getName());
+        Transaction existingTransaction = service.findById(transactionId, accountId).getpayload();
+        if (existingTransaction != null && existingTransaction.getAccount().getAccountId() != accountId){
+            return new ResponseEntity<>(List.of("Cannot update an account you do not own"), HttpStatus.FORBIDDEN);
+        }
+
+        if(transactionId != transaction.getTransactionId()){
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        Result<Transaction> result = service.update(transaction, accountId, userId);
+        if (!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+
+        return new ResponseEntity<>(result.getpayload(), HttpStatus.OK);
+    }
  }
