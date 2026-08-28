@@ -64,7 +64,23 @@ public class TransactionJdbcClientRepository implements TransactionRepository{
 
     @Override
     public boolean update(Transaction transaction) {
-        return false;
+        String sql = """
+                update transaction
+                set amount = :amount,
+                date = :date,
+                merchantName = :merchantName,
+                description = :description
+                where transactionId = :transactionId and accountId = :accountId;
+                """;
+
+        return jdbcClient.sql(sql)
+                .param("amount", transaction.getAmount())
+                .param("date", transaction.getDate())
+                .param("merchantName", transaction.getMerchant_name())
+                .param("description", transaction.getDescription())
+                .param("transactionId", transaction.getTransactionId())
+                .param("accountId", transaction.getAccount().getAccountId())
+                .update() > 0;
     }
 
     @Override

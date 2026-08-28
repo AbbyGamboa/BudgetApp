@@ -89,4 +89,24 @@ class TransactionJdbcClientRepositoryTest {
             assertEquals(expected, actual);
         }
     }
+
+    @Nested
+    class update{
+        @Test
+        void success(){
+            Transaction updated = TestDataHelper.firstTransaction();
+            updated.setDate(LocalDate.now());
+
+            boolean actual = repository.update(updated);
+            assertTrue(actual);
+        }
+
+        @Test
+        void fails(){
+            Transaction notInDB= TestDataHelper.createdTransaction();
+
+            boolean actual = repository.update(notInDB);
+            assertFalse(actual);
+        }
+    }
 }
