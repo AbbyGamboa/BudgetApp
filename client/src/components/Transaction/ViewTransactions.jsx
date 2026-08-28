@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
 import { useParams, Link} from "react-router-dom";
 import Transaction from "./Transaction";
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import TransactionForm from "./TransactionForm";
+
 
 function ViewTransactions({loggedInUser}){
     const[transactions, setTransactions] = useState([])
     const {accountId} = useParams();
+    const [show, setShow] = useState(false);
     
     useEffect(()=>{
         const doFetch = async () => {
@@ -20,10 +25,26 @@ function ViewTransactions({loggedInUser}){
         doFetch()
     }, [])
 
+    const handleShow = () => setShow(true);
+    const handleClose = () => setShow(false);
+
 
     return(
         <>
-        <Link to="/create/account" className="btn btn-success m-1">Create Transaction</Link>
+        
+        <button onClick={handleShow}>Create Transaction</button>
+        <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>Modal heading</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <TransactionForm loggedInUser={loggedInUser} transactionId ={undefined}/>
+                <Button variant="secondary" onClick={handleClose}>Close </Button>
+            </Modal.Body>
+            
+           
+            
+        </Modal>
         <h2>Transactions: </h2>
         
         <div className="d-flex">
@@ -33,8 +54,6 @@ function ViewTransactions({loggedInUser}){
         </div>)}
         </div>
         
-        
-
         
         </>
     

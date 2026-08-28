@@ -13,6 +13,7 @@ import SingleBudget from "./components/Budget/SingleBudget";
 import ViewBudgets from "./components/Budget/ViewBudgets";
 import BudgetForm from "./components/Budget/BudgetForm";
 import SingleTransaction from "./components/Transaction/SingleTransaction"
+import TransactionForm from "./components/Transaction/TransactionForm"
 
 function AppRouter(){
     const [loggedInUser, setLoggedInUser] = useState(JSON.parse(localStorage.getItem("loggedInUser")));
