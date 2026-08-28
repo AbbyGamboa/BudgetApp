@@ -2,6 +2,7 @@ package learn.BudgetApp.controller;
 
 import learn.BudgetApp.domain.Result;
 import learn.BudgetApp.domain.TransactionService;
+import learn.BudgetApp.models.Account;
 import learn.BudgetApp.models.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,5 +56,16 @@ public class TransactionController {
             return ErrorResponse.build(result);
         }
         return new ResponseEntity(result, HttpStatus.OK);
+    }
+
+    @PostMapping("/{accountId}")
+    public ResponseEntity<?> create(@PathVariable int accountId, @RequestBody Transaction transaction, Authentication authentication){
+        int userId = Integer.parseInt(authentication.getName());
+        Result<Transaction> result = service.create(transaction, accountId, userId);
+        if (!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+
+        return new ResponseEntity<>(result.getpayload(), HttpStatus.CREATED);
     }
  }

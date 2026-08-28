@@ -10,3 +10,14 @@ Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tI
 ###
 GET {{base_url}}/date/1?start=2025-01-01&end=2026-08-01 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg3OTI3MDc0LCJleHAiOjE3ODc5MzA2NzR9.LSChE-BPJS6LqsXN-grIcFYVgcoaEI6jV7BlY_e9z4gmxTlHmZ-0qU-CGWyw2ubj
+
+
+###
+POST {{base_url}}/1 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg3OTM0NTc0LCJleHAiOjE3ODc5MzgxNzR9.OdxcAFB8EEUOVVgXpq95RIZGccAnIto2vekpSqfuzn9MjmzWIvNjETwE8iz9voDU
+
+{
+  "amount": 10.90,
+  "date": "2026-08-28"
+}

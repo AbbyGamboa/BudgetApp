@@ -86,12 +86,19 @@ public class TransactionService {
         return result;
     }
 
-    public Result<Transaction> create(Transaction transaction, int userId){
+    public Result<Transaction> create(Transaction transaction, int accountId, int userId){
         Result<Transaction> result = new Result<>();
         if (transaction == null){
             result.addErrorMessage("Transaction not found", ResultType.NOT_FOUND);
             return result;
         }
+
+        Account account = accountRepository.findById(accountId);
+        if (account == null){
+            result.addErrorMessage("Account not found", ResultType.NOT_FOUND);
+            return result;
+        }
+        transaction.setAccount(account);
 
         validateTransaction(result, transaction);
         if (!result.isSuccess()){
