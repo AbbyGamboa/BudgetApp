@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -75,6 +76,17 @@ class TransactionJdbcClientRepositoryTest {
         void nothingFound(){
             List<Transaction> actual = repository.findByDate(1, LocalDate.now(), LocalDate.now());
             assertEquals(0, actual.size());
+        }
+    }
+
+    @Nested
+    class create{
+        @Test
+        void success(){
+            Transaction expected = new Transaction(3, TestDataHelper.existingAccount(), BigDecimal.valueOf(10.50), LocalDate.now(), null, null);
+            Transaction actual = repository.create(expected);
+
+            assertEquals(expected, actual);
         }
     }
 }

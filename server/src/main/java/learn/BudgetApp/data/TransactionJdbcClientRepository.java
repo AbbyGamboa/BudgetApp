@@ -4,6 +4,8 @@ import learn.BudgetApp.models.Transaction;
 import learn.BudgetApp.models.mapping.TransactionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -39,7 +41,25 @@ public class TransactionJdbcClientRepository implements TransactionRepository{
 
     @Override
     public Transaction create(Transaction transaction) {
-        return null;
+        String sql = """
+                insert into transaction(accountId, amount, date, merchantName, description) values
+                (:accountId, :amount, :date, :merchantName, :description);
+                """;
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        int rowsAffected = jdbcClient.sql(sql)
+                .param("accountId", transaction.getAccount().getAccountId())
+                .param("amount", transaction.getAmount())
+                .param("date", transaction.getDate())
+                .param("merchantName", transaction.getMerchant_name())
+                .param("description", transaction.getDescription())
+                .update(keyHolder, "transactionId");
+
+        if(rowsAffected == 0){
+            return null;
+        }
+        return transaction;
     }
 
     @Override
