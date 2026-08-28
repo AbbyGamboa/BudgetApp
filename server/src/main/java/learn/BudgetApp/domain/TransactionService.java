@@ -86,7 +86,33 @@ public class TransactionService {
         return result;
     }
 
-    private void assureCorrectAccountAndUser(Result<List<Transaction>> result, int accountId, int userId){
+    public Result<Transaction> create(Transaction transaction, int userId){
+        Result<Transaction> result = new Result<>();
+        if (transaction == null){
+            result.addErrorMessage("Transaction not found", ResultType.NOT_FOUND);
+            return result;
+        }
+
+        validateTransaction(result, transaction);
+        if (!result.isSuccess()){
+            return result;
+        }
+
+        assureCorrectAccountAndUser(result, transaction.getAccount().getAccountId(), userId);
+
+        if(result.isSuccess()){
+            Transaction created = repository.create(transaction);
+            if(created == null){
+                result.addErrorMessage("Transaction cannot be created", ResultType.INVALID);
+            } else{
+                result.setpayload(created);
+            }
+        }
+
+        return result;
+    }
+
+    private void assureCorrectAccountAndUser(Result<?> result, int accountId, int userId){
         Account found = accountRepository.findById(accountId);
         if(found == null){
             result.addErrorMessage("Account not found", ResultType.NOT_FOUND);
@@ -94,6 +120,8 @@ public class TransactionService {
         }
 
         List<Account> usersAccounts = accountRepository.findByUser(userId);
+
+
         if(!usersAccounts.contains(found)){
             result.addErrorMessage("Cannot access other user's accounts", ResultType.INVALID);
         }
@@ -125,11 +153,11 @@ public class TransactionService {
             result.addErrorMessage("Account is required", ResultType.INVALID);
         }
 
-        if(transaction.getAmount() == null| transaction.getAmount().signum() == 0 || transaction.getAmount().signum() == -1){
+        if(transaction.getAmount() == null|| transaction.getAmount().signum() == 0 || transaction.getAmount().signum() == -1){
             result.addErrorMessage("Amount is required and cannot be negative", ResultType.INVALID);
         }
 
-        if(transaction.getDate() == null | transaction.getDate().isAfter(LocalDate.now())){
+        if(transaction.getDate() == null || transaction.getDate().isAfter(LocalDate.now())){
             result.addErrorMessage("Date is required and cannot be in the future", ResultType.INVALID);
         }
 

@@ -47,8 +47,7 @@ public class TestDataHelper {
         return List.of(new Account(1, TestDataHelper.existingUser(), "Checkings"));
     }
 
-    public static List<Transaction> allInDate(){
-        return List.of(firstTransaction(), new Transaction(2, existingAccount(), BigDecimal.TEN.setScale(2, RoundingMode.DOWN), LocalDate.of(2026, 6,9), "Speedway", "Gas"),
-                new Transaction(3,secondAccount(), BigDecimal.valueOf(300.50).setScale(2, RoundingMode.DOWN), LocalDate.of(2026, 8, 23), "Ikea", null));
+    public static Transaction createdTransaction(){
+        return new Transaction(3, TestDataHelper.existingAccount(), BigDecimal.valueOf(10.50), LocalDate.now(), null, null);
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -202,5 +203,73 @@ class TransactionServiceTest {
         }
     }
 
+    @Nested
+    class create{
+        @Test
+        void success(){
+            Transaction created = TestDataHelper.createdTransaction();
+            when(accountRepository.findById(1)).thenReturn(TestDataHelper.existingAccount());
+            when(accountRepository.findByUser(1)).thenReturn(TestDataHelper.allUserOneAccounts());
+            when(repository.create(created)).thenReturn(created);
+
+            Result<Transaction> expected = new Result<>();
+            expected.setpayload(created);
+
+            Result<Transaction> actual = service.create(created, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenMissingData(){
+            Transaction created = TestDataHelper.createdTransaction();
+            created.setAmount(null);
+
+            Result<Transaction> missingAmount = new Result<>();
+            missingAmount.addErrorMessage("Amount is required and cannot be negative", ResultType.INVALID);
+
+            Result<Transaction> actual = service.create(created, 1);
+
+            assertEquals(missingAmount, actual);
+
+            created.setAmount(BigDecimal.TEN);
+            created.setDate(null);
+
+            Result<Transaction> missingDate = new Result<>();
+            missingDate.addErrorMessage("Date is required and cannot be in the future", ResultType.INVALID);
+
+            actual = service.create(created, 1);
+
+            assertEquals(missingDate, actual);
+
+        }
+
+        @Test
+        void failsWhenDateIsInTheFuture(){
+            Transaction created = TestDataHelper.createdTransaction();
+            created.setDate(LocalDate.of(2030, 1, 1));
+
+            Result<Transaction> missingAmount = new Result<>();
+            missingAmount.addErrorMessage("Date is required and cannot be in the future", ResultType.INVALID);
+
+            Result<Transaction> actual = service.create(created, 1);
+
+            assertEquals(missingAmount, actual);
+        }
+
+        @Test
+        void failsWhenUserDoesNotOwnAccount(){
+            Transaction created = TestDataHelper.createdTransaction();
+            when(accountRepository.findById(1)).thenReturn(TestDataHelper.existingAccount());
+            when(accountRepository.findByUser(1)).thenReturn(List.of());
+
+            Result<Transaction> expected = new Result<>();
+            expected.addErrorMessage("Cannot access other user's accounts", ResultType.INVALID);
+
+            Result<Transaction> actual = service.create(created, 1);
+
+            assertEquals(expected, actual);
+        }
+    }
 
 }
