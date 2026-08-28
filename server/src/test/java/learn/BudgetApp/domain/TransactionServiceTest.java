@@ -215,7 +215,7 @@ class TransactionServiceTest {
             Result<Transaction> expected = new Result<>();
             expected.setpayload(created);
 
-            Result<Transaction> actual = service.create(created, 1);
+            Result<Transaction> actual = service.create(created,1,1);
 
             assertEquals(expected, actual);
         }
@@ -224,11 +224,12 @@ class TransactionServiceTest {
         void failsWhenMissingData(){
             Transaction created = TestDataHelper.createdTransaction();
             created.setAmount(null);
+            when(accountRepository.findById(1)).thenReturn(TestDataHelper.existingAccount());
 
             Result<Transaction> missingAmount = new Result<>();
             missingAmount.addErrorMessage("Amount is required and cannot be negative", ResultType.INVALID);
 
-            Result<Transaction> actual = service.create(created, 1);
+            Result<Transaction> actual = service.create(created, 1,1);
 
             assertEquals(missingAmount, actual);
 
@@ -238,7 +239,7 @@ class TransactionServiceTest {
             Result<Transaction> missingDate = new Result<>();
             missingDate.addErrorMessage("Date is required and cannot be in the future", ResultType.INVALID);
 
-            actual = service.create(created, 1);
+            actual = service.create(created, 1,1);
 
             assertEquals(missingDate, actual);
 
@@ -248,11 +249,12 @@ class TransactionServiceTest {
         void failsWhenDateIsInTheFuture(){
             Transaction created = TestDataHelper.createdTransaction();
             created.setDate(LocalDate.of(2030, 1, 1));
+            when(accountRepository.findById(1)).thenReturn(TestDataHelper.existingAccount());
 
             Result<Transaction> missingAmount = new Result<>();
             missingAmount.addErrorMessage("Date is required and cannot be in the future", ResultType.INVALID);
 
-            Result<Transaction> actual = service.create(created, 1);
+            Result<Transaction> actual = service.create(created, 1,1);
 
             assertEquals(missingAmount, actual);
         }
@@ -266,7 +268,7 @@ class TransactionServiceTest {
             Result<Transaction> expected = new Result<>();
             expected.addErrorMessage("Cannot access other user's accounts", ResultType.INVALID);
 
-            Result<Transaction> actual = service.create(created, 1);
+            Result<Transaction> actual = service.create(created, 1,1);
 
             assertEquals(expected, actual);
         }
