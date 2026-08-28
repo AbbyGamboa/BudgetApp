@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -39,6 +40,17 @@ public class TransactionController {
         int userid = Integer.parseInt(authentication.getName());
 
         Result<List<Transaction>> result = service.findByAccount(accountId, userid);
+        if (!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/date/{accountId}")
+    public ResponseEntity<?> findByDate(@PathVariable int accountId, @RequestParam LocalDate start, @RequestParam LocalDate end,Authentication authentication){
+        int userid = Integer.parseInt(authentication.getName());
+
+        Result<List<Transaction>> result = service.findByDate(accountId,start,end,userid);
         if (!result.isSuccess()){
             return ErrorResponse.build(result);
         }
