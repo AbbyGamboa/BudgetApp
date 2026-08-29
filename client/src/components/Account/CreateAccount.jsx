@@ -79,8 +79,6 @@ function CreateAccount({loggedInUser}){
                 }
                 
                 
-
-
             <label htmlFor="subtype">Type: </label>
             <input type="text" id="subtype" name="subtype" onChange={handleChange} value={account.subtype}/>
 

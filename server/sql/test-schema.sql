@@ -51,7 +51,7 @@ create table account(
 create table transaction(
 	transactionId int primary key auto_increment,
 	accountId int,
-	amount decimal, 
+	amount decimal(10,2), 
 	date date, 
 	merchantName text NULL,
 	description text NULL,

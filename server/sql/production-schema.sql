@@ -15,6 +15,7 @@ create table budget(
 	 constraint fk_budget_user_id
         foreign key (userId)
         references user(userId)
+        on delete cascade
 );
 
 create table categories(
@@ -24,6 +25,7 @@ create table categories(
 	constraint fk_user_cat_id
 		foreign key (userId)
 		references user(userId)
+		on delete cascade
 );
 
 create table budget_category(
@@ -33,10 +35,12 @@ create table budget_category(
 	percentage decimal, 
 	constraint fk_budget_id
         foreign key (budgetId)
-        references budget(budgetId), 
+        references budget(budgetId)
+        on delete cascade, 
     constraint fk_budget_category_id
     	foreign key (categoryId)
     	references categories(categoryId)
+    	on delete cascade
 );
 
 create table account(
@@ -46,18 +50,20 @@ create table account(
 	constraint fk_user_account_id
 		foreign key (userId)
 		references user(userId)
+		on delete cascade
 );
 
 create table transaction(
 	transactionId int primary key auto_increment,
 	accountId int,
-	amount decimal, 
+	amount decimal(10,2), 
 	date date, 
 	merchantName text NULL,
 	description text NULL,
 	constraint fk_account_id
 		foreign key (accountId)
 		references account(accountId)
+		on delete cascade
 );
 
 create table transaction_categories(
@@ -66,9 +72,11 @@ create table transaction_categories(
 	primary key (transactionId, categoryId),
 	constraint fk_cat_transaction_id
 		foreign key (transactionId)
-		references transaction(transactionId),
+		references transaction(transactionId)
+		on delete cascade,
 	constraint fk_trans_category_id
 		foreign key (categoryId)
 		references categories(categoryId)
+		on delete cascade
 );
 

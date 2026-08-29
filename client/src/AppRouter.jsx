@@ -12,6 +12,8 @@ import CreateAccount from "./components/Account/CreateAccount";
 import SingleBudget from "./components/Budget/SingleBudget";
 import ViewBudgets from "./components/Budget/ViewBudgets";
 import BudgetForm from "./components/Budget/BudgetForm";
+import SingleTransaction from "./components/Transaction/SingleTransaction"
+import TransactionForm from "./components/Transaction/TransactionForm"
 
 function AppRouter(){
     const [loggedInUser, setLoggedInUser] = useState(JSON.parse(localStorage.getItem("loggedInUser")));
@@ -76,9 +78,11 @@ function AppRouter(){
                 {
                     path:"/add/budget", 
                     element: loggedInUser? <BudgetForm loggedInUser={loggedInUser}></BudgetForm>:<Navigate to="/"></Navigate>,
+                }, 
+                {
+                    path:"/view/:transactionId",
+                    element: loggedInUser? <SingleTransaction loggedInUser={loggedInUser}></SingleTransaction>:<Navigate to="/"></Navigate>,
                 }
-                
-            
                 
             ],
         },
