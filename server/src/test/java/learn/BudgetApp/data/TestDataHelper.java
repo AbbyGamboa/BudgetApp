@@ -1,6 +1,7 @@
 package learn.BudgetApp.data;
 
 import learn.BudgetApp.models.Account;
+import learn.BudgetApp.models.Category;
 import learn.BudgetApp.models.Transaction;
 import learn.BudgetApp.models.User;
 import org.junit.jupiter.api.Test;
@@ -49,5 +50,9 @@ public class TestDataHelper {
 
     public static Transaction createdTransaction(){
         return new Transaction(3, TestDataHelper.existingAccount(), BigDecimal.valueOf(10.50), LocalDate.now(), null, null);
+    }
+
+    public static List<Category> categoriesForUserOne(){
+        return List.of(new Category(1, "Tuition"), new Category(2, "Groceries", TestDataHelper.existingUser()));
     }
 }

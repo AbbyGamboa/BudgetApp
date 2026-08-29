@@ -12,13 +12,22 @@ public class CategoryMapper implements RowMapper<Category> {
     @Nullable
     @Override
     public Category mapRow(ResultSet rs, int rowNum) throws SQLException {
-        UserMapper userMapper = new UserMapper();
-        User user = userMapper.mapRow(rs,rowNum);
+
+        if(rs.getInt("userId") != 0){
+            UserMapper userMapper = new UserMapper();
+            User user = userMapper.mapRow(rs,rowNum);
+
+            return new Category(
+                    rs.getInt("categoryId"),
+                    rs.getString("name"),
+                    user
+            );
+        }
 
         return new Category(
                 rs.getInt("categoryId"),
-                rs.getString("name"),
-                user
+                rs.getString("name")
         );
+
     }
 }

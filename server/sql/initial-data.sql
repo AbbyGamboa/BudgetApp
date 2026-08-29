@@ -37,3 +37,9 @@ insert into user (email, password) values
 select * from budget;
 
 select * from transaction t inner join account a on t.accountId = a.accountId;
+
+select * from categories c inner join user u on c.userId = u.userId
+where categoryId = 1;
+
+select * from categories c 
+where categoryId = 1 or userId = 1;
