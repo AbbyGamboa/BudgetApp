@@ -86,7 +86,7 @@ function TransactionForm({loggedInUser, transactionId, setActiveModalItem}){
             <input type="date" name="date" id="date" value={transaction.date} onChange={handleChange} required/>
 
             <label htmlFor="merchantName">Merchant Name: </label>
-            <input type="text" name="merchantName" id="merchantName" value={transaction.merchantName? transaction.merchantName : " "} onChange={handleChange}/>
+            <input type="text" name="merchantName" id="merchantName" value={transaction.merchant_name? transaction.merchant_name : " "} onChange={handleChange}/>
 
             <label htmlFor="amount">Description: </label>
             <input type="description" name="description" id="description" value={transaction.description? transaction.description: " "} onChange={handleChange}/>
