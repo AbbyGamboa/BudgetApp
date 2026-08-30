@@ -63,4 +63,8 @@ public class TestDataHelper {
     public static Category customCategory(){
         return new Category(2, "Groceries", existingUser());
     }
+
+    public static Category createCategory(){
+        return new Category(4, "Insurance", existingUser());
+    }
 }

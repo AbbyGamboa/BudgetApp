@@ -3,6 +3,8 @@ package learn.BudgetApp.data;
 import learn.BudgetApp.models.Category;
 import learn.BudgetApp.models.mapping.CategoryMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -37,7 +39,21 @@ public class CategoryJdbcClientRepository implements CategoryRepository{
 
     @Override
     public Category create(Category category) {
-        return null;
+        String sql = """
+                insert into categories (name, userId)
+                value (:name, :userId);
+                """;
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        int rowsAffected = jdbcClient.sql(sql)
+                .param("name", category.getName())
+                .param("userId", category.getUser().getUserId())
+                .update(keyHolder, "categoryId");
+
+        if (rowsAffected <= 0){
+            return null;
+        }
+        return category;
     }
 
     @Override

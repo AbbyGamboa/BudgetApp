@@ -1,6 +1,7 @@
 package learn.BudgetApp.data;
 
 import learn.BudgetApp.models.Category;
+import learn.BudgetApp.models.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -58,6 +59,17 @@ class CategoryJdbcClientRepositoryTest {
             Category actual = repository.findById(99);
 
             assertNull(actual);
+        }
+    }
+
+    @Nested
+    class create{
+        @Test
+        void success(){
+            Category created = TestDataHelper.createCategory();
+            Category actual = repository.create(created);
+
+            assertEquals(created, actual);
         }
     }
 
