@@ -40,4 +40,24 @@ public class CategoryService {
         }
         return result;
     }
+
+    public Result<Category> findById(int categoryId, int userId){
+        Result<Category> result = new Result<>();
+
+        Category category = repository.findById(categoryId);
+        if (category == null){
+            result.addErrorMessage("Category not found", ResultType.NOT_FOUND);
+            return result;
+        }
+
+        if(category.getUser() != null && category.getUser().getUserId() != userId){
+            result.addErrorMessage("Cannot access other user's categories", ResultType.INVALID);
+        }
+
+        if(result.isSuccess()){
+            result.setpayload(category);
+        }
+
+        return result;
+    }
 }
