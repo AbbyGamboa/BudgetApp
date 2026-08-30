@@ -58,4 +58,16 @@ public class CategoryController {
 
         return ResponseEntity.ok(result);
     }
+
+    @DeleteMapping("/{categoryId}")
+    public ResponseEntity<?> delete(@PathVariable int categoryId, Authentication authentication){
+        int userId = Integer.parseInt(authentication.getName());
+
+        Result<Category> result = service.delete(categoryId, userId);
+        if (!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+
+        return ResponseEntity.ok(result);
+    }
 }
