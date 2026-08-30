@@ -68,15 +68,16 @@ public class CategoryService {
             result.addErrorMessage("Cannot add category", ResultType.NOT_FOUND);
             return result;
         }
+        User user = userRepository.findById(userId);
+        category.setUser(user);
+
         validateCategory(result, category);
 
         if(!result.isSuccess()){
             return result;
         }
 
-        if (category.getUser().getUserId() != userId){
-            result.addErrorMessage("Cannot add category for another user", ResultType.INVALID);
-        }
+        validateCategoryIsUnique(result, category);
 
         if (result.isSuccess()){
             Category created = repository.create(category);
@@ -97,6 +98,19 @@ public class CategoryService {
 
         if(category.getUser() == null){
             result.addErrorMessage("User is required to add category", ResultType.INVALID);
+        }
+
+    }
+
+    public void validateCategoryIsUnique(Result<Category> result, Category category){
+        int currentUserId = category.getUser().getUserId();
+        List<Category> allCategoriesByUser = repository.findAllCategoriesForUser(currentUserId);
+
+        for (Category c: allCategoriesByUser){
+            // if the user has it
+            if (c.getName().equals(category.getName()) && (c.getUser() == category.getUser() || c.getUser() == null)){
+                result.addErrorMessage("Cannot add duplicate of category", ResultType.INVALID);
+            }
         }
     }
 }

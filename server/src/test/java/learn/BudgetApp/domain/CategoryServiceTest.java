@@ -109,6 +109,8 @@ class CategoryServiceTest {
         void success(){
             Category created = TestDataHelper.createCategory();
 
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
+            when(repository.findAllCategoriesForUser(1)).thenReturn(TestDataHelper.categoriesForUserOne());
             when(repository.create(created)).thenReturn(created);
 
             Result<Category> expected = new Result<>();
@@ -136,6 +138,8 @@ class CategoryServiceTest {
             Result<Category> expectedNoName = new Result<>();
             expectedNoName.addErrorMessage("Name is required", ResultType.INVALID);
 
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
+
             Result<Category> actual = service.create(createdNoName, 1);
 
             assertEquals(expectedNoName, actual);
@@ -144,22 +148,13 @@ class CategoryServiceTest {
             Result<Category> expectedNoUser = new Result<>();
             expectedNoUser.addErrorMessage("User is required to add category", ResultType.INVALID);
 
+            when(userRepository.findById(1)).thenReturn(null);
             actual = service.create(createdNoUser, 1);
 
             assertEquals(expectedNoUser, actual);
 
         }
 
-        @Test
-        void failsWhenCategoryDoesNotBelongToUser(){
-            Category created = TestDataHelper.createCategory();
-            Result<Category> expected = new Result<>();
-            expected.addErrorMessage("Cannot add category for another user", ResultType.INVALID);
-
-            Result<Category> actual = service.create(created, 2);
-
-            assertEquals(expected, actual);
-        }
 
         @Test
         void failsWhenRepoFails(){
@@ -167,11 +162,38 @@ class CategoryServiceTest {
             Result<Category> expected = new Result<>();
             expected.addErrorMessage("Cannot add category", ResultType.INVALID);
 
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
+            when(repository.findAllCategoriesForUser(1)).thenReturn(TestDataHelper.categoriesForUserOne());
             when(repository.create(created)).thenReturn(null);
 
             Result<Category> actual = service.create(created, 1);
 
             assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenDuplicateCategory(){
+            Category created = TestDataHelper.createCategory();
+            Result<Category> expectedDuplicateCustom = new Result<>();
+            expectedDuplicateCustom.addErrorMessage("Cannot add duplicate of category", ResultType.INVALID);
+
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
+            when(repository.findAllCategoriesForUser(1)).thenReturn(List.of(created));
+
+            Result<Category> actual = service.create(created, 1);
+
+            assertEquals(expectedDuplicateCustom, actual);
+
+            created = TestDataHelper.firstCategory();
+            Result<Category> expectedDuplicateGeneric = new Result<>();
+            expectedDuplicateGeneric.addErrorMessage("Cannot add duplicate of category", ResultType.INVALID);
+
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
+            when(repository.findAllCategoriesForUser(1)).thenReturn(List.of(created));
+
+            actual = service.create(created, 1);
+
+            assertEquals(expectedDuplicateGeneric, actual);
         }
     }
 

@@ -46,4 +46,16 @@ public class CategoryController {
 
         return ResponseEntity.ok(result);
     }
+
+    @PostMapping
+    public ResponseEntity<?> create(@RequestBody Category category, Authentication authentication){
+        int userId = Integer.parseInt(authentication.getName());
+
+        Result<Category> result = service.create(category, userId);
+        if (!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+
+        return ResponseEntity.ok(result);
+    }
 }
