@@ -43,4 +43,22 @@ class CategoryJdbcClientRepositoryTest {
         }
     }
 
+    @Nested
+    class findById{
+        @Test
+        void success(){
+            Category expected = new Category(1, "Tuition", null);
+            Category actual = repository.findById(1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenIdNotFound(){
+            Category actual = repository.findById(99);
+
+            assertNull(actual);
+        }
+    }
+
 }

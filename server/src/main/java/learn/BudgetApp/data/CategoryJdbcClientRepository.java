@@ -31,7 +31,8 @@ public class CategoryJdbcClientRepository implements CategoryRepository{
 
     @Override
     public Category findById(int categoryId) {
-        return null;
+        String sql = BASE_SELECT + " where c.categoryId = ?;";
+        return jdbcClient.sql(sql).param(categoryId).query(new CategoryMapper()).optional().orElse(null);
     }
 
     @Override
