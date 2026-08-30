@@ -108,7 +108,7 @@ public class CategoryService {
 
         for (Category c: allCategoriesByUser){
             // if the user has it
-            if (c.getName().equals(category.getName()) && (c.getUser() == category.getUser() || c.getUser() == null)){
+            if (c.getName().toLowerCase().equals(category.getName().toLowerCase()) && (c.getUser() == category.getUser() || c.getUser() == null)){
                 result.addErrorMessage("Cannot add duplicate of category", ResultType.INVALID);
             }
         }

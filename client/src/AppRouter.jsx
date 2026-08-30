@@ -15,6 +15,7 @@ import BudgetForm from "./components/Budget/BudgetForm";
 import SingleTransaction from "./components/Transaction/SingleTransaction"
 import TransactionForm from "./components/Transaction/TransactionForm"
 import ViewCategoryByUser from "./components/Category/ViewCategoryByUser";
+import CategoryForm from "./components/Category/CategoryForm";
 
 function AppRouter(){
     const [loggedInUser, setLoggedInUser] = useState(JSON.parse(localStorage.getItem("loggedInUser")));
@@ -88,6 +89,10 @@ function AppRouter(){
                     path:"/view/categories",
                     element: loggedInUser? <ViewCategoryByUser loggedInUser={loggedInUser}></ViewCategoryByUser>:<Navigate to="/"></Navigate>,
                 },
+                {
+                    path:"/add/category", 
+                    element: loggedInUser? <CategoryForm loggedInUser={loggedInUser}></CategoryForm>:<Navigate to="/"></Navigate>,
+                }
                 
             ],
         },
