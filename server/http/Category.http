@@ -2,3 +2,7 @@
 
 GET {{base_url}} HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg4MDUxMjM0LCJleHAiOjE3ODgwNTQ4MzR9.NJk9961AREjrjWNzYFMlua4OL0vLtGw2hOJYbA64EY3Om3NnOD5SaG3eOd6fiZ-O
+
+###
+GET {{base_url}}/1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg4MTA1NDM0LCJleHAiOjE3ODgxMDkwMzR9.gO-sN0TioT7alPzFyubsWUuOJz_A-RaVmhwhHpdXir8zDaT5qMIIsYCSRpdBUGzT
