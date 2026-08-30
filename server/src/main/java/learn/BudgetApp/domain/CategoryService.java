@@ -60,4 +60,43 @@ public class CategoryService {
 
         return result;
     }
+
+    public Result<Category> create(Category category, int userId){
+        Result<Category> result = new Result<>();
+
+        if (category == null){
+            result.addErrorMessage("Cannot add category", ResultType.NOT_FOUND);
+            return result;
+        }
+        validateCategory(result, category);
+
+        if(!result.isSuccess()){
+            return result;
+        }
+
+        if (category.getUser().getUserId() != userId){
+            result.addErrorMessage("Cannot add category for another user", ResultType.INVALID);
+        }
+
+        if (result.isSuccess()){
+            Category created = repository.create(category);
+            if (created == null) {
+                result.addErrorMessage("Cannot add category", ResultType.INVALID);
+            } else{
+                result.setpayload(created);
+            }
+        }
+
+        return result;
+    }
+
+    public void validateCategory(Result<Category> result, Category category){
+        if (category.getName() == null){
+            result.addErrorMessage("Name is required", ResultType.INVALID);
+        }
+
+        if(category.getUser() == null){
+            result.addErrorMessage("User is required to add category", ResultType.INVALID);
+        }
+    }
 }

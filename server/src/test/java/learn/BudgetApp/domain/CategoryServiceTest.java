@@ -103,5 +103,77 @@ class CategoryServiceTest {
         }
     }
 
+    @Nested
+    class create{
+        @Test
+        void success(){
+            Category created = TestDataHelper.createCategory();
+
+            when(repository.create(created)).thenReturn(created);
+
+            Result<Category> expected = new Result<>();
+            expected.setpayload(created);
+
+            Result<Category> actual = service.create(created, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenCategoryIsNull(){
+            Category created = null;
+            Result<Category> expected = new Result<>();
+            expected.addErrorMessage("Cannot add category", ResultType.NOT_FOUND);
+
+            Result<Category> actual = service.create(created, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenCategoryIsMissingInformation(){
+            Category createdNoName = new Category(4, null, TestDataHelper.existingUser());
+            Result<Category> expectedNoName = new Result<>();
+            expectedNoName.addErrorMessage("Name is required", ResultType.INVALID);
+
+            Result<Category> actual = service.create(createdNoName, 1);
+
+            assertEquals(expectedNoName, actual);
+
+            Category createdNoUser = new Category(4, "TEST", null);
+            Result<Category> expectedNoUser = new Result<>();
+            expectedNoUser.addErrorMessage("User is required to add category", ResultType.INVALID);
+
+            actual = service.create(createdNoUser, 1);
+
+            assertEquals(expectedNoUser, actual);
+
+        }
+
+        @Test
+        void failsWhenCategoryDoesNotBelongToUser(){
+            Category created = TestDataHelper.createCategory();
+            Result<Category> expected = new Result<>();
+            expected.addErrorMessage("Cannot add category for another user", ResultType.INVALID);
+
+            Result<Category> actual = service.create(created, 2);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenRepoFails(){
+            Category created = TestDataHelper.createCategory();
+            Result<Category> expected = new Result<>();
+            expected.addErrorMessage("Cannot add category", ResultType.INVALID);
+
+            when(repository.create(created)).thenReturn(null);
+
+            Result<Category> actual = service.create(created, 1);
+
+            assertEquals(expected, actual);
+        }
+    }
+
 
 }
