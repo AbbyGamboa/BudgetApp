@@ -18,24 +18,15 @@ public class CategoryJdbcClientRepository implements CategoryRepository{
 
     private final String BASE_SELECT = """
             select c.categoryId, c.name, c.userId, u.email, u.password
-            from categories c inner join user u on c.userId = u.userId
+            from categories c left outer join user u on c.userId = u.userId
             """;
 
 
     @Override
     public List<Category> findAllCategoriesForUser(int userId) {
-        String sql = BASE_SELECT + " where c.userId = ? or c.userId is null;";
+        String sql = BASE_SELECT + " where c.userId is null or c.userId = ?;";
 
-        List<Category> categories = jdbcClient.sql(
-                """
-                select * from categories where userId is null;
-                """
-        ).query(new CategoryMapper()).list();
-
-        List<Category> fromUser = jdbcClient.sql(sql).param(userId).query(new CategoryMapper()).list();
-
-        categories.addAll(fromUser);
-        return categories;
+        return jdbcClient.sql(sql).param(userId).query(new CategoryMapper()).list();
     }
 
     @Override

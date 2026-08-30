@@ -38,7 +38,7 @@ class CategoryJdbcClientRepositoryTest {
         void failsWhenUserDoesNotExist(){
             List<Category> actual = repository.findAllCategoriesForUser(99);
 
-            assertEquals(List.of(new Category(1, "Tuition")), actual);
+            assertEquals(List.of(new Category(1, "Tuition", null)), actual);
 
         }
     }

@@ -53,6 +53,6 @@ public class TestDataHelper {
     }
 
     public static List<Category> categoriesForUserOne(){
-        return List.of(new Category(1, "Tuition"), new Category(2, "Groceries", TestDataHelper.existingUser()));
+        return List.of(new Category(2, "Groceries", TestDataHelper.existingUser()), new Category(1, "Tuition", null));
     }
 }
