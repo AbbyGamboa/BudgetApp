@@ -12,6 +12,6 @@ public interface CategoryRepository {
 
     Category create(Category category);
 
-    boolean delete(Category category);
+    boolean delete(int categoryId);
 
 }

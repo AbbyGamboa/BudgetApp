@@ -57,7 +57,10 @@ public class CategoryJdbcClientRepository implements CategoryRepository{
     }
 
     @Override
-    public boolean delete(Category category) {
-        return false;
+    public boolean delete(int categoryId) {
+        String sql = """
+                delete from categories where categoryId = ?;""";
+
+        return jdbcClient.sql(sql).param(categoryId).update() > 0;
     }
 }
