@@ -55,4 +55,12 @@ public class TestDataHelper {
     public static List<Category> categoriesForUserOne(){
         return List.of(new Category(2, "Groceries", TestDataHelper.existingUser()), new Category(1, "Tuition", null));
     }
+
+    public static Category firstCategory(){
+        return new Category(1, "Tuition", null);
+    }
+
+    public static Category customCategory(){
+        return new Category(2, "Groceries", existingUser());
+    }
 }
