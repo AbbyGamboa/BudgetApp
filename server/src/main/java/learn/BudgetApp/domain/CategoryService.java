@@ -1,5 +1,6 @@
 package learn.BudgetApp.domain;
 
+import learn.BudgetApp.controller.CategoryController;
 import learn.BudgetApp.data.CategoryRepository;
 import learn.BudgetApp.data.UserRepository;
 import learn.BudgetApp.models.Category;
@@ -85,6 +86,42 @@ public class CategoryService {
                 result.addErrorMessage("Cannot add category", ResultType.INVALID);
             } else{
                 result.setpayload(created);
+            }
+        }
+
+        return result;
+    }
+
+    public Result<Category> delete(int categoryId, int userId){
+        Result<Category> result = new Result<>();
+
+        Category category = repository.findById(categoryId);
+        if (category == null){
+            result.addErrorMessage("Category not found", ResultType.NOT_FOUND);
+            return result;
+        }
+
+        User user = userRepository.findById(userId);
+        if(user == null){
+            result.addErrorMessage("User not found", ResultType.NOT_FOUND);
+            return result;
+        }
+
+        if (category.getUser() == null){
+            result.addErrorMessage("Cannot delete a generic category", ResultType.INVALID);
+            return result;
+        }
+
+        if(category.getUser().getUserId() != userId){
+            result.addErrorMessage("Cannot delete a category that belongs to someone else", ResultType.INVALID);
+        }
+
+        if(result.isSuccess()){
+            boolean delete = repository.delete(categoryId);
+            if(delete){
+                result.setpayload(category);
+            } else{
+                result.addErrorMessage("Cannot delete category", ResultType.INVALID);
             }
         }
 

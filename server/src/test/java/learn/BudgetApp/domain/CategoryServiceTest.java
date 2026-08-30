@@ -197,5 +197,88 @@ class CategoryServiceTest {
         }
     }
 
+    @Nested
+    class delete{
+        @Test
+        void success(){
+            when(repository.findById(2)).thenReturn(TestDataHelper.customCategory());
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
+            when(repository.delete(2)).thenReturn(true);
+
+            Result<Category> expected = new Result<>();
+            expected.setpayload(TestDataHelper.customCategory());
+
+            Result<Category> actual = service.delete(2, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenCategoryNotFound(){
+            when(repository.findById(9999)).thenReturn(null);
+
+            Result<Category> expected = new Result<>();
+            expected.addErrorMessage("Category not found", ResultType.NOT_FOUND);
+
+            Result<Category> actual = service.delete(9999, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenUserNotFound(){
+            when(repository.findById(2)).thenReturn(TestDataHelper.customCategory());
+            when(userRepository.findById(999)).thenReturn(null);
+
+            Result<Category> expected = new Result<>();
+            expected.addErrorMessage("User not found", ResultType.NOT_FOUND);
+
+            Result<Category> actual = service.delete(2, 999);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenTryingToDeleteGenericVersion(){
+            when(repository.findById(1)).thenReturn(TestDataHelper.firstCategory());
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
+
+            Result<Category> expected = new Result<>();
+            expected.addErrorMessage("Cannot delete a generic category", ResultType.INVALID);
+
+            Result<Category> actual = service.delete(1, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenDeletingCategoryOwnedByOtherUser(){
+            when(repository.findById(2)).thenReturn(TestDataHelper.customCategory());
+            when(userRepository.findById(2)).thenReturn(TestDataHelper.secondUser());
+
+            Result<Category> expected = new Result<>();
+            expected.addErrorMessage("Cannot delete a category that belongs to someone else", ResultType.INVALID);
+
+            Result<Category> actual = service.delete(2, 2);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsInRepo(){
+            when(repository.findById(2)).thenReturn(TestDataHelper.customCategory());
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
+            when(repository.delete(2)).thenReturn(false);
+
+            Result<Category> expected = new Result<>();
+            expected.addErrorMessage("Cannot delete category", ResultType.INVALID);
+
+            Result<Category> actual = service.delete(2, 1);
+
+            assertEquals(expected, actual);
+        }
+
+    }
+
 
 }
