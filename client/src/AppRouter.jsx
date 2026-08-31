@@ -16,6 +16,7 @@ import SingleTransaction from "./components/Transaction/SingleTransaction"
 import TransactionForm from "./components/Transaction/TransactionForm"
 import ViewCategoryByUser from "./components/Category/ViewCategoryByUser";
 import CategoryForm from "./components/Category/CategoryForm";
+import ConfirmDelete from "./components/Category/ConfirmDelete";
 
 function AppRouter(){
     const [loggedInUser, setLoggedInUser] = useState(JSON.parse(localStorage.getItem("loggedInUser")));
@@ -92,6 +93,10 @@ function AppRouter(){
                 {
                     path:"/add/category", 
                     element: loggedInUser? <CategoryForm loggedInUser={loggedInUser}></CategoryForm>:<Navigate to="/"></Navigate>,
+                }, 
+                {
+                    path:"/delete/:categoryId", 
+                    element: loggedInUser? <ConfirmDelete loggedInUser={loggedInUser}></ConfirmDelete>:<Navigate to="/"></Navigate>,
                 }
                 
             ],
