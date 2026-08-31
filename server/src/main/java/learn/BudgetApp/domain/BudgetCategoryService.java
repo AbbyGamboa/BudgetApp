@@ -5,6 +5,7 @@ import learn.BudgetApp.data.BudgetRepository;
 import learn.BudgetApp.data.CategoryRepository;
 import learn.BudgetApp.models.Budget;
 import learn.BudgetApp.models.BudgetCategory;
+import learn.BudgetApp.models.Category;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -69,13 +70,19 @@ public class BudgetCategoryService {
     }
 
 
-    public Result<BudgetCategory> updatePercentage(BudgetCategory budgetCategory, int userId){
+    public Result<BudgetCategory> updatePercentage(BudgetCategory budgetCategory, int userId, int budgetId, int categoryId){
         Result<BudgetCategory> result = new Result<>();
 
         if (budgetCategory == null){
             result.addErrorMessage("Budget is not defined", ResultType.NOT_FOUND);
             return result;
         }
+        Budget foundBudget = budgetRepository.findById(budgetId);
+        budgetCategory.setBudget(foundBudget);
+
+        Category foundCategory = categoryRepository.findById(categoryId);
+        budgetCategory.setCategory(foundCategory);
+
         validateBC(result, budgetCategory);
         if(!result.isSuccess()){
             return result;

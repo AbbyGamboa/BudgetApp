@@ -4,11 +4,13 @@ import learn.BudgetApp.Security.JwtService;
 import learn.BudgetApp.domain.BudgetCategoryService;
 import learn.BudgetApp.domain.Result;
 import learn.BudgetApp.models.BudgetCategory;
+import learn.BudgetApp.models.Category;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController

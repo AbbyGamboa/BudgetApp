@@ -12,3 +12,14 @@ Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tI
 ###
 GET {{base_url}}/mybc/1 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg4MTkyNzc0LCJleHAiOjE3ODgxOTYzNzR9.hnLBVb1UtBjWSLI18narljsCQWhOqzSHy1MJ4HQiQLC_BSvLiYlVHwDBhVn5pzjH
+
+###
+GET {{base_url}}/edit/1 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg3NzcwMTA0LCJleHAiOjE3ODc3NzM3MDR9.GBqoKp5PoXCj0rpUVHRuw1QjdJMyR67DsYNcngkPybc9rNl6daQagn7Nq-wGd7IW
+
+{
+  "budgetCategoryId": 1,
+  "percentage": 100.00
+
+}
