@@ -13,6 +13,8 @@ public class Category {
         this.user = user;
     }
 
+    public Category(){};
+
     public int getCategoryId() {
         return categoryId;
     }

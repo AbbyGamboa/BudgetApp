@@ -43,3 +43,28 @@ where c.userId is null or c.userId = 1;
 
 select * from categories c 
 where categoryId = 1 or userId = 1;
+
+select bc.budgetCategoryId, b.budgetId, c.categoryId, bc.percentage, b.income, c.name, c.userId, u.userId, u.email, u.password
+            from budget_category bc
+            inner join budget b on bc.budgetId = b.budgetId
+            inner join categories c on bc.categoryId = c.categoryId
+            inner join user u on b.userId = u.userId;
+
+select
+                bc.budgetCategoryId,
+                bc.percentage,
+                b.budgetId,
+                b.income,
+                c.name,
+                c.categoryId,
+                bu.userId AS budgetUserId,
+                bu.email AS budgetUserEmail,
+                bu.password AS budgetUserPassword,
+                cu.userId AS categoryUserId,
+                cu.email AS categoryUserEmail,
+                cu.password AS categoryUserPassword
+            from budget_category bc
+                inner  join budget b on bc.budgetId = b.budgetId
+                inner join user bu on b.userId = bu.userId
+                inner join categories c on bc.categoryId = c.categoryId
+                left join user cu on c.userId = cu.userId;

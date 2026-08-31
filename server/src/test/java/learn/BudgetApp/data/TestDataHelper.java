@@ -1,9 +1,6 @@
 package learn.BudgetApp.data;
 
-import learn.BudgetApp.models.Account;
-import learn.BudgetApp.models.Category;
-import learn.BudgetApp.models.Transaction;
-import learn.BudgetApp.models.User;
+import learn.BudgetApp.models.*;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -66,5 +63,14 @@ public class TestDataHelper {
 
     public static Category createCategory(){
         return new Category(4, "Insurance", existingUser());
+    }
+
+    public static Budget budgetOne(){
+        return new Budget(1, TestDataHelper.existingUser(), BigDecimal.valueOf(4000).setScale(2, RoundingMode.DOWN));
+    }
+
+    public static List<BudgetCategory> budgetOneBCList(){
+        return List.of(new BudgetCategory(1, budgetOne(), firstCategory(), BigDecimal.valueOf(15)),
+                new BudgetCategory(2, budgetOne(), customCategory(), BigDecimal.valueOf(30)));
     }
 }
