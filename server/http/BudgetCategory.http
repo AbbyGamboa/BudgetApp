@@ -11,15 +11,13 @@ Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tI
 
 ###
 GET {{base_url}}/mybc/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg4MTkyNzc0LCJleHAiOjE3ODgxOTYzNzR9.hnLBVb1UtBjWSLI18narljsCQWhOqzSHy1MJ4HQiQLC_BSvLiYlVHwDBhVn5pzjH
-
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg4MjA4MDY3LCJleHAiOjE3ODgyMTE2Njd9.38LlKkoFyyIzeG5NsGos2I2CfkedpjQ570eWCDVZqSMmROKo5vF_EhpIoqFAhJ5C
 ###
-GET {{base_url}}/edit/1 HTTP/1.1
+PUT {{base_url}}/edit/1?budgetId=1&categoryId=1 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg3NzcwMTA0LCJleHAiOjE3ODc3NzM3MDR9.GBqoKp5PoXCj0rpUVHRuw1QjdJMyR67DsYNcngkPybc9rNl6daQagn7Nq-wGd7IW
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg4MjA4MDY3LCJleHAiOjE3ODgyMTE2Njd9.38LlKkoFyyIzeG5NsGos2I2CfkedpjQ570eWCDVZqSMmROKo5vF_EhpIoqFAhJ5C
 
 {
   "budgetCategoryId": 1,
   "percentage": 100.00
-
 }

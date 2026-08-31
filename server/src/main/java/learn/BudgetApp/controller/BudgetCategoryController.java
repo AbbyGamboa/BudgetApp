@@ -5,6 +5,7 @@ import learn.BudgetApp.domain.BudgetCategoryService;
 import learn.BudgetApp.domain.Result;
 import learn.BudgetApp.models.BudgetCategory;
 import learn.BudgetApp.models.Category;
+import learn.BudgetApp.models.Transaction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -46,5 +47,22 @@ public class BudgetCategoryController {
             return ErrorResponse.build(result);
         }
         return new ResponseEntity<>(result.getpayload(), HttpStatus.OK);
+    }
+
+    @PutMapping("/edit/{budgetCategoryId}")
+    public ResponseEntity<?> update(@PathVariable int budgetCategoryId, @RequestParam int budgetId, @RequestParam int categoryId, @RequestBody BudgetCategory budgetCategory, Authentication authentication){
+        int userId = Integer.parseInt(authentication.getName());
+
+        Result<BudgetCategory> existingBC = service.findById(budgetCategoryId, userId);
+        if(!existingBC.isSuccess()){
+            return ErrorResponse.build(existingBC);
+        }
+
+        Result<BudgetCategory> result = service.updatePercentage(budgetCategory, userId, budgetId, categoryId);
+        if(!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+        return new ResponseEntity<>(result.getpayload(), HttpStatus.OK);
+
     }
 }
