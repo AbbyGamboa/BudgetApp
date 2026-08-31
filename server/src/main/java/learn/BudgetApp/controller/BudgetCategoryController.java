@@ -34,4 +34,17 @@ public class BudgetCategoryController {
         }
         return new ResponseEntity<>(result.getpayload(), HttpStatus.OK);
     }
+
+    @GetMapping("/mybc/{budgetCategoryId}")
+    public ResponseEntity<?> findById(@PathVariable int budgetCategoryId,Authentication authentication){
+        int userId = Integer.parseInt(authentication.getName());
+
+        Result<BudgetCategory> result = service.findById(budgetCategoryId, userId);
+        if(!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+        return new ResponseEntity<>(result.getpayload(), HttpStatus.OK);
+    }
+
+
 }
