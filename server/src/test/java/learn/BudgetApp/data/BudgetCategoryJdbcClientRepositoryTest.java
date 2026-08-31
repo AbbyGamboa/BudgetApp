@@ -1,5 +1,6 @@
 package learn.BudgetApp.data;
 
+import learn.BudgetApp.models.Budget;
 import learn.BudgetApp.models.BudgetCategory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -57,6 +59,42 @@ class BudgetCategoryJdbcClientRepositoryTest {
         void notFound(){
             BudgetCategory actual = repository.findById(99);
             assertNull(actual);
+        }
+    }
+
+    @Nested
+    class update{
+        @Test
+        void success(){
+            BudgetCategory updated = TestDataHelper.budgetCategory();
+            updated.setPercentage(BigDecimal.valueOf(50));
+            boolean actual = repository.updatePercentage(updated);
+
+            assertTrue(actual);
+        }
+
+        @Test
+        void failsWhenAnythingElseDoesNotMatch(){
+            BudgetCategory updated = TestDataHelper.budgetCategory();
+            updated.setPercentage(BigDecimal.valueOf(50));
+            updated.setBudgetCategoryId(99);
+
+            boolean actual = repository.updatePercentage(updated);
+            assertFalse(actual);
+
+            updated = TestDataHelper.budgetCategory();
+            updated.setCategory(TestDataHelper.customCategory());
+
+            actual = repository.updatePercentage(updated);
+            assertFalse(actual);
+
+            updated = TestDataHelper.budgetCategory();
+            Budget wrongBudget = TestDataHelper.budgetOne();
+            wrongBudget.setBudgetId(99);
+            updated.setBudget(wrongBudget);
+
+            actual = repository.updatePercentage(updated);
+            assertFalse(actual);
         }
     }
 

@@ -45,6 +45,4 @@ public class BudgetCategoryController {
         }
         return new ResponseEntity<>(result.getpayload(), HttpStatus.OK);
     }
-
-
 }

@@ -1,6 +1,7 @@
 package learn.BudgetApp.data;
 
 import learn.BudgetApp.models.BudgetCategory;
+import learn.BudgetApp.models.Category;
 import learn.BudgetApp.models.mapping.BudgetCategoryMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
@@ -51,7 +52,17 @@ public class BudgetCategoryJdbcClientRepository implements BudgetCategoryReposit
 
     @Override
     public boolean updatePercentage(BudgetCategory budgetCategory) {
-        return false;
+        String sql = """
+                update budget_category
+                set percentage = ?
+                where budgetCategoryId = ? and budgetId = ? and categoryId = ?;
+                """;
+
+        return jdbcClient.sql(sql).param(budgetCategory.getPercentage())
+                .param(budgetCategory.getBudgetCategoryId())
+                .param(budgetCategory.getBudget().getBudgetId())
+                .param(budgetCategory.getCategory().getCategoryId())
+                .update() > 0;
     }
 
     @Override
