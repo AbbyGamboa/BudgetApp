@@ -67,4 +67,55 @@ public class BudgetCategoryService {
         }
         return result;
     }
+
+
+    public Result<BudgetCategory> updatePercentage(BudgetCategory budgetCategory, int userId){
+        Result<BudgetCategory> result = new Result<>();
+
+        if (budgetCategory == null){
+            result.addErrorMessage("Budget is not defined", ResultType.NOT_FOUND);
+            return result;
+        }
+        validateBC(result, budgetCategory);
+        if(!result.isSuccess()){
+            return result;
+        }
+
+        BudgetCategory found = repository.findById(budgetCategory.getBudgetCategoryId());
+        if(found == null){
+            result.addErrorMessage("Cannot find budgetCategory", ResultType.NOT_FOUND);
+            return result;
+        }
+        if(found.getBudget().getBudgetId() != budgetCategory.getBudget().getBudgetId() || found.getCategory().getCategoryId() != budgetCategory.getCategory().getCategoryId()){
+             result.addErrorMessage("Cannot change a budget or category", ResultType.INVALID);
+        }
+
+        if(found.getBudget().getUser().getUserId() != userId){
+            result.addErrorMessage("Cannot access another user's budget category", ResultType.INVALID);
+        }
+
+        if(result.isSuccess()){
+            boolean successfulUpdate = repository.updatePercentage(budgetCategory);
+            if(successfulUpdate){
+                result.setpayload(budgetCategory);
+            } else{
+                result.addErrorMessage("Cannot update budget category", ResultType.INVALID);
+            }
+        }
+        return result;
+    }
+
+    public void validateBC(Result<BudgetCategory> result, BudgetCategory budgetCategory){
+        if (budgetCategory.getBudget() == null){
+            result.addErrorMessage("Budget is required", ResultType.INVALID);
+        }
+
+        if(budgetCategory.getCategory() == null){
+            result.addErrorMessage("Category is required", ResultType.INVALID);
+        }
+
+        if(budgetCategory.getPercentage() ==null|| budgetCategory.getPercentage().signum() == 0 || budgetCategory.getPercentage().signum() == -1){
+            result.addErrorMessage("Percentage is required and must be positive", ResultType.INVALID);
+        }
+    }
 }

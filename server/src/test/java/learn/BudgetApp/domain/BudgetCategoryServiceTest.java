@@ -4,13 +4,16 @@ import learn.BudgetApp.data.BudgetCategoryRepository;
 import learn.BudgetApp.data.BudgetRepository;
 import learn.BudgetApp.data.CategoryRepository;
 import learn.BudgetApp.data.TestDataHelper;
+import learn.BudgetApp.models.Budget;
 import learn.BudgetApp.models.BudgetCategory;
+import learn.BudgetApp.models.User;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -115,6 +118,116 @@ class BudgetCategoryServiceTest {
             assertEquals(expected, actual);
         }
 
+    }
+
+    @Nested
+    class update{
+        @Test
+        void success(){
+            BudgetCategory updated = TestDataHelper.budgetCategory();
+            updated.setPercentage(BigDecimal.valueOf(10));
+            when(bcRepository.findById(1)).thenReturn(TestDataHelper.budgetCategory());
+            when(bcRepository.updatePercentage(updated)).thenReturn(true);
+
+            Result<BudgetCategory> expected = new Result<>();
+            expected.setpayload(updated);
+
+            Result<BudgetCategory> actual = service.updatePercentage(updated, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenBudgetIsNotDefined(){
+            Result<BudgetCategory> expected = new Result<>();
+            expected.addErrorMessage("Budget is not defined", ResultType.NOT_FOUND);
+
+            Result<BudgetCategory> actual = service.updatePercentage(null, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenInvalidBC(){
+            BudgetCategory invalid = TestDataHelper.budgetCategory();
+            invalid.setBudget(null);
+
+            Result<BudgetCategory> expectNullBudget = new Result<>();
+            expectNullBudget.addErrorMessage("Budget is required", ResultType.INVALID);
+
+            Result<BudgetCategory> actual = service.updatePercentage(invalid, 1);
+
+            assertEquals(expectNullBudget, actual);
+
+            invalid = TestDataHelper.budgetCategory();
+            invalid.setCategory(null);
+
+            Result<BudgetCategory> expectNullCategory = new Result<>();
+            expectNullCategory.addErrorMessage("Category is required", ResultType.INVALID);
+
+            actual = service.updatePercentage(invalid, 1);
+
+            assertEquals(expectNullCategory, actual);
+
+            invalid = TestDataHelper.budgetCategory();
+            invalid.setPercentage(BigDecimal.valueOf(-100));
+
+            Result<BudgetCategory> expectIncorrectPercentage = new Result<>();
+            expectIncorrectPercentage.addErrorMessage("Percentage is required and must be positive", ResultType.INVALID);
+
+            actual = service.updatePercentage(invalid, 1);
+
+            assertEquals(expectIncorrectPercentage, actual);
+        }
+
+        @Test
+        void failsWhenChangingBudgetOrCategory(){
+            BudgetCategory updated = TestDataHelper.budgetCategory();
+            Budget invalidBudget = TestDataHelper.budgetOne();
+            invalidBudget.setBudgetId(2);
+            updated.setBudget(invalidBudget);
+
+            when(bcRepository.findById(1)).thenReturn(TestDataHelper.budgetCategory());
+            Result<BudgetCategory> expected = new Result<>();
+            expected.addErrorMessage("Cannot change a budget or category", ResultType.INVALID);
+
+            Result<BudgetCategory> actual = service.updatePercentage(updated, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenAccessingAnotherUsersBudgetCategories(){
+            BudgetCategory updated = TestDataHelper.budgetCategory();
+            Budget invalidBudget = TestDataHelper.budgetOne();
+            User invalidUser = TestDataHelper.secondUser();
+
+            invalidBudget.setUser(invalidUser);
+            updated.setBudget(invalidBudget);
+
+            when(bcRepository.findById(1)).thenReturn(updated);
+            Result<BudgetCategory> expected = new Result<>();
+            expected.addErrorMessage("Cannot access another user's budget category", ResultType.INVALID);
+
+            Result<BudgetCategory> actual = service.updatePercentage(updated, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsInRepo(){
+            BudgetCategory updated = TestDataHelper.budgetCategory();
+            updated.setPercentage(BigDecimal.valueOf(10));
+            when(bcRepository.findById(1)).thenReturn(TestDataHelper.budgetCategory());
+            when(bcRepository.updatePercentage(updated)).thenReturn(false);
+
+            Result<BudgetCategory> expected = new Result<>();
+            expected.addErrorMessage("Cannot update budget category", ResultType.INVALID);
+
+            Result<BudgetCategory> actual = service.updatePercentage(updated, 1);
+
+            assertEquals(expected, actual);
+        }
     }
 
 }
