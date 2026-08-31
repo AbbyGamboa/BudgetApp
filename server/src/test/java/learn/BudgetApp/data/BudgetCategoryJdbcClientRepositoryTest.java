@@ -44,4 +44,20 @@ class BudgetCategoryJdbcClientRepositoryTest {
 
     }
 
+    @Nested
+    class findById{
+        @Test
+        void success(){
+            BudgetCategory expected = TestDataHelper.budgetCategory();
+            BudgetCategory actual = repository.findById(1);
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void notFound(){
+            BudgetCategory actual = repository.findById(99);
+            assertNull(actual);
+        }
+    }
+
 }

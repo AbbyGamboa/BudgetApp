@@ -45,7 +45,8 @@ public class BudgetCategoryJdbcClientRepository implements BudgetCategoryReposit
 
     @Override
     public BudgetCategory findById(int budgetCategoryId) {
-        return null;
+        String sql = BASE_SELECT + " where bc.budgetCategoryId =?;";
+        return jdbcClient.sql(sql).param(budgetCategoryId).query(new BudgetCategoryMapper()).optional().orElse(null);
     }
 
     @Override

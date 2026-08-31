@@ -73,4 +73,8 @@ public class TestDataHelper {
         return List.of(new BudgetCategory(1, budgetOne(), firstCategory(), BigDecimal.valueOf(15)),
                 new BudgetCategory(2, budgetOne(), customCategory(), BigDecimal.valueOf(30)));
     }
+
+    public static BudgetCategory budgetCategory(){
+        return new BudgetCategory(1, budgetOne(), firstCategory(), BigDecimal.valueOf(15));
+    }
 }
