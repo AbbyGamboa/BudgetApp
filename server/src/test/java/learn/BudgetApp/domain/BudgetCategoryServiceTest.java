@@ -80,4 +80,41 @@ class BudgetCategoryServiceTest {
         }
     }
 
+    @Nested
+    class findById{
+        @Test
+        void success(){
+            when(bcRepository.findById(1)).thenReturn(TestDataHelper.budgetCategory());
+
+            Result<BudgetCategory> expected = new Result<>();
+            expected.setpayload(TestDataHelper.budgetCategory());
+            Result<BudgetCategory> actual = service.findById(1, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenUserIsIncorrect(){
+            when(bcRepository.findById(1)).thenReturn(TestDataHelper.budgetCategory());
+
+            Result<BudgetCategory> expected = new Result<>();
+            expected.addErrorMessage("Cannot access another user's budget categories", ResultType.INVALID);
+            Result<BudgetCategory> actual = service.findById(1, 2);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenNotFound(){
+            when(bcRepository.findById(1)).thenReturn(null);
+
+            Result<BudgetCategory> expected = new Result<>();
+            expected.addErrorMessage("Budget Category not found", ResultType.NOT_FOUND);
+            Result<BudgetCategory> actual = service.findById(1, 2);
+
+            assertEquals(expected, actual);
+        }
+
+    }
+
 }

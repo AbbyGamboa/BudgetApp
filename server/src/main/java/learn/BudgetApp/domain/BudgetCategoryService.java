@@ -47,4 +47,24 @@ public class BudgetCategoryService {
 
         return result;
     }
+
+    public Result<BudgetCategory> findById(int budgetCategoryId, int userId){
+        Result<BudgetCategory> result = new Result<>();
+
+        BudgetCategory found = repository.findById(budgetCategoryId);
+
+        if(found == null){
+            result.addErrorMessage("Budget Category not found", ResultType.NOT_FOUND);
+            return result;
+        }
+
+        if (found.getBudget().getUser().getUserId() != userId){
+            result.addErrorMessage("Cannot access another user's budget categories", ResultType.INVALID);
+        }
+
+        if(result.isSuccess()){
+            result.setpayload(found);
+        }
+        return result;
+    }
 }
