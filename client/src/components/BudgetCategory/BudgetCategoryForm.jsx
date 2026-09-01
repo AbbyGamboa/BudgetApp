@@ -2,16 +2,17 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import ViewCategoryByUser from "../Category/ViewCategoryByUser"
+import { useParams } from "react-router-dom";
 
 function BudgetCategoryForm({loggedInUser,activeModalItem, setActiveModalItem}){
     const navigate = useNavigate();
-    const budgetId = activeModalItem.budget.budgetId
-    const categoryId = activeModalItem.category.categoryId
-    const budgetCategoryId = activeModalItem.budgetCategoryId
+    const {budgetId} = useParams(); 
 
+    const budgetCategoryId = activeModalItem?.budgetCategoryId;
+    const[categoryId, setCategoryId] = useState("");
 
     const initialBudgetCategory = {
-        budgetCategoryId: "",
         percentage: ""
     }
 
@@ -21,6 +22,7 @@ function BudgetCategoryForm({loggedInUser,activeModalItem, setActiveModalItem}){
     useEffect(()=> {
             if (budgetCategoryId === undefined){
                 setBudgetCategories(initialBudgetCategory)
+                setCategoryId("")
                 return;
             }
     
@@ -40,6 +42,7 @@ function BudgetCategoryForm({loggedInUser,activeModalItem, setActiveModalItem}){
                 console.log(payload)
     
                 setBudgetCategories(payload)
+                setCategoryId(payload.category.categoryId);
             }
             prepopulate()
      
@@ -56,8 +59,11 @@ function BudgetCategoryForm({loggedInUser,activeModalItem, setActiveModalItem}){
         let url = "http://localhost:8080/api/budgetcategory"
         let method = "POST"
         if (budgetCategoryId !== undefined) {
-            url += "/edit/" + budgetCategoryId +"?budgetId="+budgetId+"&categoryId="+categoryId
+            url += "/edit/" + budgetCategoryId +
+            "?budgetId="+budgetId+"&categoryId="+categoryId
             method = "PUT"
+        } else{
+            url += "?budgetId=" + budgetId + "&categoryId=" + categoryId
         }
         
         const response = await fetch(url, {
@@ -68,7 +74,9 @@ function BudgetCategoryForm({loggedInUser,activeModalItem, setActiveModalItem}){
             },
             body: JSON.stringify(budgetCategory)
         })
+        console.log(budgetCategory)
     
+        console.log(response)
         if (response.status >= 200 && response.status < 300) {
             setActiveModalItem(null);
             navigate(`/view/budget/${budgetId}`)
@@ -80,12 +88,26 @@ function BudgetCategoryForm({loggedInUser,activeModalItem, setActiveModalItem}){
         }
     }
 
+
+
     return(
+        <>
         <form onSubmit={handleSubmit}>
             <label htmlFor="percentage">Percentage:</label>
             <input type="text" name="percentage" id="percentage" onChange={handleChange} value={budgetCategory.percentage}/>
-            <button type="submit" className="btn btn-primary">Update</button>
+            
+            <div className="d-flex">
+                <p>Category: </p>
+                <select name="categoryId" id="categoryId" value={categoryId} onChange={(event)=> setCategoryId(event.target.value)}>
+                    <ViewCategoryByUser loggedInUser={loggedInUser}></ViewCategoryByUser>
+                </select>
+            </div>
+            
+            <button type="submit" className="btn btn-primary m-1">{budgetCategoryId? "Update": "Add"}</button>
         </form>
+        
+        </>
+        
     );
 }
 

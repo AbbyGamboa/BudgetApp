@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
 import Layout from "./components/Layout";
 import Landing from "./components/Landing";
+import { Link } from "react-router-dom";
 import UserForm from "./components/User/UserForm";
 import { useState } from "react";
 import UserLanding from "./components/User/UserLanding";
@@ -88,7 +89,11 @@ function AppRouter(){
                 }, 
                 {
                     path:"/view/categories",
-                    element: loggedInUser? <ViewCategoryByUser loggedInUser={loggedInUser}></ViewCategoryByUser>:<Navigate to="/"></Navigate>,
+                    element: loggedInUser? 
+                    <>
+                        <ViewCategoryByUser loggedInUser={loggedInUser}></ViewCategoryByUser>
+                        <Link className="btn btn-primary m-1" to="/add/category">Add category</Link>
+                    </>:<Navigate to="/"></Navigate>,
                 },
                 {
                     path:"/add/category", 

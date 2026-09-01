@@ -20,11 +20,10 @@ function ViewCategoryByUser({loggedInUser}){
         }, [])
 
     return(
-         <>
-        <h1>Categories: </h1>
-        {categories.map((category, i) => <Category key={i} category={category}></Category>)}
-        <Link to={"/add/category"} className="btn btn-primary">Add Category</Link>
+        <>
+        {categories.map((category) => <option key= {category.categoryId} value={category.categoryId}>{category.name}</option>)}
         </>
+         
     )
 }
 
