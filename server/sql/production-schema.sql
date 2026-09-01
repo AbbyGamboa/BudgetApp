@@ -32,7 +32,7 @@ create table budget_category(
 	budgetCategoryId int primary key auto_increment, 
 	budgetId int, 
 	categoryId int, 
-	percentage decimal, 
+	percentage decimal (10,2), 
 	constraint fk_budget_id
         foreign key (budgetId)
         references budget(budgetId)

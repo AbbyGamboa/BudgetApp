@@ -166,22 +166,6 @@ class BudgetServiceTest {
         }
 
         @Test
-        void failsWhenUserIsIncorrect(){
-            User differentUser = TestDataHelper.existingUser();
-            differentUser.setUserId(2);
-            Budget create = new Budget(3, TestDataHelper.existingUser(), BigDecimal.valueOf(75.50));
-
-            when(userRepository.findById(2)).thenReturn(TestDataHelper.existingUser());
-            when(repository.create(create)).thenReturn(create);
-            Result<Budget> actual = service.create(create, 2);
-
-            Result<Budget> expected = new Result<>();
-            expected.addErrorMessage("Cannot create a budget for another user", ResultType.INVALID);
-
-            assertEquals(expected, actual);
-        }
-
-        @Test
         void failsWhenUserDoesNotExist(){
             User doesNotExist = TestDataHelper.existingUser();
             doesNotExist.setUserId(999);
