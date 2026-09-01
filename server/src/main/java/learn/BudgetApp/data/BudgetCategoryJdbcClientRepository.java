@@ -51,7 +51,7 @@ public class BudgetCategoryJdbcClientRepository implements BudgetCategoryReposit
     }
 
     @Override
-    public boolean updatePercentage(BudgetCategory budgetCategory) {
+    public boolean updateAmount(BudgetCategory budgetCategory) {
         String sql = """
                 update budget_category
                 set percentage = ?
@@ -67,6 +67,7 @@ public class BudgetCategoryJdbcClientRepository implements BudgetCategoryReposit
 
     @Override
     public BudgetCategory create(BudgetCategory budgetCategory) {
+
         return null;
     }
 

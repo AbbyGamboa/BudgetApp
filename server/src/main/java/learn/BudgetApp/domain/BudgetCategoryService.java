@@ -102,7 +102,7 @@ public class BudgetCategoryService {
         }
 
         if(result.isSuccess()){
-            boolean successfulUpdate = repository.updatePercentage(budgetCategory);
+            boolean successfulUpdate = repository.updateAmount(budgetCategory);
             if(successfulUpdate){
                 result.setpayload(budgetCategory);
             } else{

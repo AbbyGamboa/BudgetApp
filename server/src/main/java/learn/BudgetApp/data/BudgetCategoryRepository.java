@@ -10,7 +10,7 @@ public interface BudgetCategoryRepository {
 
     BudgetCategory findById(int budgetCategoryId);
 
-    boolean updatePercentage(BudgetCategory budgetCategory);
+    boolean updateAmount(BudgetCategory budgetCategory);
 
     BudgetCategory create(BudgetCategory budgetCategory);
 

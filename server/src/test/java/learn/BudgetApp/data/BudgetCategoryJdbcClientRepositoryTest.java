@@ -68,7 +68,7 @@ class BudgetCategoryJdbcClientRepositoryTest {
         void success(){
             BudgetCategory updated = TestDataHelper.budgetCategory();
             updated.setPercentage(BigDecimal.valueOf(50));
-            boolean actual = repository.updatePercentage(updated);
+            boolean actual = repository.updateAmount(updated);
 
             assertTrue(actual);
         }
@@ -79,13 +79,13 @@ class BudgetCategoryJdbcClientRepositoryTest {
             updated.setPercentage(BigDecimal.valueOf(50));
             updated.setBudgetCategoryId(99);
 
-            boolean actual = repository.updatePercentage(updated);
+            boolean actual = repository.updateAmount(updated);
             assertFalse(actual);
 
             updated = TestDataHelper.budgetCategory();
             updated.setCategory(TestDataHelper.customCategory());
 
-            actual = repository.updatePercentage(updated);
+            actual = repository.updateAmount(updated);
             assertFalse(actual);
 
             updated = TestDataHelper.budgetCategory();
@@ -93,7 +93,7 @@ class BudgetCategoryJdbcClientRepositoryTest {
             wrongBudget.setBudgetId(99);
             updated.setBudget(wrongBudget);
 
-            actual = repository.updatePercentage(updated);
+            actual = repository.updateAmount(updated);
             assertFalse(actual);
         }
     }

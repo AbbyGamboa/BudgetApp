@@ -129,7 +129,7 @@ class BudgetCategoryServiceTest {
             when(budgetRepository.findById(1)).thenReturn(TestDataHelper.budgetOne());
             when(categoryRepository.findById(1)).thenReturn(TestDataHelper.firstCategory());
             when(bcRepository.findById(1)).thenReturn(TestDataHelper.budgetCategory());
-            when(bcRepository.updatePercentage(updated)).thenReturn(true);
+            when(bcRepository.updateAmount(updated)).thenReturn(true);
 
             Result<BudgetCategory> expected = new Result<>();
             expected.setpayload(updated);
@@ -209,7 +209,7 @@ class BudgetCategoryServiceTest {
             when(budgetRepository.findById(1)).thenReturn(TestDataHelper.budgetOne());
             when(categoryRepository.findById(1)).thenReturn(TestDataHelper.firstCategory());
             when(bcRepository.findById(1)).thenReturn(TestDataHelper.budgetCategory());
-            when(bcRepository.updatePercentage(updated)).thenReturn(false);
+            when(bcRepository.updateAmount(updated)).thenReturn(false);
 
             Result<BudgetCategory> expected = new Result<>();
             expected.addErrorMessage("Cannot update budget category", ResultType.INVALID);
