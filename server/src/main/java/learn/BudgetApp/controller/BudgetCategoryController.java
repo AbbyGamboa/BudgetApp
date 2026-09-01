@@ -4,14 +4,11 @@ import learn.BudgetApp.Security.JwtService;
 import learn.BudgetApp.domain.BudgetCategoryService;
 import learn.BudgetApp.domain.Result;
 import learn.BudgetApp.models.BudgetCategory;
-import learn.BudgetApp.models.Category;
-import learn.BudgetApp.models.Transaction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -64,5 +61,16 @@ public class BudgetCategoryController {
         }
         return new ResponseEntity<>(result.getpayload(), HttpStatus.OK);
 
+    }
+
+    @PostMapping
+    public ResponseEntity<?> create(@RequestParam int budgetId, @RequestParam int categoryId, @RequestBody BudgetCategory budgetCategory, Authentication authentication){
+        int userId = Integer.parseInt(authentication.getName());
+
+        Result<BudgetCategory> result = service.create(budgetCategory, userId, budgetId, categoryId);
+        if(!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+        return new ResponseEntity<>(result.getpayload(), HttpStatus.OK);
     }
 }
