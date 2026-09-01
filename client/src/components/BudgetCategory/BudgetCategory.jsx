@@ -1,10 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState} from "react";
+import { Link } from "react-router-dom";
+import Modal from 'react-bootstrap/Modal';
+import BudgetCategoryForm from "./BudgetCategoryForm";
+import Button from "react-bootstrap/esm/Button";
 
 function BudgetCategory({budgetId, loggedInUser}){
-    const navigate = useNavigate();
 
     const[budgetcategories, setBudgetCategories] = useState([])
+    const [activeModalItem, setActiveModalItem] = useState(null);
 
     useEffect(()=>{
             const doFetch = async () => {
@@ -23,9 +27,22 @@ function BudgetCategory({budgetId, loggedInUser}){
         <>
         <h1>Categories: </h1>
         {budgetcategories.map(budgetCategory=> <div key={budgetCategory.budgetCategoryId}>
-            <h2>{budgetCategory.category.name}: %{budgetCategory.percentage}</h2>
-            <h3>Dedicated amount from income: ${budgetCategory.budget.income * (budgetCategory.percentage / 100)}</h3>
+            <h2>{budgetCategory.category.name}:</h2>
+            <h3>Dedicated amount from income: ${budgetCategory.percentage}</h3>
+            <button className="btn btn-primary m-1" onClick={() => setActiveModalItem(budgetCategory)}>Edit amount</button>
         </div>)}
+
+       {activeModalItem && 
+        <Modal show={true}>
+            <Modal.Header closeButton>
+                <Modal.Title>Modal heading</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <BudgetCategoryForm loggedInUser={loggedInUser} activeModalItem={activeModalItem} setActiveModalItem={setActiveModalItem}/>
+                <Button variant="secondary" onClick={()=>setActiveModalItem(null)}>Close </Button>
+            </Modal.Body>
+            
+        </Modal>}
         </>
         
     );

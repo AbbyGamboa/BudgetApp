@@ -10,7 +10,6 @@ function ViewTransactions({loggedInUser}){
     const[transactions, setTransactions] = useState([])
     const {accountId} = useParams();
     const [showCreate, setShowCreate] = useState(false);
-    const [showEdit, setShowEdit] = useState(false);
     
     useEffect(()=>{
         const doFetch = async () => {
@@ -39,7 +38,7 @@ function ViewTransactions({loggedInUser}){
                 <Modal.Title>Modal heading</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <TransactionForm loggedInUser={loggedInUser} transactionId ={undefined}/>
+                <TransactionForm loggedInUser={loggedInUser} transactionId ={undefined} setActiveModalItem={setActiveModalItem}/>
                 <Button variant="secondary" onClick={handleCreateClose}>Close </Button>
             </Modal.Body>
             

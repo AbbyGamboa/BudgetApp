@@ -65,9 +65,11 @@ function TransactionForm({loggedInUser, transactionId, setActiveModalItem}){
             },
             body: JSON.stringify(transaction)
         })
+        console.log(response)
         if (response.status >= 200 && response.status < 300) {
             setActiveModalItem(null)
             navigate(`/view/account/${accountId}`)
+            window.location.reload();
         } else {
             const payload = await response.json()
             setErrors(payload)
@@ -85,8 +87,8 @@ function TransactionForm({loggedInUser, transactionId, setActiveModalItem}){
             <label htmlFor="date">*Date: </label>
             <input type="date" name="date" id="date" value={transaction.date} onChange={handleChange} required/>
 
-            <label htmlFor="merchantName">Merchant Name: </label>
-            <input type="text" name="merchantName" id="merchantName" value={transaction.merchant_name? transaction.merchant_name : " "} onChange={handleChange}/>
+            <label htmlFor="merchant_name">Merchant Name: </label>
+            <input type="text" name="merchant_name" id="merchant_name" value={transaction.merchant_name? transaction.merchant_name : " "} onChange={handleChange}/>
 
             <label htmlFor="amount">Description: </label>
             <input type="description" name="description" id="description" value={transaction.description? transaction.description: " "} onChange={handleChange}/>
