@@ -74,14 +74,10 @@ public class BudgetCategoryService {
         Result<BudgetCategory> result = new Result<>();
 
         if (budgetCategory == null){
-            result.addErrorMessage("Budget is not defined", ResultType.NOT_FOUND);
+            result.addErrorMessage("Budget Category is not defined", ResultType.NOT_FOUND);
             return result;
         }
-        Budget foundBudget = budgetRepository.findById(budgetId);
-        budgetCategory.setBudget(foundBudget);
-
-        Category foundCategory = categoryRepository.findById(categoryId);
-        budgetCategory.setCategory(foundCategory);
+        setBudgetAndCategory(budgetCategory, budgetId, categoryId);
 
         validateBC(result, budgetCategory);
         if(!result.isSuccess()){
@@ -112,6 +108,52 @@ public class BudgetCategoryService {
         return result;
     }
 
+    public void setBudgetAndCategory(BudgetCategory budgetCategory, int budgetId, int categoryId){
+        Budget foundBudget = budgetRepository.findById(budgetId);
+        budgetCategory.setBudget(foundBudget);
+
+        Category foundCategory = categoryRepository.findById(categoryId);
+        budgetCategory.setCategory(foundCategory);
+    }
+
+    public Result<BudgetCategory> create(BudgetCategory budgetCategory, int userId, int budgetId, int categoryId){
+        Result<BudgetCategory> result = new Result<>();
+
+        if (budgetCategory == null){
+            result.addErrorMessage("Budget Category is not defined", ResultType.NOT_FOUND);
+            return result;
+        }
+        setBudgetAndCategory(budgetCategory, budgetId, categoryId);
+
+        validateBC(result, budgetCategory);
+        if(!result.isSuccess()){
+            return result;
+        }
+
+        BudgetCategory found = repository.findById(budgetCategory.getBudgetCategoryId());
+        if(found != null){
+            result.addErrorMessage("Cannot create budgetCategory that is already made", ResultType.INVALID);
+            return result;
+        }
+
+        if(budgetCategory.getBudget().getUser().getUserId() != userId){
+            result.addErrorMessage("Cannot access another user's budget category", ResultType.INVALID);
+        }
+
+        validateCreatingBC(result, budgetCategory);
+
+        if(result.isSuccess()){
+            BudgetCategory created = repository.create(budgetCategory);
+            if(created != null){
+                result.setpayload(budgetCategory);
+            } else{
+                result.addErrorMessage("Cannot update budget category", ResultType.INVALID);
+            }
+        }
+        return result;
+
+    }
+
     public void validateBC(Result<BudgetCategory> result, BudgetCategory budgetCategory){
         if (budgetCategory.getBudget() == null){
             result.addErrorMessage("Budget is required", ResultType.INVALID);
@@ -123,6 +165,16 @@ public class BudgetCategoryService {
 
         if(budgetCategory.getPercentage() ==null|| budgetCategory.getPercentage().signum() == 0 || budgetCategory.getPercentage().signum() == -1){
             result.addErrorMessage("Percentage is required and must be positive", ResultType.INVALID);
+        }
+    }
+
+    public void validateCreatingBC(Result<BudgetCategory> result, BudgetCategory budgetCategory){
+        List<BudgetCategory> fromBudget = repository.findByBudget(budgetCategory.getBudget().getBudgetId());
+
+        for (BudgetCategory bc: fromBudget){
+            if (bc.getBudget().getBudgetId() == budgetCategory.getBudget().getBudgetId() && bc.getCategory().getCategoryId() == budgetCategory.getCategory().getCategoryId()){
+                result.addErrorMessage("Cannot have duplicate categories in the same budget", ResultType.INVALID);
+            }
         }
     }
 }

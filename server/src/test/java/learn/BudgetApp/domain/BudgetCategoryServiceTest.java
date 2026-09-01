@@ -142,7 +142,7 @@ class BudgetCategoryServiceTest {
         @Test
         void failsWhenBudgetIsNotDefined(){
             Result<BudgetCategory> expected = new Result<>();
-            expected.addErrorMessage("Budget is not defined", ResultType.NOT_FOUND);
+            expected.addErrorMessage("Budget Category is not defined", ResultType.NOT_FOUND);
 
             Result<BudgetCategory> actual = service.updatePercentage(null, 1,1,1);
 
@@ -215,6 +215,131 @@ class BudgetCategoryServiceTest {
             expected.addErrorMessage("Cannot update budget category", ResultType.INVALID);
 
             Result<BudgetCategory> actual = service.updatePercentage(updated, 1,1,1);
+
+            assertEquals(expected, actual);
+        }
+    }
+
+    @Nested
+    class create{
+        @Test
+        void success(){
+            BudgetCategory created = TestDataHelper.createdBC();
+
+            when(budgetRepository.findById(2)).thenReturn(TestDataHelper.budgetTwo());
+            when(categoryRepository.findById(1)).thenReturn(TestDataHelper.firstCategory());
+            when(bcRepository.findById(5)).thenReturn(null);
+            when(bcRepository.findByBudget(2)).thenReturn(List.of());
+            when(bcRepository.create(created)).thenReturn(created);
+
+            Result<BudgetCategory> expected = new Result<>();
+            expected.setpayload(created);
+
+            Result<BudgetCategory> actual = service.create(created, 2, 2, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenBCIsNull(){
+
+            Result<BudgetCategory> expected = new Result<>();
+            expected.addErrorMessage("Budget Category is not defined", ResultType.NOT_FOUND);
+
+            Result<BudgetCategory> actual = service.create(null, 2, 2, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenBudgetNotFound(){
+            BudgetCategory created = TestDataHelper.createdBC();
+            when(budgetRepository.findById(2)).thenReturn(null);
+            when(categoryRepository.findById(1)).thenReturn(TestDataHelper.firstCategory());
+
+            Result<BudgetCategory> expected = new Result<>();
+            expected.addErrorMessage("Budget is required", ResultType.INVALID);
+
+            Result<BudgetCategory> actual = service.create(created, 2, 2, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenCategoryNotFound(){
+            BudgetCategory created = TestDataHelper.createdBC();
+            when(budgetRepository.findById(2)).thenReturn(TestDataHelper.budgetTwo());
+            when(categoryRepository.findById(1)).thenReturn(null);
+
+            Result<BudgetCategory> expected = new Result<>();
+            expected.addErrorMessage("Category is required", ResultType.INVALID);
+
+            Result<BudgetCategory> actual = service.create(created, 2, 2, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenIncorrectAmount(){
+            BudgetCategory created = TestDataHelper.createdBC();
+            created.setPercentage(BigDecimal.valueOf(-100));
+            when(budgetRepository.findById(2)).thenReturn(TestDataHelper.budgetTwo());
+            when(categoryRepository.findById(1)).thenReturn(TestDataHelper.firstCategory());
+
+            Result<BudgetCategory> expected = new Result<>();
+            expected.addErrorMessage("Percentage is required and must be positive", ResultType.INVALID);
+
+            Result<BudgetCategory> actual = service.create(created, 2, 2, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenBCAlreadyCreated(){
+            BudgetCategory created = TestDataHelper.createdBC();
+            when(budgetRepository.findById(2)).thenReturn(TestDataHelper.budgetTwo());
+            when(categoryRepository.findById(1)).thenReturn(TestDataHelper.firstCategory());
+            when(bcRepository.findById(5)).thenReturn(TestDataHelper.createdBC());
+
+            Result<BudgetCategory> expected = new Result<>();
+            expected.addErrorMessage("Cannot create budgetCategory that is already made", ResultType.INVALID);
+
+            Result<BudgetCategory> actual = service.create(created, 2, 2, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenAlreadyEstablishedInBudget(){
+            BudgetCategory created = TestDataHelper.createdBC();
+            when(budgetRepository.findById(2)).thenReturn(TestDataHelper.budgetTwo());
+            when(categoryRepository.findById(1)).thenReturn(TestDataHelper.firstCategory());
+            when(bcRepository.findById(5)).thenReturn(null);
+            when(bcRepository.findByBudget(2)).thenReturn(List.of(TestDataHelper.createdBC()));
+
+
+            Result<BudgetCategory> expected = new Result<>();
+            expected.addErrorMessage("Cannot have duplicate categories in the same budget", ResultType.INVALID);
+
+            Result<BudgetCategory> actual = service.create(created, 2, 2, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenRepoFails(){
+            BudgetCategory created = TestDataHelper.createdBC();
+
+            when(budgetRepository.findById(2)).thenReturn(TestDataHelper.budgetTwo());
+            when(categoryRepository.findById(1)).thenReturn(TestDataHelper.firstCategory());
+            when(bcRepository.findById(5)).thenReturn(null);
+            when(bcRepository.findByBudget(2)).thenReturn(List.of());
+            when(bcRepository.create(created)).thenReturn(null);
+
+            Result<BudgetCategory> expected = new Result<>();
+            expected.addErrorMessage("Cannot update budget category", ResultType.INVALID);
+
+            Result<BudgetCategory> actual = service.create(created, 2, 2, 1);
 
             assertEquals(expected, actual);
         }
