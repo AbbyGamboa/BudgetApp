@@ -35,8 +35,7 @@ function BudgetCategory({budgetId, loggedInUser}){
                 <Modal.Title>Add category to budget</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <BudgetCategoryForm loggedInUser={loggedInUser} activeModalItem={activeModalItem} setActiveModalItem={setActiveModalItem}/>
-                <Button variant="secondary" onClick={handleCreateClose}>Close </Button>
+                <BudgetCategoryForm loggedInUser={loggedInUser} handleCreateClose={handleCreateClose} activeModalItem={activeModalItem} setActiveModalItem={setActiveModalItem}/>
             </Modal.Body>
             
             
@@ -55,7 +54,6 @@ function BudgetCategory({budgetId, loggedInUser}){
             </Modal.Header>
             <Modal.Body>
                 <BudgetCategoryForm loggedInUser={loggedInUser} activeModalItem={activeModalItem} setActiveModalItem={setActiveModalItem}/>
-                <Button variant="secondary" onClick={()=>setActiveModalItem(null)}>Close </Button>
             </Modal.Body>
             
         </Modal>}

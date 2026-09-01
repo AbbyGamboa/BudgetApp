@@ -4,8 +4,9 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ViewCategoryByUser from "../Category/ViewCategoryByUser"
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-function BudgetCategoryForm({loggedInUser,activeModalItem, setActiveModalItem}){
+function BudgetCategoryForm({loggedInUser,activeModalItem, setActiveModalItem, handleCreateClose}){
     const navigate = useNavigate();
     const {budgetId} = useParams(); 
 
@@ -74,9 +75,7 @@ function BudgetCategoryForm({loggedInUser,activeModalItem, setActiveModalItem}){
             },
             body: JSON.stringify(budgetCategory)
         })
-        console.log(budgetCategory)
     
-        console.log(response)
         if (response.status >= 200 && response.status < 300) {
             setActiveModalItem(null);
             navigate(`/view/budget/${budgetId}`)
@@ -88,6 +87,7 @@ function BudgetCategoryForm({loggedInUser,activeModalItem, setActiveModalItem}){
         }
     }
 
+    const[show, setShow] = useState(false);
 
 
     return(
@@ -98,12 +98,21 @@ function BudgetCategoryForm({loggedInUser,activeModalItem, setActiveModalItem}){
             
             <div className="d-flex">
                 <p>Category: </p>
-                <select name="categoryId" id="categoryId" value={categoryId} onChange={(event)=> setCategoryId(event.target.value)}>
+                <select name="categoryId" id="categoryId" value={categoryId} onChange={(event)=> setCategoryId(event.target.value)} disabled={budgetCategoryId !== undefined}>
                     <ViewCategoryByUser loggedInUser={loggedInUser}></ViewCategoryByUser>
                 </select>
+                <Link className="btn btn-primary m-1" hidden={budgetCategoryId !== undefined} onClick={()=>setShow(!show)}>+</Link>
+                
             </div>
+             {show && 
+                    <>
+                        <label htmlFor="name">Category Name: </label>
+                        <input type="text" name="name" id="name"/>
+                    </>
+                }
             
             <button type="submit" className="btn btn-primary m-1">{budgetCategoryId? "Update": "Add"}</button>
+            <button type="button" className="btn btn-secondary" onClick={()=> budgetCategoryId !== undefined? setActiveModalItem(null): handleCreateClose()}>Close </button>
         </form>
         
         </>
