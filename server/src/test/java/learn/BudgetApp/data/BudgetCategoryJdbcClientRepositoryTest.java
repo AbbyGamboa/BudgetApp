@@ -98,4 +98,15 @@ class BudgetCategoryJdbcClientRepositoryTest {
         }
     }
 
+    @Nested
+    class create{
+        @Test
+        void success(){
+            BudgetCategory created = TestDataHelper.createdBC();
+            BudgetCategory actual = repository.create(created);
+
+            assertEquals(created, actual);
+        }
+    }
+
 }

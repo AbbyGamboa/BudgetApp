@@ -4,6 +4,8 @@ import learn.BudgetApp.models.BudgetCategory;
 import learn.BudgetApp.models.Category;
 import learn.BudgetApp.models.mapping.BudgetCategoryMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -67,8 +69,23 @@ public class BudgetCategoryJdbcClientRepository implements BudgetCategoryReposit
 
     @Override
     public BudgetCategory create(BudgetCategory budgetCategory) {
+        String sql = """
+                insert into budget_category(budgetId, categoryId, percentage)
+                values(:budgetId, :categoryId, :percentage);
+                """;
 
-        return null;
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        int rowsAffected = jdbcClient.sql(sql)
+                .param("budgetId", budgetCategory.getBudget().getBudgetId())
+                .param("categoryId", budgetCategory.getCategory().getCategoryId())
+                .param("percentage", budgetCategory.getPercentage())
+                .update(keyHolder, "budgetCategoryId");
+
+        if (rowsAffected <= 0){
+            return null;
+        }
+        return budgetCategory;
     }
 
     @Override

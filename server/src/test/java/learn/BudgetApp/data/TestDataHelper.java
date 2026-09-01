@@ -69,6 +69,10 @@ public class TestDataHelper {
         return new Budget(1, TestDataHelper.existingUser(), BigDecimal.valueOf(4000).setScale(2, RoundingMode.DOWN));
     }
 
+    public static Budget budgetTwo(){
+        return new Budget(2, secondUser(), BigDecimal.valueOf(15000).setScale(2, RoundingMode.DOWN));
+    }
+
     public static List<BudgetCategory> budgetOneBCList(){
         return List.of(new BudgetCategory(1, budgetOne(), firstCategory(), BigDecimal.valueOf(15)),
                 new BudgetCategory(2, budgetOne(), customCategory(), BigDecimal.valueOf(30)));
@@ -80,5 +84,9 @@ public class TestDataHelper {
 
     public static BudgetCategory secondBC(){
         return new BudgetCategory(2, budgetOne(), customCategory(), BigDecimal.valueOf(30));
+    }
+
+    public static BudgetCategory createdBC(){
+        return new BudgetCategory(5, budgetTwo(), firstCategory(), BigDecimal.valueOf(100));
     }
 }

@@ -17,7 +17,6 @@ insert into user (email, password) values
 	insert into budget_category(budgetId, categoryId, percentage) values 
 	(1,1,15),
 	(1,2,30),
-	(2,1,30),
 	(2,3,10);
 	
 	insert into account( userId, subtype) values
