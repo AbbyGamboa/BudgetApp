@@ -40,7 +40,6 @@ create table budget_category(
     constraint fk_budget_category_id
     	foreign key (categoryId)
     	references categories(categoryId)
-    	on delete cascade
 );
 
 create table account(

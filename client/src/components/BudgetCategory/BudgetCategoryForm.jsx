@@ -124,7 +124,7 @@ function BudgetCategoryForm({loggedInUser,activeModalItem, setActiveModalItem, h
 
     return(
         <>
-       <form onSubmit={handleSubmitCategory}>
+       <form onSubmit={handleSubmitCategory} hidden={activeModalItem? true:false}>
             <label htmlFor="showCustom">Create Custom Category</label>
                 <input type="checkbox" name="showCustom" id="showCustom" onChange={()=>setShowCreate(!showCustom)}/>
             <div>
@@ -141,11 +141,13 @@ function BudgetCategoryForm({loggedInUser,activeModalItem, setActiveModalItem, h
         <form onSubmit={handleSubmitBC} >
 
             <div className="d-flex flex-column align-content-center">
-                <label htmlFor="percentage">Percentage:</label>
+                <label htmlFor="percentage">Amount:</label>
             <input type="text" name="percentage" id="percentage" onChange={handleChange} value={budgetCategory.percentage}/>
             
             <label htmlFor="categoryId">Category:</label>
-            <select name="categoryId"  id="categoryId" value={categoryId} onChange={(event)=> {setCategoryId(event.target.value)}} disabled={budgetCategoryId !== undefined}>
+            <select name="categoryId"  id="categoryId" value={categoryId} onChange={(event)=> {setCategoryId(event.target.value)
+                console.log(categoryId)}} disabled={budgetCategoryId !== undefined}>
+                    <option value="">Select Category</option>
                     <ViewCategoryByUser loggedInUser={loggedInUser} category={categoryRefresh}></ViewCategoryByUser>
             </select>
             </div>

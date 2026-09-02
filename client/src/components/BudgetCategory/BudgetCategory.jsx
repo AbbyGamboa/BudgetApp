@@ -1,14 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState} from "react";
-import { Link } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal';
 import BudgetCategoryForm from "./BudgetCategoryForm";
-import Button from "react-bootstrap/esm/Button";
+import DeleteBCConfirm from "./DeleteBCConfirm";
+import { useParams } from "react-router-dom";
 
-function BudgetCategory({budgetId, loggedInUser}){
+function BudgetCategory({loggedInUser}){
+    const {budgetId} = useParams()
+
 
     const[budgetcategories, setBudgetCategories] = useState([])
     const [activeModalItem, setActiveModalItem] = useState(null);
+    const [deleteItem, setdeleteItem] = useState(null);
     
 
     useEffect(()=>{
@@ -41,10 +44,13 @@ function BudgetCategory({budgetId, loggedInUser}){
             
         </Modal>
         <h1>Categories: </h1>
-        {budgetcategories.map(budgetCategory=> <div key={budgetCategory.budgetCategoryId}>
+        {console.log(budgetcategories[0])}
+        {budgetcategories[0] === "Budget has no categories"? <div>
+            <h2>No categories found</h2></div>: budgetcategories.map(budgetCategory=>  <div key={budgetCategory.budgetCategoryId}>
             <h2>{budgetCategory.category.name}:</h2>
             <h3>Dedicated amount from income: ${Number(budgetCategory.percentage).toFixed(2)}</h3>
             <button className="btn btn-primary m-1" onClick={() => setActiveModalItem(budgetCategory)}>Edit amount</button>
+            <button className="btn btn-danger" onClick={()=>setdeleteItem(budgetCategory)}>Delete</button>
         </div>)}
 
        {activeModalItem && 
@@ -54,6 +60,18 @@ function BudgetCategory({budgetId, loggedInUser}){
             </Modal.Header>
             <Modal.Body>
                 <BudgetCategoryForm loggedInUser={loggedInUser} activeModalItem={activeModalItem} setActiveModalItem={setActiveModalItem}/>
+            </Modal.Body>
+            
+        </Modal>}
+
+        {deleteItem && 
+        <Modal show={true}>
+            <Modal.Header closeButton>
+                <Modal.Title>Delete Budget Category: {deleteItem.budgetCategoryId}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <DeleteBCConfirm deleteItem={deleteItem} setdeleteItem={setdeleteItem} loggedInUser={loggedInUser}></DeleteBCConfirm>
+                
             </Modal.Body>
             
         </Modal>}

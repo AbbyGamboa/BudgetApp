@@ -34,6 +34,8 @@ insert into user (email, password) values
 	
 	select * from user;
 select * from budget;
+select * from categories;
+select * from budget_category;
 
 select * from transaction t inner join account a on t.accountId = a.accountId;
 
