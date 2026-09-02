@@ -345,4 +345,57 @@ class BudgetCategoryServiceTest {
         }
     }
 
+    @Nested
+    class delete{
+        @Test
+        void success(){
+            when(bcRepository.findById(1)).thenReturn(TestDataHelper.budgetCategory());
+            when(bcRepository.delete(1)).thenReturn(true);
+
+            Result<BudgetCategory> expected = new Result<>();
+            expected.setpayload(TestDataHelper.budgetCategory());
+
+            Result<BudgetCategory> actual = service.delete(1, 1);
+
+            assertEquals(expected, actual);
+
+        }
+
+        @Test
+        void failsWhenBCNotFound(){
+            when(bcRepository.findById(1)).thenReturn(null);
+
+            Result<BudgetCategory> expected = new Result<>();
+            expected.addErrorMessage("Cannot delete a budget category that does not exist", ResultType.NOT_FOUND);
+
+            Result<BudgetCategory> actual = service.delete(1, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenUserIsDifferent(){
+            when(bcRepository.findById(1)).thenReturn(TestDataHelper.budgetCategory());
+
+            Result<BudgetCategory> expected = new Result<>();
+            expected.addErrorMessage("Cannot delete a budget category that is not yours", ResultType.INVALID);
+
+            Result<BudgetCategory> actual = service.delete(1, 2);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenRepoFails(){
+            when(bcRepository.findById(1)).thenReturn(TestDataHelper.budgetCategory());
+            when(bcRepository.delete(1)).thenReturn(false);
+
+            Result<BudgetCategory> expected = new Result<>();
+            expected.addErrorMessage("Cannot delete", ResultType.INVALID);
+
+            Result<BudgetCategory> actual = service.delete(1, 1);
+
+            assertEquals(expected, actual);
+        }
+    }
 }

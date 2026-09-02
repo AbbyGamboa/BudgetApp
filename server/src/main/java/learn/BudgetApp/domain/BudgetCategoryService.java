@@ -154,6 +154,31 @@ public class BudgetCategoryService {
 
     }
 
+    public Result<BudgetCategory> delete(int budgetCategoryId, int userId){
+        Result<BudgetCategory> result = new Result<>();
+
+        BudgetCategory exists = repository.findById(budgetCategoryId);
+        if(exists ==null){
+            result.addErrorMessage("Cannot delete a budget category that does not exist", ResultType.NOT_FOUND);
+            return result;
+        }
+
+        if (exists.getBudget().getUser().getUserId() != userId){
+            result.addErrorMessage("Cannot delete a budget category that is not yours", ResultType.INVALID);
+        }
+
+        if(result.isSuccess()){
+            boolean delete = repository.delete(budgetCategoryId);
+            if(delete){
+                result.setpayload(exists);
+            } else{
+                result.addErrorMessage("Cannot delete", ResultType.INVALID);
+            }
+        }
+
+        return result;
+    }
+
     public void validateBC(Result<BudgetCategory> result, BudgetCategory budgetCategory){
         if (budgetCategory.getBudget() == null){
             result.addErrorMessage("Budget is required", ResultType.INVALID);
