@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,7 +31,7 @@ class BudgetJdbcClientRepositoryTest {
     class findByUser{
         @Test
         void success(){
-            List<Budget> expected = List.of(new Budget(1, TestDataHelper.existingUser(), BigDecimal.valueOf(4000)));
+            List<Budget> expected = List.of(new Budget(1, TestDataHelper.existingUser(), BigDecimal.valueOf(4000).setScale(2, RoundingMode.DOWN)));
             List<Budget> actual = repository.findByUser(1);
 
             assertEquals(expected, actual);
@@ -49,7 +50,7 @@ class BudgetJdbcClientRepositoryTest {
         @Test
         void success(){
            Budget actual = repository.findById(1);
-           Budget expected = new Budget(1, TestDataHelper.existingUser(), BigDecimal.valueOf(4000));
+           Budget expected = new Budget(1, TestDataHelper.existingUser(), BigDecimal.valueOf(4000).setScale(2, RoundingMode.DOWN));
 
            assertEquals(expected, actual);
         }

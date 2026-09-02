@@ -184,6 +184,7 @@ class AccountServiceTest {
         void success(){
             Account beforeUpdate = new Account(1, TestDataHelper.existingUser(), "Checkings");
             Account updated = new Account(1, TestDataHelper.existingUser(), "Savings");
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
             when(repository.findById(1)).thenReturn(beforeUpdate);
             when(repository.updateAccount(updated)).thenReturn(true);
 
@@ -202,6 +203,7 @@ class AccountServiceTest {
             user.setUserId(2);
             Account updated = new Account(1, user, "Savings");
 
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
             when(repository.findById(1)).thenReturn(original);
             when(repository.updateAccount(updated)).thenReturn(true);
 
@@ -219,6 +221,7 @@ class AccountServiceTest {
             Account original = new Account(1, user, "Checkings");
             Account updated = new Account(1, user, null);
 
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
             when(repository.findById(1)).thenReturn(original);
             when(repository.updateAccount(updated)).thenReturn(true);
 

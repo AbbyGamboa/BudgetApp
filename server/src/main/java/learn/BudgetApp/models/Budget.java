@@ -14,6 +14,8 @@ public class Budget {
         this.income = income;
     }
 
+    public Budget(){};
+
     public int getBudgetId() {
         return budgetId;
     }

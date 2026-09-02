@@ -1,8 +1,6 @@
 import { useState, useEffect} from "react";
-import { Link } from "react-router-dom";
-import Category from "./Category";
 
-function ViewCategoryByUser({loggedInUser}){
+function ViewCategoryByUser({loggedInUser, category}){
 
     const[categories, setCategories] = useState([])
             
@@ -17,14 +15,13 @@ function ViewCategoryByUser({loggedInUser}){
                 setCategories(payload.payload)
             }
             doFetch()
-        }, [])
+        }, [category])
 
     return(
-         <>
-        <h1>Categories: </h1>
-        {categories.map((category, i) => <Category key={i} category={category}></Category>)}
-        <Link to={"/add/category"} className="btn btn-primary">Add Category</Link>
+        <>
+        {categories.map((category) => <option key= {category.categoryId} value={category.categoryId}>{category.name}</option>)}
         </>
+         
     )
 }
 

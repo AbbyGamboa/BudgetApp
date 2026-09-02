@@ -32,7 +32,7 @@ create table budget_category(
 	budgetCategoryId int primary key auto_increment, 
 	budgetId int, 
 	categoryId int, 
-	percentage decimal, 
+	percentage decimal (10,2), 
 	constraint fk_budget_id
         foreign key (budgetId)
         references budget(budgetId)
@@ -40,7 +40,6 @@ create table budget_category(
     constraint fk_budget_category_id
     	foreign key (categoryId)
     	references categories(categoryId)
-    	on delete cascade
 );
 
 create table account(

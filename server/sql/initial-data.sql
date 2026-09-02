@@ -17,7 +17,6 @@ insert into user (email, password) values
 	insert into budget_category(budgetId, categoryId, percentage) values 
 	(1,1,15),
 	(1,2,30),
-	(2,1,30),
 	(2,3,10);
 	
 	insert into account( userId, subtype) values
@@ -35,11 +34,37 @@ insert into user (email, password) values
 	
 	select * from user;
 select * from budget;
+select * from categories;
+select * from budget_category;
 
 select * from transaction t inner join account a on t.accountId = a.accountId;
 
 select * from categories c left outer join user u on c.userId = u.userId
 where c.userId is null or c.userId = 1;
 
-select * from categories c 
-where categoryId = 1 or userId = 1;
+select * from categories c;
+
+select bc.budgetCategoryId, b.budgetId, c.categoryId, bc.percentage, b.income, c.name, c.userId, u.userId, u.email, u.password
+            from budget_category bc
+            inner join budget b on bc.budgetId = b.budgetId
+            inner join categories c on bc.categoryId = c.categoryId
+            inner join user u on b.userId = u.userId;
+
+select
+                bc.budgetCategoryId,
+                bc.percentage,
+                b.budgetId,
+                b.income,
+                c.name,
+                c.categoryId,
+                bu.userId AS budgetUserId,
+                bu.email AS budgetUserEmail,
+                bu.password AS budgetUserPassword,
+                cu.userId AS categoryUserId,
+                cu.email AS categoryUserEmail,
+                cu.password AS categoryUserPassword
+            from budget_category bc
+                inner  join budget b on bc.budgetId = b.budgetId
+                inner join user bu on b.userId = bu.userId
+                inner join categories c on bc.categoryId = c.categoryId
+                left join user cu on c.userId = cu.userId;

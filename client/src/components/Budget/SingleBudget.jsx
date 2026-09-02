@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import BudgetCategory from "../BudgetCategory/BudgetCategory";
 
 function SingleBudget({loggedInUser}){
     const {budgetId} = useParams()
@@ -35,6 +36,7 @@ function SingleBudget({loggedInUser}){
             <>
                 <p>Budget ID: {budget.budgetId}</p>
                 <p>Total income: {budget.income}</p>
+                <BudgetCategory loggedInUser={loggedInUser}></BudgetCategory>
                 <Link className="btn btn-warning" to="/view/budgets">View all Budgets</Link>
             </>
         )}
