@@ -73,4 +73,15 @@ public class BudgetCategoryController {
         }
         return new ResponseEntity<>(result.getpayload(), HttpStatus.OK);
     }
+
+    @DeleteMapping("/{budgetCategoryId}")
+    public ResponseEntity<?> delete(@PathVariable int budgetCategoryId, Authentication authentication){
+        int userId = Integer.parseInt(authentication.getName());
+
+        Result<BudgetCategory> result = service.delete(budgetCategoryId, userId);
+        if(!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+        return new ResponseEntity<>(result.getpayload(), HttpStatus.OK);
+    }
 }
