@@ -90,6 +90,10 @@ public class BudgetCategoryJdbcClientRepository implements BudgetCategoryReposit
 
     @Override
     public boolean delete(int budgetCategoryId) {
-        return false;
+        String sql = """
+                delete from budget_category
+                where budgetCategoryId = ?;
+                """;
+        return jdbcClient.sql(sql).param(budgetCategoryId).update() > 0;
     }
 }
