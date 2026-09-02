@@ -16,7 +16,6 @@ function NavBar({loggedInUser}){
               <Link className='btn btn-primary m-1' to="/user/login">Login</Link>
             </>}
             {loggedInUser &&  <>
-            <Nav.Link href="/view/categories">Categories</Nav.Link>
             <Nav.Link href="/view/budgets">Budgets</Nav.Link>
             <Nav.Link href="/view/accounts">Accounts</Nav.Link>
             <Link className='btn btn-primary m-1' to="/user/signout">Logout</Link>

@@ -1,6 +1,4 @@
 import { useState, useEffect} from "react";
-import { Link } from "react-router-dom";
-import Category from "./Category";
 
 function ViewCategoryByUser({loggedInUser, category}){
 

@@ -16,7 +16,6 @@ import BudgetForm from "./components/Budget/BudgetForm";
 import SingleTransaction from "./components/Transaction/SingleTransaction"
 import TransactionForm from "./components/Transaction/TransactionForm"
 import ViewCategoryByUser from "./components/Category/ViewCategoryByUser";
-import CategoryForm from "./components/Category/CategoryForm";
 import ConfirmDelete from "./components/Category/ConfirmDelete";
 
 function AppRouter(){
@@ -86,23 +85,7 @@ function AppRouter(){
                 {
                     path:"/view/:transactionId",
                     element: loggedInUser? <SingleTransaction loggedInUser={loggedInUser}></SingleTransaction>:<Navigate to="/"></Navigate>,
-                }, 
-                {
-                    path:"/view/categories",
-                    element: loggedInUser? 
-                    <>
-                        <ViewCategoryByUser loggedInUser={loggedInUser}></ViewCategoryByUser>
-                        <Link className="btn btn-primary m-1" to="/add/category">Add category</Link>
-                    </>:<Navigate to="/"></Navigate>,
                 },
-                {
-                    path:"/add/category", 
-                    element: loggedInUser? <CategoryForm loggedInUser={loggedInUser}></CategoryForm>:<Navigate to="/"></Navigate>,
-                }, 
-                {
-                    path:"/delete/:categoryId", 
-                    element: loggedInUser? <ConfirmDelete loggedInUser={loggedInUser}></ConfirmDelete>:<Navigate to="/"></Navigate>,
-                }
                 
             ],
         },
