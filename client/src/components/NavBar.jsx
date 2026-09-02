@@ -9,16 +9,16 @@ function NavBar({loggedInUser}){
         <Container>
           <Navbar.Brand href="#home">Navbar</Navbar.Brand>
           <Nav className="ms-0">
-            <Nav.Link href="">Loans</Nav.Link>
-            <Nav.Link href="">Student Discounts</Nav.Link>
-            <Nav.Link href="">Savings</Nav.Link>
+            <Nav.Link href="">Articles</Nav.Link>
+            
             {!loggedInUser && <>
               <Link className='btn btn-primary m-1' to="/user/signup">Sign up</Link>
               <Link className='btn btn-primary m-1' to="/user/login">Login</Link>
             </>}
             {loggedInUser &&  <>
+            <Nav.Link href="/view/budgets">Budgets</Nav.Link>
+            <Nav.Link href="/view/accounts">Accounts</Nav.Link>
             <Link className='btn btn-primary m-1' to="/user/signout">Logout</Link>
-            <Link className='btn btn-primary m-1' to="/user/connect/bank">Connect Bank</Link>
             </>
             }
             

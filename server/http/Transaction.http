@@ -1,0 +1,32 @@
+@base_url = http://localhost:8080/api/transaction
+
+GET {{base_url}}/1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg3OTQ3ODE1LCJleHAiOjE3ODc5NTE0MTV9.Nlve7RZVvkYwUJICXpzs08D7IsrojutIaGXZ0kHCuxtqTdYIdQWCnCsS2tFi4m1E
+###
+GET {{base_url}}/account/1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg3OTQ3ODE1LCJleHAiOjE3ODc5NTE0MTV9.Nlve7RZVvkYwUJICXpzs08D7IsrojutIaGXZ0kHCuxtqTdYIdQWCnCsS2tFi4m1E
+###
+GET {{base_url}}/date/1?start=2025-01-01&end=2026-08-01 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg3OTI3MDc0LCJleHAiOjE3ODc5MzA2NzR9.LSChE-BPJS6LqsXN-grIcFYVgcoaEI6jV7BlY_e9z4gmxTlHmZ-0qU-CGWyw2ubj
+
+
+###
+POST {{base_url}}/1 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg3OTM0NTc0LCJleHAiOjE3ODc5MzgxNzR9.OdxcAFB8EEUOVVgXpq95RIZGccAnIto2vekpSqfuzn9MjmzWIvNjETwE8iz9voDU
+
+{
+  "amount": 10.90,
+  "date": "2026-08-28"
+}
+
+###
+PUT {{base_url}}/1/edit/1 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg3OTQ2MzExLCJleHAiOjE3ODc5NDk5MTF9.ZNLD7KN3sfi-bqFgq4JmFqO4IpzLUXk9am3iUWs_Xgz_zFd3NcQCo09M1sJx7_FQ
+
+{
+  "transactionId": 1,
+  "amount": 10.90,
+  "date": "2026-08-28"
+}

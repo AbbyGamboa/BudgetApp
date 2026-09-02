@@ -1,39 +1,40 @@
 package learn.BudgetApp.models;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Transaction {
-    public int plaidTransactionId;
-    public Account plaidAccount;
+    public int transactionId;
+    public Account account;
     public BigDecimal amount;
-    public String merchantName;
+    public LocalDate date;
+    public String merchant_name;
     public String description;
-    public boolean pending;
 
-    public Transaction(int plaidTransactionId, Account plaidAccount, BigDecimal amount, String merchantName, String description, boolean pending) {
-        this.plaidTransactionId = plaidTransactionId;
-        this.plaidAccount = plaidAccount;
+    public Transaction(int transactionId, Account account, BigDecimal amount, LocalDate date, String merchant_name, String description) {
+        this.transactionId = transactionId;
+        this.account = account;
         this.amount = amount;
-        this.merchantName = merchantName;
+        this.date = date;
+        this.merchant_name = merchant_name;
         this.description = description;
-        this.pending = pending;
     }
 
-    public int getPlaidTransactionId() {
-        return plaidTransactionId;
+    public int getTransactionId() {
+        return transactionId;
     }
 
-    public void setPlaidTransactionId(int plaidTransactionId) {
-        this.plaidTransactionId = plaidTransactionId;
+    public void setTransactionId(int transactionId) {
+        this.transactionId = transactionId;
     }
 
-    public Account getPlaidAccount() {
-        return plaidAccount;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setPlaidAccount(Account plaidAccount) {
-        this.plaidAccount = plaidAccount;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     public BigDecimal getAmount() {
@@ -44,12 +45,20 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public String getMerchantName() {
-        return merchantName;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setMerchantName(String merchantName) {
-        this.merchantName = merchantName;
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public String getMerchant_name() {
+        return merchant_name;
+    }
+
+    public void setMerchant_name(String merchant_name) {
+        this.merchant_name = merchant_name;
     }
 
     public String getDescription() {
@@ -60,23 +69,15 @@ public class Transaction {
         this.description = description;
     }
 
-    public boolean isPending() {
-        return pending;
-    }
-
-    public void setPending(boolean pending) {
-        this.pending = pending;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Transaction that = (Transaction) o;
-        return plaidTransactionId == that.plaidTransactionId && pending == that.pending && Objects.equals(plaidAccount, that.plaidAccount) && Objects.equals(amount, that.amount) && Objects.equals(merchantName, that.merchantName) && Objects.equals(description, that.description);
+        return transactionId == that.transactionId && Objects.equals(account, that.account) && Objects.equals(amount, that.amount) && Objects.equals(date, that.date) && Objects.equals(merchant_name, that.merchant_name) && Objects.equals(description, that.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(plaidTransactionId, plaidAccount, amount, merchantName, description, pending);
+        return Objects.hash(transactionId, account, amount, date, merchant_name, description);
     }
 }

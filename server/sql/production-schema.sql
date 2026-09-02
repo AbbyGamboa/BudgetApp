@@ -11,10 +11,11 @@ create table user(
 create table budget(
 	budgetId int primary key auto_increment, 
 	userId int, 
-	income decimal,
-	 constraint fk_user_id
+	income decimal(10, 2),
+	 constraint fk_budget_user_id
         foreign key (userId)
         references user(userId)
+        on delete cascade
 );
 
 create table categories(
@@ -24,63 +25,57 @@ create table categories(
 	constraint fk_user_cat_id
 		foreign key (userId)
 		references user(userId)
+		on delete cascade
 );
 
 create table budget_category(
 	budgetCategoryId int primary key auto_increment, 
 	budgetId int, 
 	categoryId int, 
-	percentage decimal, 
+	percentage decimal (10,2), 
 	constraint fk_budget_id
         foreign key (budgetId)
-        references budget(budgetId), 
+        references budget(budgetId)
+        on delete cascade, 
     constraint fk_budget_category_id
     	foreign key (categoryId)
     	references categories(categoryId)
 );
 
-create table plaid_items(
-	plaidItemId varchar(50) primary key, 
-	userId int, 
-	accessToken text, 
-	institutionName text,
-	constraint fk_user_item_id
+create table account(
+	accountId int primary key auto_increment,
+	userId int,
+    subtype varchar(50),
+	constraint fk_user_account_id
 		foreign key (userId)
 		references user(userId)
-);
-
-create table account(
-	plaidAccountId varchar(50) primary key, 
-	plaidItemId varchar(50), 
-	name text, 
-	subtype text,
-	constraint fk_plaid_item_id
-		foreign key (plaidItemId)
-		references plaid_items(plaidItemId)
+		on delete cascade
 );
 
 create table transaction(
-	plaidTransactionId varchar(50) primary key, 
-	plaidAccountId varchar(50), 
-	amount decimal, 
+	transactionId int primary key auto_increment,
+	accountId int,
+	amount decimal(10,2), 
 	date date, 
-	merchantName text, 
-	description text, 
-	pending boolean, 
-	constraint fk_plaid_account_id
-		foreign key (plaidAccountId)
-		references account(plaidAccountId)
+	merchantName text NULL,
+	description text NULL,
+	constraint fk_account_id
+		foreign key (accountId)
+		references account(accountId)
+		on delete cascade
 );
 
 create table transaction_categories(
-	plaidTransactionId varchar(50), 
+	transactionId int,
 	categoryId int,
-	primary key (plaidTransactionId, categoryId),
-	constraint fk_plaid_transaction_id
-		foreign key (plaidTransactionId)
-		references transaction(plaidTransactionId),
+	primary key (transactionId, categoryId),
+	constraint fk_cat_transaction_id
+		foreign key (transactionId)
+		references transaction(transactionId)
+		on delete cascade,
 	constraint fk_trans_category_id
 		foreign key (categoryId)
 		references categories(categoryId)
+		on delete cascade
 );
 

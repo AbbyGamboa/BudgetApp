@@ -11,10 +11,11 @@ create table user(
 create table budget(
 	budgetId int primary key auto_increment, 
 	userId int, 
-	income decimal,
-	 constraint fk_user_id
+	income decimal(10, 2),
+	 constraint fk_budget_user_id
         foreign key (userId)
         references user(userId)
+        on delete cascade
 );
 
 create table categories(
@@ -24,6 +25,7 @@ create table categories(
 	constraint fk_user_cat_id
 		foreign key (userId)
 		references user(userId)
+		on delete cascade
 );
 
 create table budget_category(
@@ -33,68 +35,66 @@ create table budget_category(
 	percentage decimal, 
 	constraint fk_budget_id
         foreign key (budgetId)
-        references budget(budgetId), 
+        references budget(budgetId)
+        on delete cascade, 
     constraint fk_budget_category_id
     	foreign key (categoryId)
     	references categories(categoryId)
-);
-
-create table plaid_items(
-	plaidItemId varchar(50) primary key, 
-	userId int, 
-	accessToken text, 
-	institutionName text,
-	constraint fk_user_item_id
-		foreign key (userId)
-		references user(userId)
+    	on delete cascade
 );
 
 create table account(
-	plaidAccountId varchar(50) primary key, 
-	plaidItemId varchar(50), 
-	name text, 
-	subtype text,
-	constraint fk_plaid_item_id
-		foreign key (plaidItemId)
-		references plaid_items(plaidItemId)
+	accountId int primary key auto_increment,
+	userId int,
+    subtype varchar(50),
+	constraint fk_user_account_id
+		foreign key (userId)
+		references user(userId)
+		on delete cascade
 );
 
 create table transaction(
-	plaidTransactionId varchar(50) primary key, 
-	plaidAccountId varchar(50), 
-	amount decimal, 
+	transactionId int primary key auto_increment,
+	accountId int,
+	amount decimal(10,2), 
 	date date, 
-	merchantName text, 
-	description text, 
-	pending boolean, 
-	constraint fk_plaid_account_id
-		foreign key (plaidAccountId)
-		references account(plaidAccountId)
+	merchantName text NULL,
+	description text NULL,
+	constraint fk_account_id
+		foreign key (accountId)
+		references account(accountId)
+		on delete cascade
 );
 
 create table transaction_categories(
-	plaidTransactionId varchar(50), 
+	transactionId int,
 	categoryId int,
-	primary key (plaidTransactionId, categoryId),
-	constraint fk_plaid_transaction_id
-		foreign key (plaidTransactionId)
-		references transaction(plaidTransactionId),
+	primary key (transactionId, categoryId),
+	constraint fk_cat_transaction_id
+		foreign key (transactionId)
+		references transaction(transactionId)
+		on delete cascade,
 	constraint fk_trans_category_id
 		foreign key (categoryId)
 		references categories(categoryId)
+		on delete cascade
 );
+
+
 
 delimiter //
 create procedure set_known_good_state()
 begin
 	delete from transaction_categories;
+	alter table transaction_categories auto_increment = 1;
+	delete from transaction;
+	alter table transaction auto_increment = 1;
+	delete from account;
+	alter table account auto_increment = 1;
 	delete from budget_category;
 	alter table budget_category auto_increment = 1;
 	delete from budget;
 	alter table budget auto_increment = 1;
-	delete from transaction;
-	delete from account;
-	delete from plaid_items;
 	delete from categories;
 	alter table categories auto_increment = 1;
 	delete from user;
@@ -108,21 +108,7 @@ begin
 		values
 		("Tuition", null),
 		("Groceries", 1),
-		("Gym", 2)
-		;
-	
-	insert into plaid_items(plaidItemId, userId, accessToken, institutionName) values
-	("123", 1, "abc123", "US Bank"),
-	("987", 2, "xyz987", "Chase");
-	
-	insert into account(plaidAccountId, plaidItemId, name, subtype) values
-	("123", "123", "usbank account", "Checkings"),
-	("987", "987", "Chase account", "Savings");
-	
-	insert into transaction(plaidTransactionId, plaidAccountId, amount, date, merchantName, description, pending) values
-	("123", "123", 100.00, '2026-06-08', "Target", "Online buy", false),
-	("124", "123", 10.00, '2026-06-09', "Speedway", "Gas", false),
-	("125", "987", 300.50, '2026-08-23', "Ikea", "Home Improvement", true);
+		("Gym", 2);
 	
 	insert into budget(userId, income) values
 	(1, 4000), 
@@ -131,11 +117,20 @@ begin
 	insert into budget_category(budgetId, categoryId, percentage) values 
 	(1,1,15),
 	(1,2,30),
-	(2,1,30),
 	(2,3,10);
 	
-	insert into transaction_categories(plaidTransactionId, categoryId) values
-	("123",2),("124",1), ("125",3);
+	insert into account( userId, subtype) values
+	(1, "Checkings"),
+	(2, "Savings");
+	
+	insert into transaction(accountId, amount, date, merchantName, description) values
+	(1, 100.00, '2026-06-08', "Target", "Online buy"),
+	(1, 10.00, '2026-06-09', "Speedway", "Gas"),
+	(2, 300.50, '2026-08-23', "Ikea", null);
+	
+	
+	insert into transaction_categories(transactionId, categoryId) values
+	(1,2),(2,1), (3,3);
 	
 
 end //
