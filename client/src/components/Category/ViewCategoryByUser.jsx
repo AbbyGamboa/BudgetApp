@@ -2,7 +2,7 @@ import { useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 import Category from "./Category";
 
-function ViewCategoryByUser({loggedInUser}){
+function ViewCategoryByUser({loggedInUser, category}){
 
     const[categories, setCategories] = useState([])
             
@@ -17,7 +17,7 @@ function ViewCategoryByUser({loggedInUser}){
                 setCategories(payload.payload)
             }
             doFetch()
-        }, [])
+        }, [category])
 
     return(
         <>

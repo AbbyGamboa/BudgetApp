@@ -40,7 +40,6 @@ function BudgetCategoryForm({loggedInUser,activeModalItem, setActiveModalItem, h
                 }
     
                 const payload = await response.json();
-                console.log(payload)
     
                 setBudgetCategories(payload)
                 setCategoryId(payload.category.categoryId);
@@ -52,11 +51,10 @@ function BudgetCategoryForm({loggedInUser,activeModalItem, setActiveModalItem, h
     function handleChange(event){
         let value = event.target.value;
         setBudgetCategories({...budgetCategory, [event.target.name]:value})
+        
     }
 
-    async function handleSubmit(event) {
-        event.preventDefault()
-        // could handle frontend validation here
+    async function handleSubmitBC(event) {
         let url = "http://localhost:8080/api/budgetcategory"
         let method = "POST"
         if (budgetCategoryId !== undefined) {
@@ -87,31 +85,72 @@ function BudgetCategoryForm({loggedInUser,activeModalItem, setActiveModalItem, h
         }
     }
 
-    const[show, setShow] = useState(false);
 
+    const[show, setShow] = useState(false);
+    const initialCategory = {
+        "name": ""
+    }
+    const[category, setCategory] = useState(initialCategory);
+
+    function handleCategoryChange(event){
+        let value = event.target.value;
+        setCategory({...category, [event.target.name]:value})
+        console.log(category)
+    }
+    async function handleSubmitCategory(event){
+        event.preventDefault()
+
+        const response = await fetch("http://localhost:8080/api/categories", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${loggedInUser.token}`
+            },
+            body: JSON.stringify(category)
+        })
+        console.log(response);
+
+        if (response.status >= 200 && response.status < 300) {
+            setCategoryRefresh(prev=> prev +1);
+        } else {
+            const payload = await response.json()
+            setErrors(payload)
+            
+        }
+    }
+
+    const[showCustom, setShowCreate] = useState(true)
+    const [categoryRefresh, setCategoryRefresh] = useState(0);
 
     return(
         <>
-        <form onSubmit={handleSubmit}>
-            <label htmlFor="percentage">Percentage:</label>
+       <form onSubmit={handleSubmitCategory}>
+            <label htmlFor="showCustom">Create Custom Category</label>
+                <input type="checkbox" name="showCustom" id="showCustom" onChange={()=>setShowCreate(!showCustom)}/>
+            <div>
+        
+            <label htmlFor="name" hidden={showCustom}>Name: </label>
+
+            <input type="text" name="name" id="name" onChange={handleCategoryChange} hidden={showCustom}/>
+            <button type="submit" className="btn btn-primary m-1" hidden={showCustom}>Add</button>
+            </div>
+           
+
+        </form>
+       
+        <form onSubmit={handleSubmitBC} >
+
+            <div className="d-flex flex-column align-content-center">
+                <label htmlFor="percentage">Percentage:</label>
             <input type="text" name="percentage" id="percentage" onChange={handleChange} value={budgetCategory.percentage}/>
             
-            <div className="d-flex">
-                <p>Category: </p>
-                <select name="categoryId" id="categoryId" value={categoryId} onChange={(event)=> setCategoryId(event.target.value)} disabled={budgetCategoryId !== undefined}>
-                    <ViewCategoryByUser loggedInUser={loggedInUser}></ViewCategoryByUser>
-                </select>
-                <Link className="btn btn-primary m-1" hidden={budgetCategoryId !== undefined} onClick={()=>setShow(!show)}>+</Link>
-                
+            <label htmlFor="categoryId">Category:</label>
+            <select name="categoryId"  id="categoryId" value={categoryId} onChange={(event)=> {setCategoryId(event.target.value)}} disabled={budgetCategoryId !== undefined}>
+                    <ViewCategoryByUser loggedInUser={loggedInUser} category={categoryRefresh}></ViewCategoryByUser>
+            </select>
             </div>
-             {show && 
-                    <>
-                        <label htmlFor="name">Category Name: </label>
-                        <input type="text" name="name" id="name"/>
-                    </>
-                }
             
-            <button type="submit" className="btn btn-primary m-1">{budgetCategoryId? "Update": "Add"}</button>
+            <button type="submit" className="btn btn-primary m-1" >{budgetCategoryId? "Update": "Add"} </button>
             <button type="button" className="btn btn-secondary" onClick={()=> budgetCategoryId !== undefined? setActiveModalItem(null): handleCreateClose()}>Close </button>
         </form>
         
