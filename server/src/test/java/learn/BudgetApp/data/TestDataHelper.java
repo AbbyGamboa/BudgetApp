@@ -33,6 +33,10 @@ public class TestDataHelper {
         return new Transaction(1, existingAccount(), BigDecimal.valueOf(100).setScale(2, RoundingMode.DOWN), LocalDate.of(2026, 6, 8), "Target", "Online buy");
     }
 
+    public static Transaction secondTransaction(){
+        return new Transaction(2, existingAccount(), BigDecimal.valueOf(10).setScale(2, RoundingMode.DOWN), LocalDate.of(2026, 6, 9), "Speedway", "Gas");
+    }
+
     public static Account secondAccount(){
         return  new Account(2, secondUser(), "Savings");
     }
@@ -88,5 +92,17 @@ public class TestDataHelper {
 
     public static BudgetCategory createdBC(){
         return new BudgetCategory(5, budgetTwo(), firstCategory(), BigDecimal.valueOf(100));
+    }
+
+    public static TransactionCategory firstTC(){
+        return new TransactionCategory(firstTransaction(), secondBC());
+    }
+
+    public static TransactionCategory secondTC(){
+        return new TransactionCategory(secondTransaction(), budgetCategory());
+    }
+
+    public static List<TransactionCategory> tcOfBudgetOne(){
+        return List.of(firstTC(), secondTC());
     }
 }

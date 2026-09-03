@@ -4,23 +4,23 @@ import java.util.Objects;
 
 public class TransactionCategory {
     public Transaction transaction;
-    public Category category;
+    public BudgetCategory budgetCategory;
 
-    public TransactionCategory(Transaction transaction, Category category) {
+    public TransactionCategory(Transaction transaction, BudgetCategory budgetCategory) {
         this.transaction = transaction;
-        this.category = category;
+        this.budgetCategory = budgetCategory;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         TransactionCategory that = (TransactionCategory) o;
-        return Objects.equals(transaction, that.transaction) && Objects.equals(category, that.category);
+        return Objects.equals(transaction, that.transaction) && Objects.equals(budgetCategory, that.budgetCategory);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(transaction, category);
+        return Objects.hash(transaction, budgetCategory);
     }
 
     public Transaction getTransaction() {
@@ -31,11 +31,11 @@ public class TransactionCategory {
         this.transaction = transaction;
     }
 
-    public Category getCategory() {
-        return category;
+    public BudgetCategory getCategory() {
+        return budgetCategory;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategory(BudgetCategory budgetCategory) {
+        this.budgetCategory = budgetCategory;
     }
 }
