@@ -25,6 +25,9 @@ class TransactionCategoryServiceTest {
     @MockBean
     private BudgetRepository budgetRepository;
 
+    @MockBean
+    private TransactionRepository transactionRepository;
+
     @Nested
     class findByBudget{
         @Test
@@ -73,6 +76,55 @@ class TransactionCategoryServiceTest {
             expected.addErrorMessage("Budget has no transaction categories", ResultType.NOT_FOUND);
 
             Result<List<TransactionCategory>> actual = service.findByBudget(1, 1);
+
+            assertEquals(expected, actual);
+        }
+    }
+
+    @Nested
+    class findByTransaction{
+        @Test
+        void success(){
+            when(transactionRepository.findById(1)).thenReturn(TestDataHelper.firstTransaction());
+            when(tcRepository.findByTransactionId(1)).thenReturn(TestDataHelper.firstTC());
+
+            Result<TransactionCategory> expected = new Result<>();
+            expected.setpayload(TestDataHelper.firstTC());
+            Result<TransactionCategory> actual = service.findByTransaction(1,1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenTransactionNotFound(){
+            when(transactionRepository.findById(1)).thenReturn(null);
+
+            Result<TransactionCategory> expected = new Result<>();
+            expected.addErrorMessage("Transaction not found", ResultType.NOT_FOUND);
+            Result<TransactionCategory> actual = service.findByTransaction(1,1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenUserDiffers(){
+            when(transactionRepository.findById(1)).thenReturn(TestDataHelper.firstTransaction());
+
+            Result<TransactionCategory> expected = new Result<>();
+            expected.addErrorMessage("Cannot access other user's transactions", ResultType.NOT_FOUND);
+            Result<TransactionCategory> actual = service.findByTransaction(1,2);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenRepoFails(){
+            when(transactionRepository.findById(1)).thenReturn(TestDataHelper.firstTransaction());
+            when(tcRepository.findByTransactionId(1)).thenReturn(null);
+
+            Result<TransactionCategory> expected = new Result<>();
+            expected.addErrorMessage("Cannot find by transaction", ResultType.NOT_FOUND);
+            Result<TransactionCategory> actual = service.findByTransaction(1,1);
 
             assertEquals(expected, actual);
         }
