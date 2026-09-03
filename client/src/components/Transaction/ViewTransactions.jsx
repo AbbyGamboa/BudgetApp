@@ -4,6 +4,7 @@ import Transaction from "./Transaction";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import TransactionForm from "./TransactionForm";
+import TransactionCategory from "../TransactionCategory/TransactionCategory";
 
 
 function ViewTransactions({loggedInUser}){
@@ -51,6 +52,8 @@ function ViewTransactions({loggedInUser}){
         {transactions.map(transaction => 
         <div key ={transaction.transactionId} className="flex p-5">
         <Transaction transaction={transaction}/>
+        <TransactionCategory loggedInUser = {loggedInUser} transactionId={transaction.transactionId}></TransactionCategory>
+
         <Link className="btn btn-primary m-1" to={`/view/${transaction.transactionId}`}>View</Link>
         <button onClick={() => setActiveModalItem(transaction)} className="btn btn-primary m-1" >Edit</button>
         

@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState} from "react";
 import Transaction from "./Transaction";
 import { Link } from "react-router-dom";
+import TransactionCategory from "../TransactionCategory/TransactionCategory";
 
 function ViewByDate({loggedInUser}){
 
@@ -50,6 +51,7 @@ function ViewByDate({loggedInUser}){
         </form>
         {transactions.map(transaction => <div key ={transaction.transactionId} className="flex p-5">
         <Transaction transaction={transaction}/>
+        <TransactionCategory loggedInUser={loggedInUser} transactionId={transaction.transactionId}></TransactionCategory>
         <Link className="btn btn-primary" to={`/view/${transaction.transactionId}`}>View</Link>
         </div>)}
         {errors.length > 0 ?
