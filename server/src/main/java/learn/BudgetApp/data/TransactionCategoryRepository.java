@@ -9,9 +9,7 @@ public interface TransactionCategoryRepository {
 
     List<TransactionCategory> findByBudget(int budgetId);
 
-    List<TransactionCategory> findByCategory(int categoryId);
-
-    List<TransactionCategory> findByDate(LocalDate start, LocalDate end);
+    List<TransactionCategory> findByDate(String categoryName, LocalDate start, LocalDate end);
 
     TransactionCategory findByTransactionId(int transactionId);
 

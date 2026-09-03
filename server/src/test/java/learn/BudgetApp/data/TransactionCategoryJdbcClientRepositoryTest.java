@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -59,6 +60,25 @@ class TransactionCategoryJdbcClientRepositoryTest {
             TransactionCategory actual = repository.findByTransactionId(99);
 
             assertNull(actual);
+        }
+    }
+
+    @Nested
+    class findByDate{
+        @Test
+        void success(){
+            List<TransactionCategory> expected = List.of(TestDataHelper.secondTC());
+            List<TransactionCategory> actual = repository.findByDate("Tuition", LocalDate.of(2025, 1, 1), LocalDate.now());
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenNameUnknown(){
+            List<TransactionCategory> expected = List.of();
+            List<TransactionCategory> actual = repository.findByDate("IKD", LocalDate.of(2025, 1, 1), LocalDate.now());
+
+            assertEquals(expected, actual);
         }
     }
 
