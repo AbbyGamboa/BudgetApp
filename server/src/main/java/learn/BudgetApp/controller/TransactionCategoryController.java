@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -40,6 +41,18 @@ public class TransactionCategoryController {
 
         Result<TransactionCategory> result = service.findByTransaction(transactionId, userId);
 
+        if (!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+
+        return new ResponseEntity<>(result.getpayload(), HttpStatus.OK);
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<?> findByCategoryAndDate(@PathVariable int categoryId, @RequestParam LocalDate start, @RequestParam LocalDate end, Authentication authentication){
+        int userId = Integer.parseInt(authentication.getName());
+
+        Result<List<TransactionCategory>> result = service.findByNameAndDate(categoryId, start, end, userId);
         if (!result.isSuccess()){
             return ErrorResponse.build(result);
         }
