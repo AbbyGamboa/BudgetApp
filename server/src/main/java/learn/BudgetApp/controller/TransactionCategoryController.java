@@ -34,4 +34,17 @@ public class TransactionCategoryController {
         return new ResponseEntity<>(result.getpayload(), HttpStatus.OK);
     }
 
+    @GetMapping("get/{transactionId}")
+    public ResponseEntity<?> findByTransaction(@PathVariable int transactionId, Authentication authentication){
+        int userId = Integer.parseInt(authentication.getName());
+
+        Result<TransactionCategory> result = service.findByTransaction(transactionId, userId);
+
+        if (!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+
+        return new ResponseEntity<>(result.getpayload(), HttpStatus.OK);
+    }
+
 }

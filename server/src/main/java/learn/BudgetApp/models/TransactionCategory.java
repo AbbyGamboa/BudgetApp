@@ -31,11 +31,11 @@ public class TransactionCategory {
         this.transaction = transaction;
     }
 
-    public BudgetCategory getCategory() {
+    public BudgetCategory getBudgetCategory() {
         return budgetCategory;
     }
 
-    public void setCategory(BudgetCategory budgetCategory) {
+    public void setBudgetCategory(BudgetCategory budgetCategory) {
         this.budgetCategory = budgetCategory;
     }
 }
