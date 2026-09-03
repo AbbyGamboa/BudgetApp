@@ -13,6 +13,8 @@ public interface TransactionCategoryRepository {
 
     List<TransactionCategory> findByDate(LocalDate start, LocalDate end);
 
+    TransactionCategory findByTransactionId(int transactionId);
+
     TransactionCategory create(TransactionCategory transactionCategory);
 
     boolean update(TransactionCategory transactionCategory);

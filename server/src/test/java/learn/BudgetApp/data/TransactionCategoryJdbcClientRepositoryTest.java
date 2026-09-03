@@ -44,4 +44,22 @@ class TransactionCategoryJdbcClientRepositoryTest {
         }
     }
 
+    @Nested
+    class findByTransactionId{
+        @Test
+        void success(){
+            TransactionCategory expected = TestDataHelper.firstTC();
+            TransactionCategory actual = repository.findByTransactionId(1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenTransactionIdNotFound(){
+            TransactionCategory actual = repository.findByTransactionId(99);
+
+            assertNull(actual);
+        }
+    }
+
 }

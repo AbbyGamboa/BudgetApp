@@ -48,6 +48,12 @@ public class TransactionCategoryJdbcClientRepository implements TransactionCateg
     }
 
     @Override
+    public TransactionCategory findByTransactionId(int transactionId) {
+        String sql = BASE_SELECT + " where t.transactionId = ?;";
+        return jdbcClient.sql(sql).param(transactionId).query(new TransactionCategoryMapper()).optional().orElse(null);
+    }
+
+    @Override
     public TransactionCategory create(TransactionCategory transactionCategory) {
         return null;
     }
