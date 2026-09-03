@@ -38,9 +38,9 @@ public class TransactionCategoryJdbcClientRepository implements TransactionCateg
     }
 
     @Override
-    public List<TransactionCategory> findByDate(String categoryName, LocalDate start, LocalDate end) {
-        String sql = BASE_SELECT + " where c.name = :categoryName and t.date >= :start and t.date <= :end;";
-        return jdbcClient.sql(sql).param("categoryName", categoryName).param("start", start).param("end", end)
+    public List<TransactionCategory> findByDate(int categoryId, LocalDate start, LocalDate end) {
+        String sql = BASE_SELECT + " where c.categoryId = :categoryId and t.date >= :start and t.date <= :end;";
+        return jdbcClient.sql(sql).param("categoryId", categoryId).param("start", start).param("end", end)
                 .query(new TransactionCategoryMapper()).list();
     }
 

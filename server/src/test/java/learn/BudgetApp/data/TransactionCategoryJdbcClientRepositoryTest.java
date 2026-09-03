@@ -68,7 +68,7 @@ class TransactionCategoryJdbcClientRepositoryTest {
         @Test
         void success(){
             List<TransactionCategory> expected = List.of(TestDataHelper.secondTC());
-            List<TransactionCategory> actual = repository.findByDate("Tuition", LocalDate.of(2025, 1, 1), LocalDate.now());
+            List<TransactionCategory> actual = repository.findByDate(1, LocalDate.of(2025, 1, 1), LocalDate.now());
 
             assertEquals(expected, actual);
         }
@@ -76,7 +76,7 @@ class TransactionCategoryJdbcClientRepositoryTest {
         @Test
         void failsWhenNameUnknown(){
             List<TransactionCategory> expected = List.of();
-            List<TransactionCategory> actual = repository.findByDate("IKD", LocalDate.of(2025, 1, 1), LocalDate.now());
+            List<TransactionCategory> actual = repository.findByDate(99, LocalDate.of(2025, 1, 1), LocalDate.now());
 
             assertEquals(expected, actual);
         }
