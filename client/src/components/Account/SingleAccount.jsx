@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useParams,useNavigate} from "react-router-dom"
 import ViewByDate from "../Transaction/ViewByDate";
 import ViewTransactions from "../Transaction/ViewTransactions";
+import ViewByCatAndDate from "../TransactionCategory/ViewByCatAndDate";
 
 function SingleAccount({loggedInUser}){
     const {accountId} = useParams();
@@ -36,6 +37,7 @@ function SingleAccount({loggedInUser}){
                 <p>Type: {account.subtype}</p>
                 <ViewTransactions loggedInUser={loggedInUser}></ViewTransactions>
                  <ViewByDate loggedInUser={loggedInUser}></ViewByDate>
+                <ViewByCatAndDate loggedInUser={loggedInUser}></ViewByCatAndDate>
                 
             </>
         )}
