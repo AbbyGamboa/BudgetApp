@@ -33,7 +33,14 @@ class TransactionCategoryJdbcClientRepositoryTest {
             List<TransactionCategory> expected = TestDataHelper.tcOfBudgetOne();
 
             assertEquals(expected, actual);
+        }
 
+        @Test
+        void nothingListsWhenBudgetIdDoesNotExist(){
+            List<TransactionCategory> actual = repository.findByBudget(99);
+            List<TransactionCategory> expected = List.of();
+
+            assertEquals(expected, actual);
         }
     }
 
