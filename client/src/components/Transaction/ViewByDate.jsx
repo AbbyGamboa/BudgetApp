@@ -36,10 +36,13 @@ function ViewByDate({loggedInUser}){
 
     }
 
+    const [showTrans, setShowTrans] = useState(true);
+    const hideTrans = () => setShowTrans(false);
+
 
     return(
         <>
-        <form onSubmit={handleSubmit} className="flex-column m-5" >
+        <form onSubmit={handleSubmit} className="flex-column m-5" onReset={hideTrans}>
             <h3>View by date:</h3>
             <label htmlFor="start" className="m-1">Start: </label>
             <input type="date" name="start" id="start" onChange={(event) => setStart(event.target.value)} className="m-1" />
@@ -47,9 +50,10 @@ function ViewByDate({loggedInUser}){
             <label htmlFor="end" className="m-1">End: </label>
             <input type="date" name="end" id="end" onChange={(event) => setEnd(event.target.value)} className="m-1"/>
             <button type="submit" className="btn btn-secondary m-1">Check</button>
+            <button type="reset" className="btn btn-danger">Reset</button>
 
         </form>
-        {transactions.map(transaction => <div key ={transaction.transactionId} className="flex p-5">
+        {showTrans && transactions.map(transaction => <div key ={transaction.transactionId} className="flex p-5">
         <Transaction transaction={transaction}/>
         <TransactionCategory loggedInUser={loggedInUser} transactionId={transaction.transactionId}></TransactionCategory>
         <Link className="btn btn-primary" to={`/view/${transaction.transactionId}`}>View</Link>
