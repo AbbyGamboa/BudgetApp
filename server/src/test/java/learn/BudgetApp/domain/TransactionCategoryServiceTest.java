@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,6 +28,9 @@ class TransactionCategoryServiceTest {
 
     @MockBean
     private TransactionRepository transactionRepository;
+
+    @MockBean
+    private CategoryRepository categoryRepository;
 
     @Nested
     class findByBudget{
@@ -125,6 +129,78 @@ class TransactionCategoryServiceTest {
             Result<TransactionCategory> expected = new Result<>();
             expected.addErrorMessage("Cannot find by transaction", ResultType.NOT_FOUND);
             Result<TransactionCategory> actual = service.findByTransaction(1,1);
+
+            assertEquals(expected, actual);
+        }
+    }
+
+    @Nested
+    class findByCategoryAndDate{
+        @Test
+        void success(){
+            when(categoryRepository.findById(1)).thenReturn(TestDataHelper.firstCategory());
+            when(categoryRepository.findAllCategoriesForUser(1)).thenReturn(TestDataHelper.categoriesForUserOne());
+            when(tcRepository.findByDate(1, LocalDate.of(2025,1, 1), LocalDate.now())).thenReturn(
+                    List.of(TestDataHelper.secondTC())
+            );
+
+            Result<List<TransactionCategory>> expected = new Result<>();
+            expected.setpayload(List.of(TestDataHelper.secondTC()));
+
+            Result<List<TransactionCategory>> actual = service.findByNameAndDate(1, LocalDate.of(2025, 1, 1), LocalDate.now(), 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenCategoryNotFound(){
+            when(categoryRepository.findById(1)).thenReturn(null);
+
+            Result<List<TransactionCategory>> expected = new Result<>();
+            expected.addErrorMessage("Cannot find category", ResultType.NOT_FOUND);
+
+            Result<List<TransactionCategory>> actual = service.findByNameAndDate(1, LocalDate.of(2025, 1, 1), LocalDate.now(), 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenUserDoesNotOwnCategory(){
+            when(categoryRepository.findById(2)).thenReturn(TestDataHelper.customCategory());
+
+            Result<List<TransactionCategory>> expected = new Result<>();
+            expected.addErrorMessage("Cannot access another user's categories", ResultType.INVALID);
+
+            Result<List<TransactionCategory>> actual = service.findByNameAndDate(2, LocalDate.of(2025, 1, 1), LocalDate.now(), 2);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenDatesInvalid(){
+            when(categoryRepository.findById(1)).thenReturn(TestDataHelper.firstCategory());
+            when(categoryRepository.findAllCategoriesForUser(1)).thenReturn(TestDataHelper.categoriesForUserOne());
+
+            Result<List<TransactionCategory>> expected = new Result<>();
+            expected.addErrorMessage("End date cannot be after today's date", ResultType.INVALID);
+
+            Result<List<TransactionCategory>> actual = service.findByNameAndDate(1, LocalDate.of(2025, 1, 1), LocalDate.of(2027,1,1), 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenNothingFoundInList(){
+            when(categoryRepository.findById(1)).thenReturn(TestDataHelper.firstCategory());
+            when(categoryRepository.findAllCategoriesForUser(1)).thenReturn(TestDataHelper.categoriesForUserOne());
+            when(tcRepository.findByDate(1, LocalDate.of(2025,1, 1), LocalDate.now())).thenReturn(
+                    List.of()
+            );
+
+            Result<List<TransactionCategory>> expected = new Result<>();
+            expected.addErrorMessage("No transactions found", ResultType.NOT_FOUND);
+
+            Result<List<TransactionCategory>> actual = service.findByNameAndDate(1, LocalDate.of(2025, 1, 1), LocalDate.now(), 1);
 
             assertEquals(expected, actual);
         }

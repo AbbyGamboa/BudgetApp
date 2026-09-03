@@ -1,12 +1,10 @@
 package learn.BudgetApp.domain;
 
 import learn.BudgetApp.data.*;
-import learn.BudgetApp.models.Budget;
-import learn.BudgetApp.models.BudgetCategory;
-import learn.BudgetApp.models.Transaction;
-import learn.BudgetApp.models.TransactionCategory;
+import learn.BudgetApp.models.*;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -15,11 +13,13 @@ public class TransactionCategoryService {
     private final TransactionCategoryRepository repository;
     private final BudgetRepository budgetRepository;
     private final TransactionRepository transactionRepository;
+    private final CategoryRepository categoryRepository;
 
-    public TransactionCategoryService(TransactionCategoryRepository repository, BudgetRepository budgetRepository, TransactionRepository transactionRepository) {
+    public TransactionCategoryService(TransactionCategoryRepository repository, BudgetRepository budgetRepository, TransactionRepository transactionRepository, CategoryRepository categoryRepository) {
         this.repository = repository;
         this.budgetRepository = budgetRepository;
         this.transactionRepository = transactionRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     public Result<List<TransactionCategory>> findByBudget(int budgetId, int userId){
@@ -72,5 +72,55 @@ public class TransactionCategoryService {
         }
 
         return result;
+    }
+
+    public Result<List<TransactionCategory>> findByNameAndDate(int categoryId, LocalDate start, LocalDate end, int userId){
+        Result<List<TransactionCategory>> result = new Result<>();
+
+        Category found = categoryRepository.findById(categoryId);
+        if(found == null){
+            result.addErrorMessage("Cannot find category", ResultType.NOT_FOUND);
+            return result;
+        }
+
+        List<Category> forUser = categoryRepository.findAllCategoriesForUser(userId);
+        if(!forUser.contains(found) && found.getUser() != null){
+            result.addErrorMessage("Cannot access another user's categories", ResultType.INVALID);
+            return result;
+        }
+
+        validDates(result, start, end);
+        if(!result.isSuccess()){
+            return  result;
+        }
+
+        List<TransactionCategory> foundByNameAndDate = repository.findByDate(categoryId, start, end);
+        if(foundByNameAndDate.isEmpty()){
+            result.addErrorMessage("No transactions found", ResultType.NOT_FOUND);
+        } else{
+            result.setpayload(foundByNameAndDate);
+        }
+
+        return result;
+    }
+
+    private void validDates(Result<List<TransactionCategory>> result, LocalDate start, LocalDate end){
+        if(start == null || end == null){
+            result.addErrorMessage("Date missing", ResultType.NOT_FOUND);
+            return;
+        }
+
+        if(start.isAfter(end)){
+            result.addErrorMessage("Start date cannot be after end date", ResultType.INVALID);
+        }
+
+        if(start.isAfter(LocalDate.now())){
+            result.addErrorMessage("Start date cannot be after today's date", ResultType.INVALID);
+        }
+
+        if(end.isAfter(LocalDate.now())){
+            result.addErrorMessage("End date cannot be after today's date", ResultType.INVALID);
+        }
+
     }
 }
