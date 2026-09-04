@@ -4,6 +4,7 @@ import learn.BudgetApp.data.*;
 import learn.BudgetApp.models.TransactionCategory;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -204,6 +205,74 @@ class TransactionCategoryServiceTest {
 
             assertEquals(expected, actual);
         }
+    }
+
+    @Nested
+    class create{
+        @Test
+        void success(){
+            TransactionCategory created = TestDataHelper.createdTC();
+
+            when(tcRepository.create(created)).thenReturn(created);
+
+            Result<TransactionCategory> expected = new Result<>();
+            expected.setpayload(created);
+
+            Result<TransactionCategory> actual = service.create(created, 2);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenTransactionIsNull(){
+            TransactionCategory created = null;
+
+            Result<TransactionCategory> expected = new Result<>();
+            expected.addErrorMessage("Transaction category invalid", ResultType.NOT_FOUND);
+
+            Result<TransactionCategory> actual = service.create(created, 2);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenMissingContent(){
+            TransactionCategory created = new TransactionCategory(null, null);
+
+            Result<TransactionCategory> expected = new Result<>();
+            expected.addErrorMessage("Transaction is required", ResultType.INVALID);
+
+            Result<TransactionCategory> actual = service.create(created, 2);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenDifferentUser(){
+            TransactionCategory created = TestDataHelper.createdTC();
+
+            Result<TransactionCategory> expected = new Result<>();
+            expected.addErrorMessage("Cannot access another user's account", ResultType.INVALID);
+
+            Result<TransactionCategory> actual = service.create(created, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsInRepo(){
+            TransactionCategory created = TestDataHelper.createdTC();
+
+            when(tcRepository.create(created)).thenReturn(null);
+
+            Result<TransactionCategory> expected = new Result<>();
+            expected.addErrorMessage("Could not create", ResultType.INVALID);
+
+            Result<TransactionCategory> actual = service.create(created, 2);
+
+            assertEquals(expected, actual);
+        }
+
     }
 
 

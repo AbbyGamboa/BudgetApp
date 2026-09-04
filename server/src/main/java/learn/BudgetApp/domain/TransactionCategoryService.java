@@ -104,6 +104,35 @@ public class TransactionCategoryService {
         return result;
     }
 
+    public Result<TransactionCategory> create(TransactionCategory transactionCategory, int userId){
+        Result<TransactionCategory> result = new Result<>();
+
+        if (transactionCategory == null){
+            result.addErrorMessage("Transaction category invalid", ResultType.NOT_FOUND);
+            return result;
+        }
+
+        validateTransCat(result, transactionCategory);
+        if (!result.isSuccess()){
+            return result;
+        }
+
+        if(transactionCategory.getTransaction().getAccount().getUser().getUserId() != userId){
+            result.addErrorMessage("Cannot access another user's account", ResultType.INVALID);
+        }
+
+        if(result.isSuccess()){
+            TransactionCategory created = repository.create(transactionCategory);
+            if(created == null){
+                result.addErrorMessage("Could not create", ResultType.INVALID);
+            } else{
+                result.setpayload(created);
+            }
+        }
+
+        return result;
+    }
+
     private void validDates(Result<List<TransactionCategory>> result, LocalDate start, LocalDate end){
         if(start == null || end == null){
             result.addErrorMessage("Date missing", ResultType.NOT_FOUND);
@@ -121,6 +150,32 @@ public class TransactionCategoryService {
         if(end.isAfter(LocalDate.now())){
             result.addErrorMessage("End date cannot be after today's date", ResultType.INVALID);
         }
+
+    }
+
+    private void validateTransCat(Result<TransactionCategory> result, TransactionCategory transactionCategory){
+        if (transactionCategory.getTransaction() == null){
+            result.addErrorMessage("Transaction is required", ResultType.INVALID);
+            return;
+        }
+
+        if(transactionCategory.getBudgetCategory() == null){
+            result.addErrorMessage("Budget is required", ResultType.INVALID);
+            return;
+        }
+
+        if (transactionCategory.getTransaction().getAccount() == null){
+            result.addErrorMessage("Transaction requires an account", ResultType.INVALID);
+        }
+
+        if(transactionCategory.getTransaction().getDate() == null){
+            result.addErrorMessage("Transaction date required", ResultType.INVALID);
+        }
+
+        if(transactionCategory.getTransaction().getAmount() == null){
+            result.addErrorMessage("Transaction amount required", ResultType.INVALID);
+        }
+
 
     }
 }
