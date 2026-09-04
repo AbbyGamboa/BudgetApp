@@ -33,6 +33,9 @@ class TransactionCategoryServiceTest {
     @MockBean
     private CategoryRepository categoryRepository;
 
+    @MockBean
+    private BudgetCategoryRepository budgetCategoryRepository;
+
     @Nested
     class findByBudget{
         @Test
@@ -213,12 +216,14 @@ class TransactionCategoryServiceTest {
         void success(){
             TransactionCategory created = TestDataHelper.createdTC();
 
+            when(transactionRepository.findById(3)).thenReturn(TestDataHelper.thirdTransaction());
+            when(budgetCategoryRepository.findById(3)).thenReturn(TestDataHelper.secondUserBC());
             when(tcRepository.create(created)).thenReturn(created);
 
             Result<TransactionCategory> expected = new Result<>();
             expected.setpayload(created);
 
-            Result<TransactionCategory> actual = service.create(created, 2);
+            Result<TransactionCategory> actual = service.create(created, 2,3, 3);
 
             assertEquals(expected, actual);
         }
@@ -230,7 +235,7 @@ class TransactionCategoryServiceTest {
             Result<TransactionCategory> expected = new Result<>();
             expected.addErrorMessage("Transaction category invalid", ResultType.NOT_FOUND);
 
-            Result<TransactionCategory> actual = service.create(created, 2);
+            Result<TransactionCategory> actual = service.create(created, 2,3,3);
 
             assertEquals(expected, actual);
         }
@@ -238,11 +243,12 @@ class TransactionCategoryServiceTest {
         @Test
         void failsWhenMissingContent(){
             TransactionCategory created = new TransactionCategory(null, null);
-
+            when(transactionRepository.findById(99)).thenReturn(null);
+            when(budgetCategoryRepository.findById(3)).thenReturn(TestDataHelper.secondUserBC());
             Result<TransactionCategory> expected = new Result<>();
             expected.addErrorMessage("Transaction is required", ResultType.INVALID);
 
-            Result<TransactionCategory> actual = service.create(created, 2);
+            Result<TransactionCategory> actual = service.create(created, 2,99,3);
 
             assertEquals(expected, actual);
         }
@@ -251,10 +257,13 @@ class TransactionCategoryServiceTest {
         void failsWhenDifferentUser(){
             TransactionCategory created = TestDataHelper.createdTC();
 
+            when(transactionRepository.findById(3)).thenReturn(TestDataHelper.thirdTransaction());
+            when(budgetCategoryRepository.findById(3)).thenReturn(TestDataHelper.secondUserBC());
+
             Result<TransactionCategory> expected = new Result<>();
             expected.addErrorMessage("Cannot access another user's account", ResultType.INVALID);
 
-            Result<TransactionCategory> actual = service.create(created, 1);
+            Result<TransactionCategory> actual = service.create(created, 1,3,3);
 
             assertEquals(expected, actual);
         }
@@ -263,12 +272,14 @@ class TransactionCategoryServiceTest {
         void failsInRepo(){
             TransactionCategory created = TestDataHelper.createdTC();
 
+            when(transactionRepository.findById(3)).thenReturn(TestDataHelper.thirdTransaction());
+            when(budgetCategoryRepository.findById(3)).thenReturn(TestDataHelper.secondUserBC());
             when(tcRepository.create(created)).thenReturn(null);
 
             Result<TransactionCategory> expected = new Result<>();
             expected.addErrorMessage("Could not create", ResultType.INVALID);
 
-            Result<TransactionCategory> actual = service.create(created, 2);
+            Result<TransactionCategory> actual = service.create(created, 2,3,3);
 
             assertEquals(expected, actual);
         }

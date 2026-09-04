@@ -14,12 +14,14 @@ public class TransactionCategoryService {
     private final BudgetRepository budgetRepository;
     private final TransactionRepository transactionRepository;
     private final CategoryRepository categoryRepository;
+    private final BudgetCategoryRepository budgetCategoryRepository;
 
-    public TransactionCategoryService(TransactionCategoryRepository repository, BudgetRepository budgetRepository, TransactionRepository transactionRepository, CategoryRepository categoryRepository) {
+    public TransactionCategoryService(TransactionCategoryRepository repository, BudgetRepository budgetRepository, TransactionRepository transactionRepository, CategoryRepository categoryRepository, BudgetCategoryRepository budgetCategoryRepository) {
         this.repository = repository;
         this.budgetRepository = budgetRepository;
         this.transactionRepository = transactionRepository;
         this.categoryRepository = categoryRepository;
+        this.budgetCategoryRepository = budgetCategoryRepository;
     }
 
     public Result<List<TransactionCategory>> findByBudget(int budgetId, int userId){
@@ -104,7 +106,7 @@ public class TransactionCategoryService {
         return result;
     }
 
-    public Result<TransactionCategory> create(TransactionCategory transactionCategory, int userId){
+    public Result<TransactionCategory> create(TransactionCategory transactionCategory, int userId, int transactionId, int budgetCategoryId){
         Result<TransactionCategory> result = new Result<>();
 
         if (transactionCategory == null){
@@ -112,10 +114,16 @@ public class TransactionCategoryService {
             return result;
         }
 
+        Transaction transaction = transactionRepository.findById(transactionId);
+        BudgetCategory budgetCategory = budgetCategoryRepository.findById(budgetCategoryId);
+
         validateTransCat(result, transactionCategory);
         if (!result.isSuccess()){
             return result;
         }
+
+        transactionCategory.setTransaction(transaction);
+        transactionCategory.setBudgetCategory(budgetCategory);
 
         if(transactionCategory.getTransaction().getAccount().getUser().getUserId() != userId){
             result.addErrorMessage("Cannot access another user's account", ResultType.INVALID);
