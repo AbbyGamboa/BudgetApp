@@ -70,7 +70,14 @@ public class TransactionCategoryJdbcClientRepository implements TransactionCateg
 
     @Override
     public boolean update(TransactionCategory transactionCategory) {
-        return false;
+        String sql = """
+                update transaction_categories
+                set budgetCategoryId = :budgetCategoryId
+                where transactionId = :transactionId;
+                """;
+
+       return jdbcClient.sql(sql).param("budgetCategoryId", transactionCategory.getBudgetCategory().getBudgetCategoryId())
+                .param("transactionId", transactionCategory.getTransaction().getTransactionId()).update() > 0;
     }
 
     @Override

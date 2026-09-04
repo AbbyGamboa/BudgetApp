@@ -92,4 +92,25 @@ class TransactionCategoryJdbcClientRepositoryTest {
         }
     }
 
+    @Nested
+    class update{
+        @Test
+        void success(){
+            TransactionCategory updated = TestDataHelper.firstTC();
+            updated.setBudgetCategory(TestDataHelper.secondBC());
+            boolean update = repository.update(updated);
+
+            assertTrue(update);
+        }
+
+        @Test
+        void fails(){
+            TransactionCategory updated = TestDataHelper.firstTC();
+            updated.setTransaction(TestDataHelper.thirdTransaction());
+            boolean update = repository.update(updated);
+
+            assertFalse(update);
+        }
+    }
+
 }
