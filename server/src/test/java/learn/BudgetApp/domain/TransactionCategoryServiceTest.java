@@ -223,39 +223,26 @@ class TransactionCategoryServiceTest {
             Result<TransactionCategory> expected = new Result<>();
             expected.setpayload(created);
 
-            Result<TransactionCategory> actual = service.create(created, 2,3, 3);
+            Result<TransactionCategory> actual = service.create(2,3, 3);
 
             assertEquals(expected, actual);
         }
 
-        @Test
-        void failsWhenTransactionIsNull(){
-            TransactionCategory created = null;
-
-            Result<TransactionCategory> expected = new Result<>();
-            expected.addErrorMessage("Transaction category invalid", ResultType.NOT_FOUND);
-
-            Result<TransactionCategory> actual = service.create(created, 2,3,3);
-
-            assertEquals(expected, actual);
-        }
 
         @Test
         void failsWhenMissingContent(){
-            TransactionCategory created = new TransactionCategory(null, null);
             when(transactionRepository.findById(99)).thenReturn(null);
             when(budgetCategoryRepository.findById(3)).thenReturn(TestDataHelper.secondUserBC());
             Result<TransactionCategory> expected = new Result<>();
             expected.addErrorMessage("Transaction is required", ResultType.INVALID);
 
-            Result<TransactionCategory> actual = service.create(created, 2,99,3);
+            Result<TransactionCategory> actual = service.create( 2,99,3);
 
             assertEquals(expected, actual);
         }
 
         @Test
         void failsWhenDifferentUser(){
-            TransactionCategory created = TestDataHelper.createdTC();
 
             when(transactionRepository.findById(3)).thenReturn(TestDataHelper.thirdTransaction());
             when(budgetCategoryRepository.findById(3)).thenReturn(TestDataHelper.secondUserBC());
@@ -263,7 +250,7 @@ class TransactionCategoryServiceTest {
             Result<TransactionCategory> expected = new Result<>();
             expected.addErrorMessage("Cannot access another user's account", ResultType.INVALID);
 
-            Result<TransactionCategory> actual = service.create(created, 1,3,3);
+            Result<TransactionCategory> actual = service.create(1,3,3);
 
             assertEquals(expected, actual);
         }
@@ -279,7 +266,7 @@ class TransactionCategoryServiceTest {
             Result<TransactionCategory> expected = new Result<>();
             expected.addErrorMessage("Could not create", ResultType.INVALID);
 
-            Result<TransactionCategory> actual = service.create(created, 2,3,3);
+            Result<TransactionCategory> actual = service.create(2,3,3);
 
             assertEquals(expected, actual);
         }

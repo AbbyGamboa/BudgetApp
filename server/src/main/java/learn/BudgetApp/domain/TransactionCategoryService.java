@@ -106,16 +106,12 @@ public class TransactionCategoryService {
         return result;
     }
 
-    public Result<TransactionCategory> create(TransactionCategory transactionCategory, int userId, int transactionId, int budgetCategoryId){
+    public Result<TransactionCategory> create(int userId, int transactionId, int budgetCategoryId){
         Result<TransactionCategory> result = new Result<>();
-
-        if (transactionCategory == null){
-            result.addErrorMessage("Transaction category invalid", ResultType.NOT_FOUND);
-            return result;
-        }
-
         Transaction transaction = transactionRepository.findById(transactionId);
         BudgetCategory budgetCategory = budgetCategoryRepository.findById(budgetCategoryId);
+
+        TransactionCategory transactionCategory = new TransactionCategory(transaction, budgetCategory);
 
         validateTransCat(result, transactionCategory);
         if (!result.isSuccess()){
