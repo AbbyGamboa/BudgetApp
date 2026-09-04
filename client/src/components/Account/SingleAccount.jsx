@@ -2,8 +2,6 @@ import { useState, useEffect } from "react"
 import { useParams,useNavigate} from "react-router-dom"
 import ViewByDate from "../Transaction/ViewByDate";
 import ViewTransactions from "../Transaction/ViewTransactions";
-import ViewByCatAndDate from "../TransactionCategory/ViewByCatAndDate";
-
 function SingleAccount({loggedInUser}){
     const {accountId} = useParams();
     const navigate = useNavigate();
