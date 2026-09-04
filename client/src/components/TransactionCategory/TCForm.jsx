@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-function TCForm({loggedInUser}){
+function TCForm({loggedInUser, setActiveModalItem}){
     const[budgetCategories, setBudgetCategories] = useState([])
     const[budgetCategoryId, setBudgetCategoryId] = useState()
     const[budgetId, setBudgetId] = useState()
@@ -68,12 +68,12 @@ function TCForm({loggedInUser}){
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${loggedInUser.token}`
-            },
-            body: JSON.stringify(transaction)
+            }
         })
         console.log(response)
         if (response.status >= 200 && response.status < 300) {
             setActiveModalItem(null)
+           window.location.reload();
             
         } else {
             const payload = await response.json()

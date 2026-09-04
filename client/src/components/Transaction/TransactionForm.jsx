@@ -105,7 +105,7 @@ function TransactionForm({loggedInUser, transactionId, setActiveModalItem}){
         </form>
 
         {
-            addCat && <TCForm loggedInUser={loggedInUser}></TCForm>
+            addCat && <TCForm loggedInUser={loggedInUser} setActiveModalItem={setActiveModalItem}></TCForm>
         }
         </>
     );
