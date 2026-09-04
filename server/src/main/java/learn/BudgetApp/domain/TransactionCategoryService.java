@@ -118,8 +118,6 @@ public class TransactionCategoryService {
             return result;
         }
 
-        transactionCategory.setTransaction(transaction);
-        transactionCategory.setBudgetCategory(budgetCategory);
 
         if(transactionCategory.getTransaction().getAccount().getUser().getUserId() != userId){
             result.addErrorMessage("Cannot access another user's account", ResultType.INVALID);
@@ -179,7 +177,6 @@ public class TransactionCategoryService {
         if(transactionCategory.getTransaction().getAmount() == null){
             result.addErrorMessage("Transaction amount required", ResultType.INVALID);
         }
-
 
     }
 }

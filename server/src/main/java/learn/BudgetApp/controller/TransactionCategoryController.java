@@ -60,4 +60,16 @@ public class TransactionCategoryController {
         return new ResponseEntity<>(result.getpayload(), HttpStatus.OK);
     }
 
+    @PostMapping
+    public ResponseEntity<?> create(@RequestParam int tId, @RequestParam int bCId, Authentication authentication){
+        int userId = Integer.parseInt(authentication.getName());
+
+        Result<TransactionCategory> result = service.create(userId, tId, bCId);
+        if (!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+
+        return new ResponseEntity<>(result.getpayload(), HttpStatus.CREATED);
+    }
+
 }

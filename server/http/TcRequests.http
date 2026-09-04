@@ -11,3 +11,5 @@ GET {{base_url}}/category/3?start=2025-01-01&end=2026-08-01 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg4NDY2MDUxLCJleHAiOjE3ODg0Njk2NTF9.oxjuXs0QR5QyIN_h4PLRZpzYq1n2Reb2tGdSVtLrFje3plSuCigp3JAtff6Sqv7f
 
 ###
+POST {{base_url}}?tId=3&bCId=3 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIyIiwiZW1haWwiOiJiQGIuY29tIiwiaWF0IjoxNzg4NTM1MzkzLCJleHAiOjE3ODg1Mzg5OTN9.dEHfXVisKdKQJdNfebr_HjKoaaRFby8lvEtrXQjhEabAN_FaMEoVuiTiKXYTIk6h

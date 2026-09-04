@@ -71,3 +71,13 @@ Content-Type: application/json
   "email": "a@a.com",
   "password": "a"
 }
+
+###
+
+POST {{base_url}}/login
+Content-Type: application/json
+
+{
+"email": "b@b.com",
+"password": "b"
+}
