@@ -46,9 +46,9 @@ function ViewTransactions({loggedInUser}){
         </Modal>
         <h2>Transactions: </h2>
         
-        <div className="d-flex">
+        <div className="grid-container">
         {transactions.map(transaction => 
-        <div key ={transaction.transactionId} className="flex p-5">
+        <div key ={transaction.transactionId} className="grid-item p-5">
         <Transaction transaction={transaction}/>
         <TransactionCategory loggedInUser = {loggedInUser} transactionId={transaction.transactionId}></TransactionCategory>
 
