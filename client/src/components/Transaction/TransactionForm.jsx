@@ -1,48 +1,12 @@
 import { useParams, useNavigate} from "react-router-dom";
 import { useState, useEffect } from "react";
+import TCForm from "../TransactionCategory/TCForm";
 
 function TransactionForm({loggedInUser, transactionId, setActiveModalItem}){
     const navigate = useNavigate();
 
     const{accountId} = useParams();
-    const[budgets, setBudgets] = useState([])
-    const[budgetCategories, setBudgetCategories] = useState([])
-    const [addCat, setAddCat] = useState(true);
-    const[budgetCategoryId, setBudgetCategoryId] = useState()
-    const[budgetId, setBudgetId] = useState()
-        
-    useEffect(()=>{
-        const doFetch = async () => {
-            const response = await fetch("http://localhost:8080/api/budget/myBudgets", {
-                headers:{
-                        "Authorization": `Bearer ${loggedInUser.token}`
-                }
-            })
-            const payload = await response.json();
-            setBudgets(payload)
-        }
-        doFetch()
-    }, [])
-
-    useEffect(()=> {
-        if (budgetId === undefined || budgetId === ""){
-            setBudgetCategories([])
-            return;
-        }; 
-        const doFetch = async () => {
-            const response = await fetch("http://localhost:8080/api/budgetcategory/"+budgetId, {
-                headers:{
-                        "Authorization": `Bearer ${loggedInUser.token}`
-                }
-            })
-            const payload = await response.json();
-            setBudgetCategories(payload)
-        }
-        doFetch()
-
-    }, [budgetId])
-
-
+    const [addCat, setAddCat] = useState(false);
 
     const initialTransaction = {
         "amount": "",
@@ -104,7 +68,7 @@ function TransactionForm({loggedInUser, transactionId, setActiveModalItem}){
         })
         console.log(response)
         if (response.status >= 200 && response.status < 300) {
-            setActiveModalItem(null)
+            const payload = await response.json();
             setAddCat(true);
             
         } else {
@@ -141,20 +105,7 @@ function TransactionForm({loggedInUser, transactionId, setActiveModalItem}){
         </form>
 
         {
-            addCat && budgets && <form>
-                <label htmlFor="budget">Budget: </label>
-                <select name="budget" id="budget" onChange={(event)=> setBudgetId(event.target.value)}>
-                    <option value="">Select Budget</option>
-                    {budgets.map((budget)=> <option key={budget.budgetId} value={budget.budgetId}>{budget.income}</option>)}
-                </select>
-
-                <label htmlFor="budgetCategoryId">Category:</label>
-                <select name="budgetCategoryId"  id="budgetCategoryId" value={budgetCategoryId}>
-                        <option value="">Select Category</option>
-                        {budgetCategories.map(budgetCategory => <option key={budgetCategory.budgetCategoryId}>{budgetCategory.category.name}</option>)}
-                        
-                </select>
-            </form>
+            addCat && <TCForm loggedInUser={loggedInUser}></TCForm>
         }
         </>
     );

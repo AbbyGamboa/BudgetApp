@@ -43,8 +43,6 @@ function ViewTransactions({loggedInUser}){
                 <Button variant="secondary" onClick={handleCreateClose}>Close </Button>
             </Modal.Body>
             
-           
-            
         </Modal>
         <h2>Transactions: </h2>
         

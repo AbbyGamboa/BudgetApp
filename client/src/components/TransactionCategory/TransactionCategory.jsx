@@ -13,7 +13,12 @@ function TransactionCategory({loggedInUser, transactionId}){
             })
             const payload = await response.json();
 
-            setTranCategory(payload.budgetCategory.category.name)
+            if (response.status >= 200 && response.status < 300) {
+                setTranCategory(payload.budgetCategory.category.name)
+            } else{
+                setTranCategory(null);
+            }
+
         }
         doFetch()
     }, [])
