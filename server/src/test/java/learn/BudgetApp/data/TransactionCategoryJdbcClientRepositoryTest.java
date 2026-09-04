@@ -82,4 +82,14 @@ class TransactionCategoryJdbcClientRepositoryTest {
         }
     }
 
+    @Nested
+    class create{
+        @Test
+        void success(){
+            TransactionCategory expected = TestDataHelper.createdTC();
+            TransactionCategory actual = repository.create(TestDataHelper.createdTC());
+            assertEquals(expected, actual);
+        }
+    }
+
 }

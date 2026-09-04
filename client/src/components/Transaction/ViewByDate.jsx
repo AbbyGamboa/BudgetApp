@@ -99,7 +99,7 @@ function ViewByDate({loggedInUser}){
         <TransactionCategory loggedInUser={loggedInUser} transactionId={transaction.transactionId}></TransactionCategory>
         <Link className="btn btn-primary" to={`/view/${transaction.transactionId}`}>View</Link>
         </div>)}
-
+    
          { withCat &&
             showTrans && transactions.map(transaction => <div key ={transaction.transaction.transactionId} className="flex p-5">
         <Transaction transaction={transaction.transaction}/>

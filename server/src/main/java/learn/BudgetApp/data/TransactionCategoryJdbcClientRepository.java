@@ -3,6 +3,8 @@ package learn.BudgetApp.data;
 import learn.BudgetApp.models.TransactionCategory;
 import learn.BudgetApp.models.mapping.TransactionCategoryMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -52,7 +54,18 @@ public class TransactionCategoryJdbcClientRepository implements TransactionCateg
 
     @Override
     public TransactionCategory create(TransactionCategory transactionCategory) {
-        return null;
+        String sql = """ 
+                insert into transaction_categories(transactionId, budgetCategoryId)
+                values (:transactionId, :budgetCategoryId);""";
+
+        int rowsAffected = jdbcClient.sql(sql).param("transactionId", transactionCategory.getTransaction().getTransactionId())
+                .param("budgetCategoryId", transactionCategory.getBudgetCategory().getBudgetCategoryId())
+                .update();
+
+        if (rowsAffected == 0){
+            return null;
+        }
+        return transactionCategory;
     }
 
     @Override
