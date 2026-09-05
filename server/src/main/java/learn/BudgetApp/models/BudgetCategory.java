@@ -16,6 +16,8 @@ public class BudgetCategory {
         this.percentage = percentage;
     }
 
+    public BudgetCategory(){};
+
     public int getBudgetCategoryId() {
         return budgetCategoryId;
     }

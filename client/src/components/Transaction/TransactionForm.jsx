@@ -1,10 +1,12 @@
 import { useParams, useNavigate} from "react-router-dom";
 import { useState, useEffect } from "react";
+import TCForm from "../TransactionCategory/TCForm";
 
 function TransactionForm({loggedInUser, transactionId, setActiveModalItem}){
     const navigate = useNavigate();
 
     const{accountId} = useParams();
+    const [addCat, setAddCat] = useState(false);
 
     const initialTransaction = {
         "amount": "",
@@ -17,7 +19,6 @@ function TransactionForm({loggedInUser, transactionId, setActiveModalItem}){
     const [errors, setErrors] = useState([]);
 
     useEffect(()=> {
-        console.log(transactionId)
         if (transactionId === undefined){
             setTransaction(initialTransaction)
             return;
@@ -67,9 +68,9 @@ function TransactionForm({loggedInUser, transactionId, setActiveModalItem}){
         })
         console.log(response)
         if (response.status >= 200 && response.status < 300) {
-            setActiveModalItem(null)
-            navigate(`/view/account/${accountId}`)
-            window.location.reload();
+            const payload = await response.json();
+            setAddCat(true);
+            
         } else {
             const payload = await response.json()
             setErrors(payload)
@@ -78,24 +79,35 @@ function TransactionForm({loggedInUser, transactionId, setActiveModalItem}){
     }
 
     return(
-        <form action="" className="flex-column align-content-center" onSubmit={handleSubmit}>
+        <>
+        <form action="" className="flex-column align-content-center" onSubmit={handleSubmit} hidden={addCat}>
             <h1>{transactionId? "Update": "Create"} Transaction: </h1>
 
-            <label htmlFor="amount">*Amount: </label>
-            <input type="text" name="amount" id="amount" value={transaction.amount} onChange={handleChange} required/>
+            <div>
+                <label htmlFor="amount">*Amount: </label>
+                <input type="text" name="amount" id="amount" value={transaction.amount} onChange={handleChange} required/>
+                <label htmlFor="date">*Date: </label>
+                <input type="date" name="date" id="date" value={transaction.date} onChange={handleChange} required/>
+            </div>
+            
+            <div>
+                <label htmlFor="merchant_name">Merchant Name: </label>
+                <input type="text" name="merchant_name" id="merchant_name" value={transaction.merchant_name? transaction.merchant_name : " "} onChange={handleChange}/>
+            </div>
+            
+            <div>
+                <label htmlFor="amount">Description: </label>
+                <input type="description" name="description" id="description" value={transaction.description? transaction.description: " "} onChange={handleChange}/>
+            </div>
 
-            <label htmlFor="date">*Date: </label>
-            <input type="date" name="date" id="date" value={transaction.date} onChange={handleChange} required/>
-
-            <label htmlFor="merchant_name">Merchant Name: </label>
-            <input type="text" name="merchant_name" id="merchant_name" value={transaction.merchant_name? transaction.merchant_name : " "} onChange={handleChange}/>
-
-            <label htmlFor="amount">Description: </label>
-            <input type="description" name="description" id="description" value={transaction.description? transaction.description: " "} onChange={handleChange}/>
 
             <button type="submit" className="btn btn-primary">{transactionId? "Update": "Create"}</button>
         </form>
-        
+
+        {
+            addCat && <TCForm loggedInUser={loggedInUser} setActiveModalItem={setActiveModalItem}></TCForm>
+        }
+        </>
     );
 }
 

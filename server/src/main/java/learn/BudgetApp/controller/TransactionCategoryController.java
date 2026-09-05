@@ -1,0 +1,87 @@
+package learn.BudgetApp.controller;
+
+import learn.BudgetApp.domain.Result;
+import learn.BudgetApp.domain.TransactionCategoryService;
+import learn.BudgetApp.models.TransactionCategory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/transactioncategory")
+@CrossOrigin
+public class TransactionCategoryController {
+
+    private final TransactionCategoryService service;
+
+    public TransactionCategoryController(TransactionCategoryService service) {
+        this.service = service;
+    }
+
+    @GetMapping("/{budgetId}")
+    public ResponseEntity<?> findByBudget(@PathVariable int budgetId, Authentication authentication){
+        int userId = Integer.parseInt(authentication.getName());
+
+        Result<List<TransactionCategory>> result = service.findByBudget(budgetId, userId);
+
+        if (!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+
+        return new ResponseEntity<>(result.getpayload(), HttpStatus.OK);
+    }
+
+    @GetMapping("get/{transactionId}")
+    public ResponseEntity<?> findByTransaction(@PathVariable int transactionId, Authentication authentication){
+        int userId = Integer.parseInt(authentication.getName());
+
+        Result<TransactionCategory> result = service.findByTransaction(transactionId, userId);
+
+        if (!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+
+        return new ResponseEntity<>(result.getpayload(), HttpStatus.OK);
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<?> findByCategoryAndDate(@PathVariable int categoryId, @RequestParam LocalDate start, @RequestParam LocalDate end, Authentication authentication){
+        int userId = Integer.parseInt(authentication.getName());
+
+        Result<List<TransactionCategory>> result = service.findByNameAndDate(categoryId, start, end, userId);
+        if (!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+
+        return new ResponseEntity<>(result.getpayload(), HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<?> create(@RequestParam int tId, @RequestParam int bCId, Authentication authentication){
+        int userId = Integer.parseInt(authentication.getName());
+
+        Result<TransactionCategory> result = service.create(userId, tId, bCId);
+        if (!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+
+        return new ResponseEntity<>(result.getpayload(), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> update(@RequestParam int tId, @RequestParam int bCId, Authentication authentication){
+        int userId = Integer.parseInt(authentication.getName());
+
+        Result<TransactionCategory> result = service.create(tId, bCId, userId);
+        if (!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+
+        return new ResponseEntity<>(result.getpayload(), HttpStatus.CREATED);
+    }
+
+}
