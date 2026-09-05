@@ -113,4 +113,19 @@ class TransactionCategoryJdbcClientRepositoryTest {
         }
     }
 
+    @Nested
+    class delete{
+        @Test
+        void success(){
+            boolean actual = repository.delete(1);
+            assertTrue(actual);
+        }
+
+        @Test
+        void failsToDelete(){
+            boolean actual = repository.delete(99);
+            assertFalse(actual);
+        }
+    }
+
 }

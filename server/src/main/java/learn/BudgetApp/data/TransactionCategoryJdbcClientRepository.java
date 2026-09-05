@@ -81,7 +81,12 @@ public class TransactionCategoryJdbcClientRepository implements TransactionCateg
     }
 
     @Override
-    public boolean delete(int transactionCategoryId) {
-        return false;
+    public boolean delete(int transactionId) {
+        String sql = """
+                delete from transaction_categories
+                where transactionId = ?;
+                """;
+
+        return jdbcClient.sql(sql).param(transactionId).update() > 0;
     }
 }
