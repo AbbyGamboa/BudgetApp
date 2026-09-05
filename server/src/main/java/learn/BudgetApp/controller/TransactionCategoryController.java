@@ -84,4 +84,16 @@ public class TransactionCategoryController {
         return new ResponseEntity<>(result.getpayload(), HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/{transactionId}")
+    public ResponseEntity<?> delete(@PathVariable int transactionId, Authentication authentication){
+        int userId = Integer.parseInt(authentication.getName());
+
+        Result<TransactionCategory> result = service.delete(transactionId, userId);
+        if (!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+
+        return new ResponseEntity<>(result.getpayload(), HttpStatus.CREATED);
+    }
+
 }
