@@ -13,3 +13,9 @@ Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tI
 ###
 POST {{base_url}}?tId=3&bCId=3 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIyIiwiZW1haWwiOiJiQGIuY29tIiwiaWF0IjoxNzg4NTM1MzkzLCJleHAiOjE3ODg1Mzg5OTN9.dEHfXVisKdKQJdNfebr_HjKoaaRFby8lvEtrXQjhEabAN_FaMEoVuiTiKXYTIk6h
+
+###
+PUT {{base_url}}/update?tId=1&bCId=1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg4NTcyODEyLCJleHAiOjE3ODg1NzY0MTJ9.CCjkvdleRiCrD3lSRsxL0VH78FOu2E0pM732TnPoZTeH7UDO2xx6T9LqQt1G-_RG
+
+###
