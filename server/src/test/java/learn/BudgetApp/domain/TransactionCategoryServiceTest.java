@@ -367,5 +367,54 @@ class TransactionCategoryServiceTest {
         }
     }
 
+    @Nested
+    class delete{
+        @Test
+        void success(){
+            when(tcRepository.findByTransactionId(1)).thenReturn(TestDataHelper.firstTC());
+            when(tcRepository.delete(1)).thenReturn(true);
+
+            Result<TransactionCategory> expected = new Result<>();
+            expected.setpayload(TestDataHelper.firstTC());
+            Result<TransactionCategory> actual = service.delete(1,1);
+
+            assertEquals(actual, expected);
+        }
+
+        @Test
+        void failsWhenTCNotFound(){
+            when(tcRepository.findByTransactionId(1)).thenReturn(null);
+
+            Result<TransactionCategory> expected = new Result<>();
+            expected.addErrorMessage("Transaction category found", ResultType.NOT_FOUND);
+            Result<TransactionCategory> actual = service.delete(1,1);
+
+            assertEquals(actual, expected);
+        }
+
+        @Test
+        void failsWhenDifferentUser(){
+            when(tcRepository.findByTransactionId(1)).thenReturn(TestDataHelper.firstTC());
+
+            Result<TransactionCategory> expected = new Result<>();
+            expected.addErrorMessage("Cannot delete another user's transaction category", ResultType.NOT_FOUND);
+            Result<TransactionCategory> actual = service.delete(1,2);
+
+            assertEquals(actual, expected);
+        }
+
+        @Test
+        void failsWhenRepoFails(){
+            when(tcRepository.findByTransactionId(1)).thenReturn(TestDataHelper.firstTC());
+            when(tcRepository.delete(1)).thenReturn(false);
+
+            Result<TransactionCategory> expected = new Result<>();
+            expected.addErrorMessage("Cannot delete transaction category", ResultType.NOT_FOUND);
+            Result<TransactionCategory> actual = service.delete(1,1);
+
+            assertEquals(actual, expected);
+        }
+    }
+
 
 }

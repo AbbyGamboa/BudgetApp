@@ -172,6 +172,32 @@ public class TransactionCategoryService {
         return result;
     }
 
+    public Result<TransactionCategory> delete(int transactionId, int userId){
+        Result<TransactionCategory> result = new Result<>();
+
+        TransactionCategory found = repository.findByTransactionId(transactionId);
+
+        if (found == null){
+            result.addErrorMessage("Transaction category found", ResultType.NOT_FOUND);
+            return result;
+        }
+
+        if(found.getTransaction().getAccount().getUser().getUserId() != userId){
+            result.addErrorMessage("Cannot delete another user's transaction category", ResultType.NOT_FOUND);
+        }
+
+        if(result.isSuccess()){
+            boolean deleted = repository.delete(transactionId);
+            if (deleted){
+                result.setpayload(found);
+            } else{
+                result.addErrorMessage("Cannot delete transaction category", ResultType.NOT_FOUND);
+            }
+        }
+
+        return result;
+    }
+
     private void validDates(Result<List<TransactionCategory>> result, LocalDate start, LocalDate end){
         if(start == null || end == null){
             result.addErrorMessage("Date missing", ResultType.NOT_FOUND);
