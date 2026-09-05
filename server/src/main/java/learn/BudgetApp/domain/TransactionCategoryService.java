@@ -135,6 +135,43 @@ public class TransactionCategoryService {
         return result;
     }
 
+    public Result<TransactionCategory> update(int transactionId, int budgetCategoryId, int userId){
+        Result<TransactionCategory> result = new Result<>();
+        TransactionCategory foundTC = repository.findByTransactionId(transactionId);
+
+        if(foundTC == null){
+            result.addErrorMessage("Cannot edit a Transaction Category that does not exist", ResultType.NOT_FOUND);
+            return result;
+        }
+
+        if (foundTC.getTransaction().getAccount().getUser().getUserId() != userId){
+            result.addErrorMessage("Cannot edit a transaction category that does not belong to you", ResultType.INVALID);
+        }
+
+        if(result.isSuccess()){
+            BudgetCategory foundBC = budgetCategoryRepository.findById(budgetCategoryId);
+            if(foundBC == null){
+                result.addErrorMessage("Cannot find budget category", ResultType.NOT_FOUND);
+                return result;
+            }
+            User categoryUser = foundBC.getCategory().getUser();
+
+            if(categoryUser!= null &&categoryUser.getUserId() != userId ){
+                result.addErrorMessage("Cannot access a category that does not belong to you", ResultType.INVALID);
+            } else{
+                foundTC.setBudgetCategory(foundBC);
+                boolean update = repository.update(foundTC);
+                if(update){
+                    result.setpayload(foundTC);
+                } else{
+                    result.addErrorMessage("Cannot update transactionCategory", ResultType.NOT_FOUND);
+                }
+            }
+        }
+
+        return result;
+    }
+
     private void validDates(Result<List<TransactionCategory>> result, LocalDate start, LocalDate end){
         if(start == null || end == null){
             result.addErrorMessage("Date missing", ResultType.NOT_FOUND);

@@ -69,6 +69,8 @@ public class TestDataHelper {
         return new Category(2, "Groceries", existingUser());
     }
 
+    public static Category thirdCategory(){return new Category(3, "Gym", secondUser());}
+
     public static Category createCategory(){
         return new Category(4, "Insurance", existingUser());
     }
@@ -92,6 +94,10 @@ public class TestDataHelper {
 
     public static BudgetCategory secondBC(){
         return new BudgetCategory(2, budgetOne(), customCategory(), BigDecimal.valueOf(30));
+    }
+
+    public static BudgetCategory thirdBC(){
+        return new BudgetCategory(3,budgetTwo(), thirdCategory(), BigDecimal.valueOf(10));
     }
 
     public static BudgetCategory createdBC(){

@@ -270,7 +270,101 @@ class TransactionCategoryServiceTest {
 
             assertEquals(expected, actual);
         }
+    }
 
+    @Nested
+    class update{
+        @Test
+        void success(){
+            TransactionCategory updated = TestDataHelper.firstTC();
+            updated.setBudgetCategory(TestDataHelper.budgetCategory());
+
+            when(tcRepository.findByTransactionId(1)).thenReturn(TestDataHelper.firstTC());
+            when(budgetCategoryRepository.findById(1)).thenReturn(TestDataHelper.budgetCategory());
+            when(tcRepository.update(updated)).thenReturn(true);
+
+
+            Result<TransactionCategory> expected = new Result<>();
+            expected.setpayload(updated);
+
+            Result<TransactionCategory> actual = service.update(1, 1, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenTCNotFound(){
+            when(tcRepository.findByTransactionId(1)).thenReturn(null);
+
+            Result<TransactionCategory> expected = new Result<>();
+            expected.addErrorMessage("Cannot edit a Transaction Category that does not exist", ResultType.NOT_FOUND);
+
+            Result<TransactionCategory> actual = service.update(1, 1, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenTransactionDoesNotBelongToUser(){
+            when(tcRepository.findByTransactionId(1)).thenReturn(TestDataHelper.firstTC());
+
+            Result<TransactionCategory> expected = new Result<>();
+            expected.addErrorMessage("Cannot edit a transaction category that does not belong to you", ResultType.INVALID);
+
+            Result<TransactionCategory> actual = service.update(1, 1, 2);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenBudgetCategoryNotFound(){
+            TransactionCategory updated = TestDataHelper.firstTC();
+            updated.setBudgetCategory(TestDataHelper.budgetCategory());
+
+            when(tcRepository.findByTransactionId(1)).thenReturn(TestDataHelper.firstTC());
+            when(budgetCategoryRepository.findById(99)).thenReturn(null);
+
+            Result<TransactionCategory> expected = new Result<>();
+            expected.addErrorMessage("Cannot find budget category", ResultType.NOT_FOUND);
+
+            Result<TransactionCategory> actual = service.update(1, 99, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenCategoryDoesNotBelongToUser(){
+            TransactionCategory updated = TestDataHelper.firstTC();
+            updated.setBudgetCategory(TestDataHelper.budgetCategory());
+
+            when(tcRepository.findByTransactionId(1)).thenReturn(TestDataHelper.firstTC());
+            when(budgetCategoryRepository.findById(3)).thenReturn(TestDataHelper.thirdBC());
+
+            Result<TransactionCategory> expected = new Result<>();
+            expected.addErrorMessage("Cannot access a category that does not belong to you", ResultType.INVALID);
+
+            Result<TransactionCategory> actual = service.update(1, 3, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsToUpdateInRepo(){
+            TransactionCategory updated = TestDataHelper.firstTC();
+            updated.setBudgetCategory(TestDataHelper.budgetCategory());
+
+            when(tcRepository.findByTransactionId(1)).thenReturn(TestDataHelper.firstTC());
+            when(budgetCategoryRepository.findById(1)).thenReturn(TestDataHelper.budgetCategory());
+            when(tcRepository.update(updated)).thenReturn(false);
+
+
+            Result<TransactionCategory> expected = new Result<>();
+            expected.addErrorMessage("Cannot update transactionCategory", ResultType.NOT_FOUND);
+
+            Result<TransactionCategory> actual = service.update(1, 1, 1);
+
+            assertEquals(expected, actual);
+        }
     }
 
 
