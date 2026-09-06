@@ -10,7 +10,7 @@ function NavBar({loggedInUser}){
       <Navbar bg="light" data-bs-theme="light">
         <Container>
 
-          <Navbar.Brand href="#home">
+          <Navbar.Brand href={loggedInUser? "/user/landing": "/"}>
             <img src={logo} alt="React Logo" className="logo p-1" width={60}/>
             1st Steps
             </Navbar.Brand>

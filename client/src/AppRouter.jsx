@@ -39,7 +39,7 @@ function AppRouter(){
                     },
                     {
                         path:"landing",
-                        element: <UserLanding></UserLanding>,
+                        element: <UserLanding loggedInUser={loggedInUser}></UserLanding>,
                     },
                     {
                         path: "signout",

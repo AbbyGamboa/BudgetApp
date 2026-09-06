@@ -45,7 +45,7 @@ function UserForm({signup, setLoggedInUser}){
 
             setLoggedInUser(loggedInUser)
             localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser))
-            navigate("/user/landing")
+            navigate("/view/accounts")
         } else{
             setErrors(payload);
         }
@@ -68,7 +68,7 @@ function UserForm({signup, setLoggedInUser}){
 
             setLoggedInUser(loggedInUser)
             localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser))
-            navigate("/user/landing")
+            navigate("/view/accounts")
         } else {
             setErrors(payload)
         }
@@ -94,7 +94,7 @@ function UserForm({signup, setLoggedInUser}){
                 <label htmlFor="password">Password: </label>
                 <input type="password" id="password" name="password" required placeholder="ex: password123" onChange={handleChange} value={user.password}/>
                 
-                <button type="submit" className="btn btn-primary m-3">{signup? "Sign Up": "Login"}</button>
+                <button type="submit" className="btn btn-primary m-3 w-25">{signup? "Sign Up": "Login"}</button>
 
                 <p>{endParagraph} <Link to={endNavigate}>Click here</Link></p>
             </form>

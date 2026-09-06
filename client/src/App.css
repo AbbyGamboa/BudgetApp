@@ -7,4 +7,5 @@
 .background-blue{
   background-image: url(./assets/blueBackground.jpg);
   height: 200px;
+  color:white;
 }

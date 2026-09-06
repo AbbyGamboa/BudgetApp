@@ -65,6 +65,7 @@ function BudgetCategory({loggedInUser}){
             
         </Modal>
         <h1>Categories: </h1>
+    
         {budgetcategories[0] === "Budget has no categories"? <div>
             <h4>No categories found</h4></div>: budgetcategories.map(budgetCategory=>  <div key={budgetCategory.budgetCategoryId}>
             <h4>{budgetCategory.category.name}:</h4>
