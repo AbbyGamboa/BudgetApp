@@ -76,7 +76,7 @@ public class TransactionCategoryController {
     public ResponseEntity<?> update(@RequestParam int tId, @RequestParam int bCId, Authentication authentication){
         int userId = Integer.parseInt(authentication.getName());
 
-        Result<TransactionCategory> result = service.create(tId, bCId, userId);
+        Result<TransactionCategory> result = service.update(tId, bCId, userId);
         if (!result.isSuccess()){
             return ErrorResponse.build(result);
         }
