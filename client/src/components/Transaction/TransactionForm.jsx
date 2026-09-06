@@ -102,8 +102,7 @@ function TransactionForm({loggedInUser, transactionId, setActiveModalItem, handl
 
 
             <button type="submit" className="btn btn-primary">{transactionId? "Next": "Create"}</button>
-            {!transactionId &&
-            <button type="button" className="btn btn-danger m-1" onClick={handleCreateClose}>Close</button>}
+            <button type="button" className="btn btn-danger m-1" onClick={()=>transactionId? setActiveModalItem(null):handleCreateClose()}>Close</button>
         </form>
 
         {

@@ -57,13 +57,13 @@ function ViewTransactions({loggedInUser}){
         </div>)}
 
         {activeModalItem && 
-        <Modal show={true}>
+        <Modal show={true} onHide={handleCreateClose}>
             <Modal.Header closeButton>
                 <Modal.Title>Update Transaction</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <TransactionForm loggedInUser={loggedInUser} transactionId ={activeModalItem.transactionId} setActiveModalItem={setActiveModalItem} handleCreateClose={handleCreateClose}/>
-                <Button variant="secondary" onClick={()=>setActiveModalItem(null)}>Close </Button>
+                {/*<Button variant="secondary" onClick={()=>setActiveModalItem(null)}>Close </Button>*/}
             </Modal.Body>
             
         </Modal>}

@@ -122,7 +122,18 @@ function TCForm({loggedInUser, setActiveModalItem, firstTId, handleCreateClose})
             
         }
     }
-    //we need a way to prepopulate data
+    //work on delete transaction category:
+    async function handleDelete(){
+    }
+
+    function handleNoCategory(){
+        if (existing){
+            setActiveModalItem(null)
+        } else{
+            handleCreateClose()
+        }
+        window.location.reload();
+    }
 
     return (
         <form onSubmit={handleTransCate}>
@@ -145,7 +156,9 @@ function TCForm({loggedInUser, setActiveModalItem, firstTId, handleCreateClose})
                 </div>
 
                 <button type="submit" className="btn btn-primary m-1">{existing? "Edit": "Add"}</button>
-                <button type="button" className="btn btn-danger m-1" onClick={() => existing? setActiveModalItem(null): handleCreateClose()}>No thanks</button>
+                {existing && <button  className="btn btn-danger m-1">Delete</button>}
+                <button type="button" className="btn btn-warning m-1" onClick={() => handleNoCategory()}>No thanks</button>
+            
             </form>
     )
 }
