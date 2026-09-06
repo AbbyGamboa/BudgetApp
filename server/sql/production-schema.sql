@@ -12,7 +12,6 @@ create table budget(
 	budgetId int primary key auto_increment, 
 	userId int, 
 	name text,
-	income decimal(10,2) NULL,
 	 constraint fk_budget_user_id
         foreign key (userId)
         references user(userId)
