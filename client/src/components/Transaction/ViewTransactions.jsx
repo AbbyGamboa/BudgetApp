@@ -40,7 +40,6 @@ function ViewTransactions({loggedInUser}){
             </Modal.Header>
             <Modal.Body>
                 <TransactionForm loggedInUser={loggedInUser} transactionId ={undefined} setActiveModalItem={setActiveModalItem} handleCreateClose={handleCreateClose}/>
-                <Button variant="secondary" onClick={handleCreateClose}>Close </Button>
             </Modal.Body>
             
         </Modal>
