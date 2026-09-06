@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Transaction from "./Transaction";
+import TransactionCategory from "../TransactionCategory/TransactionCategory";
 
 function SingleTransaction({loggedInUser}){
     const {transactionId} = useParams()
@@ -34,6 +35,7 @@ function SingleTransaction({loggedInUser}){
         {transaction && (
             <>
                 <Transaction transaction={transaction}></Transaction>
+                <TransactionCategory loggedInUser={loggedInUser} transactionId={transaction.transactionId}></TransactionCategory>
                 
                 <Link className="btn btn-warning m-1" to={`/view/account/${transaction.account.accountId}`}>View all Transactions for this Account</Link>
                 <Link className="btn btn-primary m-1" to="/edit/transaction">Edit</Link>

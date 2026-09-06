@@ -20,7 +20,7 @@ public class BudgetJdbcClientRepository implements BudgetRepository{
 
 
     private final String BASE_SELECT = """
-            select b.budgetId, b.userId, b.income, u.email, u.password from budget b
+            select b.budgetId, b.userId, b.name, u.email, u.password from budget b
                 inner join user u on b.userId = u.userId""";
 
     @Override
@@ -38,15 +38,15 @@ public class BudgetJdbcClientRepository implements BudgetRepository{
     @Override
     public Budget create(Budget budget) {
         String sql = """
-                insert into budget (userId, income) 
-                values (:userId, :income);
+                insert into budget (userId, name)
+                values (:userId, :name;
                 """;
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         int rowsAffected = jdbcClient.sql(sql)
                 .param("userId", budget.getUser().getUserId())
-                .param("income", budget.getIncome())
+                .param("name", budget.getName())
                 .update(keyHolder, "budgetId");
 
         if(rowsAffected == 0){
@@ -63,7 +63,7 @@ public class BudgetJdbcClientRepository implements BudgetRepository{
                 where budgetId = ? and userId = ?;
                 """;
 
-        return  jdbcClient.sql(sql).param(budget.getIncome())
+        return  jdbcClient.sql(sql).param(budget.getName())
                 .param(budget.getBudgetId())
                 .param(budget.getUser().getUserId())
                 .update() > 0;

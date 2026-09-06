@@ -6,12 +6,12 @@ import java.util.Objects;
 public class Budget {
     public int budgetId;
     public User user;
-    public BigDecimal income;
+    public String name;
 
-    public Budget(int budgetId, User user, BigDecimal income) {
+    public Budget(int budgetId, User user, String name) {
         this.budgetId = budgetId;
         this.user = user;
-        this.income = income;
+        this.name = name;
     }
 
     public Budget(){};
@@ -32,23 +32,23 @@ public class Budget {
         this.user = user;
     }
 
-    public BigDecimal getIncome() {
-        return income;
+    public String getName() {
+        return name;
     }
 
-    public void setIncome(BigDecimal income) {
-        this.income = income;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Budget budget = (Budget) o;
-        return budgetId == budget.budgetId && Objects.equals(user, budget.user) && Objects.equals(income, budget.income);
+        return budgetId == budget.budgetId && Objects.equals(user, budget.user) && Objects.equals(name, budget.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(budgetId, user, income);
+        return Objects.hash(budgetId, user, name);
     }
 }

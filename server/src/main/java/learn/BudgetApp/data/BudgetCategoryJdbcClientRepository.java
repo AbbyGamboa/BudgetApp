@@ -24,7 +24,7 @@ public class BudgetCategoryJdbcClientRepository implements BudgetCategoryReposit
                 bc.budgetCategoryId,
                 bc.percentage,
                 b.budgetId,
-                b.income,
+                b.name,
                 c.name,
                 c.categoryId,
                 bu.userId AS budgetUserId,

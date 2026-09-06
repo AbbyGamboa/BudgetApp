@@ -21,6 +21,8 @@ public class Transaction {
         this.description = description;
     }
 
+    public Transaction(){};
+
     public int getTransactionId() {
         return transactionId;
     }

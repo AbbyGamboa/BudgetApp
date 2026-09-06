@@ -10,9 +10,9 @@ insert into user (email, password) values
 		("Groceries", 1),
 		("Gym", 2);
 	
-	insert into budget(userId, income) values
-	(1, 4000), 
-	(2, 15000);
+	insert into budget(userId, name) values
+	(1, "September"), 
+	(2, "October");
 	
 	insert into budget_category(budgetId, categoryId, percentage) values 
 	(1,1,15),
@@ -29,8 +29,8 @@ insert into user (email, password) values
 	(2, 300.50, '2026-08-23', "Ikea", null);
 	
 	
-	insert into transaction_categories(transactionId, categoryId) values
-	(1,2),(2,1), (3,3);
+	insert into transaction_categories(transactionId, budgetCategoryId) values
+	(1,2),(2,1);
 	
 	select * from user;
 select * from budget;
@@ -44,7 +44,7 @@ where c.userId is null or c.userId = 1;
 
 select * from categories c;
 
-select bc.budgetCategoryId, b.budgetId, c.categoryId, bc.percentage, b.income, c.name, c.userId, u.userId, u.email, u.password
+select bc.budgetCategoryId, b.budgetId, c.categoryId, bc.percentage, b.name, c.name, c.userId, u.userId, u.email, u.password
             from budget_category bc
             inner join budget b on bc.budgetId = b.budgetId
             inner join categories c on bc.categoryId = c.categoryId
@@ -54,7 +54,7 @@ select
                 bc.budgetCategoryId,
                 bc.percentage,
                 b.budgetId,
-                b.income,
+                b.name,
                 c.name,
                 c.categoryId,
                 bu.userId AS budgetUserId,
@@ -68,3 +68,17 @@ select
                 inner join user bu on b.userId = bu.userId
                 inner join categories c on bc.categoryId = c.categoryId
                 left join user cu on c.userId = cu.userId;
+
+select tc.transactionId, tc.budgetCategoryId, au.userId, au.email, au.password, cu.userId as cUserId,
+            cu.email as cEmail, cu.password as cPassword, c.categoryId, c.name, b.budgetId, b.name, bc.percentage,
+            bc.budgetCategoryId, a.accountId, a.subtype, t.description, t.date, t.merchantName, t.amount
+            from transaction_categories tc
+            inner join transaction t on tc.transactionId = t.transactionId
+            inner join account a on t.accountId = a.accountId
+            inner join user au on a.userId = au.userId
+            inner join budget_category bc on tc.budgetCategoryId = bc.budgetCategoryId
+            inner join budget b on bc.budgetId = b.budgetId
+            inner join user bu on b.userId = bu.userId
+            inner join categories c on bc.categoryId = c.categoryId
+            left join user cu on c.userId = cu.userId;
+

@@ -21,7 +21,7 @@ function ViewBudgets({loggedInUser}){
     return(
         <>
         <h1>Budgets: </h1>
-        {budgets.map((budget, i) => <Budget key={i} income={Number(budget.income).toFixed(2)} budgetId={budget.budgetId}></Budget>)}
+        {budgets.map((budget, i) => <Budget key={i} name={budget.name} budgetId={budget.budgetId}></Budget>)}
         <Link to={"/add/budget"} className="btn btn-primary">Add budget</Link>
         </>
     

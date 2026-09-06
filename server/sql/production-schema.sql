@@ -11,7 +11,7 @@ create table user(
 create table budget(
 	budgetId int primary key auto_increment, 
 	userId int, 
-	income decimal(10, 2),
+	name text,
 	 constraint fk_budget_user_id
         foreign key (userId)
         references user(userId)
@@ -67,15 +67,15 @@ create table transaction(
 
 create table transaction_categories(
 	transactionId int,
-	categoryId int,
-	primary key (transactionId, categoryId),
+	budgetCategoryId int,
+	primary key (transactionId, budgetCategoryId),
 	constraint fk_cat_transaction_id
 		foreign key (transactionId)
 		references transaction(transactionId)
 		on delete cascade,
 	constraint fk_trans_category_id
-		foreign key (categoryId)
-		references categories(categoryId)
+		foreign key (budgetCategoryId)
+		references budget_category(budgetCategoryId)
 		on delete cascade
 );
 

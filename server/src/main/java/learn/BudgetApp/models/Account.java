@@ -13,6 +13,9 @@ public class Account {
         this.subtype = subtype;
     }
 
+    public Account() {
+    }
+
     public int getAccountId() {
         return accountId;
     }

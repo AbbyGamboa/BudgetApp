@@ -33,6 +33,14 @@ public class TestDataHelper {
         return new Transaction(1, existingAccount(), BigDecimal.valueOf(100).setScale(2, RoundingMode.DOWN), LocalDate.of(2026, 6, 8), "Target", "Online buy");
     }
 
+    public static Transaction secondTransaction(){
+        return new Transaction(2, existingAccount(), BigDecimal.valueOf(10).setScale(2, RoundingMode.DOWN), LocalDate.of(2026, 6, 9), "Speedway", "Gas");
+    }
+
+    public static Transaction thirdTransaction(){
+        return new Transaction(3, secondAccount(), BigDecimal.valueOf(300.50).setScale(2, RoundingMode.DOWN), LocalDate.of(2026, 8, 23), "Ikea", null);
+    }
+
     public static Account secondAccount(){
         return  new Account(2, secondUser(), "Savings");
     }
@@ -61,6 +69,8 @@ public class TestDataHelper {
         return new Category(2, "Groceries", existingUser());
     }
 
+    public static Category thirdCategory(){return new Category(3, "Gym", secondUser());}
+
     public static Category createCategory(){
         return new Category(4, "Insurance", existingUser());
     }
@@ -86,7 +96,35 @@ public class TestDataHelper {
         return new BudgetCategory(2, budgetOne(), customCategory(), BigDecimal.valueOf(30));
     }
 
+    public static BudgetCategory thirdBC(){
+        return new BudgetCategory(3,budgetTwo(), thirdCategory(), BigDecimal.valueOf(10));
+    }
+
     public static BudgetCategory createdBC(){
         return new BudgetCategory(5, budgetTwo(), firstCategory(), BigDecimal.valueOf(100));
+    }
+
+    public static TransactionCategory firstTC(){
+        return new TransactionCategory(firstTransaction(), secondBC());
+    }
+
+    public static TransactionCategory secondTC(){
+        return new TransactionCategory(secondTransaction(), budgetCategory());
+    }
+
+    public static List<TransactionCategory> tcOfBudgetOne(){
+        return List.of(firstTC(), secondTC());
+    }
+
+    public static Category secondUserCat(){
+        return new Category(3, "Gym", secondUser());
+    }
+
+    public static BudgetCategory secondUserBC(){
+        return new BudgetCategory(3, budgetTwo(), secondUserCat(), BigDecimal.valueOf(10).setScale(2, RoundingMode.DOWN));
+    }
+
+    public static TransactionCategory createdTC(){
+        return new TransactionCategory(thirdTransaction(), secondUserBC());
     }
 }

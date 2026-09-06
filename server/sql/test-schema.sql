@@ -68,15 +68,15 @@ create table transaction(
 
 create table transaction_categories(
 	transactionId int,
-	categoryId int,
-	primary key (transactionId, categoryId),
+	budgetCategoryId int,
+	primary key (transactionId, budgetCategoryId),
 	constraint fk_cat_transaction_id
 		foreign key (transactionId)
 		references transaction(transactionId)
 		on delete cascade,
 	constraint fk_trans_category_id
-		foreign key (categoryId)
-		references categories(categoryId)
+		foreign key (budgetCategoryId)
+		references budget_category(budgetCategoryId)
 		on delete cascade
 );
 
@@ -129,8 +129,8 @@ begin
 	(2, 300.50, '2026-08-23', "Ikea", null);
 	
 	
-	insert into transaction_categories(transactionId, categoryId) values
-	(1,2),(2,1), (3,3);
+	insert into transaction_categories(transactionId, budgetCategoryId) values
+	(1,2),(2,1);
 	
 
 end //

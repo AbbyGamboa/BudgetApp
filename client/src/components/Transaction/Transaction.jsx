@@ -8,6 +8,7 @@ function Transaction({transaction}){
             <h4>{transaction.merchant_name && `Merchant Name: ${transaction.merchant_name}`}</h4>
             <h4>{transaction.description && `Description: ${transaction.description}`}</h4>
         </div>
+        
 
 
     )

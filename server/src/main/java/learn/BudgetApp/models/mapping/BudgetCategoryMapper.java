@@ -24,7 +24,7 @@ public class BudgetCategoryMapper implements RowMapper<BudgetCategory> {
 
         budget.setBudgetId(rs.getInt("budgetId"));
         budget.setUser(budgetUser);
-        budget.setIncome(rs.getBigDecimal("income"));
+        budget.setName(rs.getString("name"));
 
         Category category = new Category();
         User categoryUser = new User();
