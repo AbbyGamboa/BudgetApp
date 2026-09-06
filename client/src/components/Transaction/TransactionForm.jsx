@@ -2,7 +2,7 @@ import { useParams, useNavigate} from "react-router-dom";
 import { useState, useEffect } from "react";
 import TCForm from "../TransactionCategory/TCForm";
 
-function TransactionForm({loggedInUser, transactionId, setActiveModalItem}){
+function TransactionForm({loggedInUser, transactionId, setActiveModalItem, handleCreateClose}){
     const navigate = useNavigate();
 
     const{accountId} = useParams();
@@ -105,7 +105,7 @@ function TransactionForm({loggedInUser, transactionId, setActiveModalItem}){
         </form>
 
         {
-            addCat && <TCForm loggedInUser={loggedInUser} setActiveModalItem={setActiveModalItem} firstTId={transactionId}></TCForm>
+            addCat && <TCForm loggedInUser={loggedInUser} setActiveModalItem={setActiveModalItem} firstTId={transactionId} handleCreateClose={handleCreateClose}></TCForm>
         }
         
         </>

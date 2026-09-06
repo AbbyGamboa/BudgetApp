@@ -39,7 +39,7 @@ function ViewTransactions({loggedInUser}){
                 <Modal.Title>Modal heading</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <TransactionForm loggedInUser={loggedInUser} transactionId ={undefined} setActiveModalItem={setActiveModalItem}/>
+                <TransactionForm loggedInUser={loggedInUser} transactionId ={undefined} setActiveModalItem={setActiveModalItem} handleCreateClose={handleCreateClose}/>
                 <Button variant="secondary" onClick={handleCreateClose}>Close </Button>
             </Modal.Body>
             
@@ -63,7 +63,7 @@ function ViewTransactions({loggedInUser}){
                 <Modal.Title>Update Transaction</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <TransactionForm loggedInUser={loggedInUser} transactionId ={activeModalItem.transactionId} setActiveModalItem={setActiveModalItem}/>
+                <TransactionForm loggedInUser={loggedInUser} transactionId ={activeModalItem.transactionId} setActiveModalItem={setActiveModalItem} handleCreateClose={handleCreateClose}/>
                 <Button variant="secondary" onClick={()=>setActiveModalItem(null)}>Close </Button>
             </Modal.Body>
             

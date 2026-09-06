@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-function TCForm({loggedInUser, setActiveModalItem, firstTId}){
+function TCForm({loggedInUser, setActiveModalItem, firstTId, handleCreateClose}){
     const[budgetCategories, setBudgetCategories] = useState([])
     const[budgetCategoryId, setBudgetCategoryId] = useState("")
     const[budgetId, setBudgetId] = useState()
@@ -145,7 +145,7 @@ function TCForm({loggedInUser, setActiveModalItem, firstTId}){
                 </div>
 
                 <button type="submit" className="btn btn-primary m-1">{existing? "Edit": "Add"}</button>
-                <button type="button" className="btn btn-danger m-1" onClick={() => setActiveModalItem(null)}>No thanks</button>
+                <button type="button" className="btn btn-danger m-1" onClick={() => existing? setActiveModalItem(null): handleCreateClose()}>No thanks</button>
             </form>
     )
 }
