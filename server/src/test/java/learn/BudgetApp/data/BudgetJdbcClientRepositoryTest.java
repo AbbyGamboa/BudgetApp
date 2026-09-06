@@ -31,7 +31,7 @@ class BudgetJdbcClientRepositoryTest {
     class findByUser{
         @Test
         void success(){
-            List<Budget> expected = List.of(new Budget(1, TestDataHelper.existingUser(), BigDecimal.valueOf(4000).setScale(2, RoundingMode.DOWN)));
+            List<Budget> expected = List.of(new Budget(1, TestDataHelper.existingUser(), "September"));
             List<Budget> actual = repository.findByUser(1);
 
             assertEquals(expected, actual);
@@ -50,7 +50,7 @@ class BudgetJdbcClientRepositoryTest {
         @Test
         void success(){
            Budget actual = repository.findById(1);
-           Budget expected = new Budget(1, TestDataHelper.existingUser(), BigDecimal.valueOf(4000).setScale(2, RoundingMode.DOWN));
+           Budget expected = new Budget(1, TestDataHelper.existingUser(),"September");
 
            assertEquals(expected, actual);
         }
@@ -67,7 +67,7 @@ class BudgetJdbcClientRepositoryTest {
     class update{
         @Test
         void success(){
-            Budget update = new Budget(1, TestDataHelper.existingUser(), BigDecimal.valueOf(5000));
+            Budget update = new Budget(1, TestDataHelper.existingUser(), "June");
             boolean actual = repository.update(update);
 
             assertTrue(actual);
@@ -75,7 +75,7 @@ class BudgetJdbcClientRepositoryTest {
 
         @Test
         void failToUpdateWithIncorrectUserAndBudget(){
-            Budget update = new Budget(2, TestDataHelper.existingUser(), BigDecimal.valueOf(5000));
+            Budget update = new Budget(2, TestDataHelper.existingUser(), "June");
             boolean actual = repository.update(update);
 
             assertFalse(actual);
@@ -87,7 +87,7 @@ class BudgetJdbcClientRepositoryTest {
     class create{
         @Test
         void success(){
-            Budget create = new Budget(3, TestDataHelper.existingUser(), BigDecimal.valueOf(950.40));
+            Budget create = new Budget(3, TestDataHelper.existingUser(), "June");
             Budget actual = repository.create(create);
 
             assertEquals(create, actual);

@@ -39,7 +39,7 @@ public class BudgetJdbcClientRepository implements BudgetRepository{
     public Budget create(Budget budget) {
         String sql = """
                 insert into budget (userId, name)
-                values (:userId, :name;
+                values (:userId, :name);
                 """;
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -59,7 +59,7 @@ public class BudgetJdbcClientRepository implements BudgetRepository{
     public boolean update(Budget budget) {
         String sql = """
                 update budget
-                set income =?
+                set name =?
                 where budgetId = ? and userId = ?;
                 """;
 

@@ -21,7 +21,7 @@ public class TransactionCategoryJdbcClientRepository implements TransactionCateg
 
     private final String BASE_SELECT = """
             select tc.transactionId, tc.budgetCategoryId, au.userId, au.email, au.password, cu.userId as cUserId,
-            cu.email as cEmail, cu.password as cPassword, c.categoryId, c.name, b.budgetId, b.name, bc.percentage,
+            cu.email as cEmail, cu.password as cPassword, c.categoryId, c.name, b.budgetId, b.name as budgetName, bc.percentage,
             bc.budgetCategoryId, a.accountId, a.subtype, t.description, t.date, t.merchantName, t.amount
             from transaction_categories tc
             inner join transaction t on tc.transactionId = t.transactionId

@@ -6,12 +6,14 @@ import DeleteBCConfirm from "./DeleteBCConfirm";
 import { useParams } from "react-router-dom";
 
 function BudgetCategory({loggedInUser}){
+    const navigate = useNavigate()
     const {budgetId} = useParams()
 
 
     const[budgetcategories, setBudgetCategories] = useState([])
     const [activeModalItem, setActiveModalItem] = useState(null);
     const [deleteItem, setdeleteItem] = useState(null);
+    const [sum, setSum]= useState(0);
     
 
     useEffect(()=>{
@@ -22,16 +24,35 @@ function BudgetCategory({loggedInUser}){
                     }
                 })
                 const payload = await response.json();
-                setBudgetCategories(payload)
+                    if(response.status>= 200 && response.status <= 300){
+                        setBudgetCategories(payload)
+
+                    if(payload != "Budget has no categories"){
+                        let total = 0;
+                        for (const budCat of payload) {
+                            total += Number(budCat.percentage);
+                        }
+
+                        setSum(total.toFixed(2));
+                    } else{
+                        setSum(0)
+                    }
+                } else{
+                    navigate("/view/budgets")
+                }
+                
             }
+            
             doFetch()
-        }, [])
+            
+        }, [budgetId])
     const [showCreate, setShowCreate] = useState(false);
     const handleShowCreate = () => setShowCreate(true);
     const handleCreateClose= () => setShowCreate(false);
 
     return (
         <>
+        <h4>Total budget: ${sum}</h4>
         <button onClick={handleShowCreate}>Add category to budget</button>
         <Modal show={showCreate} onHide={handleCreateClose}>
             <Modal.Header closeButton>
@@ -44,11 +65,10 @@ function BudgetCategory({loggedInUser}){
             
         </Modal>
         <h1>Categories: </h1>
-        {console.log(budgetcategories[0])}
         {budgetcategories[0] === "Budget has no categories"? <div>
-            <h2>No categories found</h2></div>: budgetcategories.map(budgetCategory=>  <div key={budgetCategory.budgetCategoryId}>
-            <h2>{budgetCategory.category.name}:</h2>
-            <h3>Dedicated amount from income: ${Number(budgetCategory.percentage).toFixed(2)}</h3>
+            <h4>No categories found</h4></div>: budgetcategories.map(budgetCategory=>  <div key={budgetCategory.budgetCategoryId}>
+            <h4>{budgetCategory.category.name}:</h4>
+            <h4>Dedicated amount from income: ${Number(budgetCategory.percentage).toFixed(2)}</h4>
             <button className="btn btn-primary m-1" onClick={() => setActiveModalItem(budgetCategory)}>Edit amount</button>
             <button className="btn btn-danger" onClick={()=>setdeleteItem(budgetCategory)}>Delete</button>
         </div>)}

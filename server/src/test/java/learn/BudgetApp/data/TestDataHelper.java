@@ -76,24 +76,24 @@ public class TestDataHelper {
     }
 
     public static Budget budgetOne(){
-        return new Budget(1, TestDataHelper.existingUser(), BigDecimal.valueOf(4000).setScale(2, RoundingMode.DOWN));
+        return new Budget(1, TestDataHelper.existingUser(), "September");
     }
 
     public static Budget budgetTwo(){
-        return new Budget(2, secondUser(), BigDecimal.valueOf(15000).setScale(2, RoundingMode.DOWN));
+        return new Budget(2, secondUser(), "October");
     }
 
     public static List<BudgetCategory> budgetOneBCList(){
-        return List.of(new BudgetCategory(1, budgetOne(), firstCategory(), BigDecimal.valueOf(15)),
-                new BudgetCategory(2, budgetOne(), customCategory(), BigDecimal.valueOf(30)));
+        return List.of(new BudgetCategory(1, budgetOne(), firstCategory(), BigDecimal.valueOf(15).setScale(2, RoundingMode.DOWN)),
+                new BudgetCategory(2, budgetOne(), customCategory(), BigDecimal.valueOf(30).setScale(2, RoundingMode.DOWN)));
     }
 
     public static BudgetCategory budgetCategory(){
-        return new BudgetCategory(1, budgetOne(), firstCategory(), BigDecimal.valueOf(15));
+        return new BudgetCategory(1, budgetOne(), firstCategory(), BigDecimal.valueOf(15).setScale(2, RoundingMode.DOWN));
     }
 
     public static BudgetCategory secondBC(){
-        return new BudgetCategory(2, budgetOne(), customCategory(), BigDecimal.valueOf(30));
+        return new BudgetCategory(2, budgetOne(), customCategory(), BigDecimal.valueOf(30).setScale(2, RoundingMode.DOWN));
     }
 
     public static BudgetCategory thirdBC(){
