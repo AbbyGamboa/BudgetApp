@@ -23,7 +23,7 @@ public class BudgetMapper implements RowMapper<Budget> {
         return new Budget(
                 rs.getInt("budgetId"),
                 user,
-                rs.getBigDecimal("income").setScale(2, RoundingMode.DOWN)
+                rs.getString("name")
         );
     }
 }

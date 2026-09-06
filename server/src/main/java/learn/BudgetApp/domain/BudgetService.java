@@ -2,13 +2,11 @@ package learn.BudgetApp.domain;
 
 import learn.BudgetApp.data.BudgetRepository;
 import learn.BudgetApp.data.UserRepository;
-import learn.BudgetApp.models.Account;
 import learn.BudgetApp.models.Budget;
 import learn.BudgetApp.models.User;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 
 @Service
@@ -73,8 +71,6 @@ public class BudgetService {
         budget.setUser(existing.getUser());
         validate(result, budget);
 
-
-        validateIncome(result, budget.getIncome());
         if (result.isSuccess()){
             if (repository.update(budget)){
                 result.setpayload(budget);
@@ -103,7 +99,6 @@ public class BudgetService {
         validate(result, budget);
 
         if (result.isSuccess()){
-            validateIncome(result, budget.getIncome());
             if (result.isSuccess()){
                 result.setpayload(repository.create(budget));
             }
@@ -126,25 +121,10 @@ public class BudgetService {
         }
 
 
-        if(budget.getIncome() == null){
+        if(budget.getName() == null){
             result.addErrorMessage("Income is required", ResultType.INVALID);
         }
     }
 
-    private void validateIncome(Result<Budget> results, BigDecimal income){
-        if (income == null){
-            return;
-        }
-
-        if(income.signum() != 1){
-            results.addErrorMessage("Income must be higher than 0", ResultType.INVALID);
-        }
-
-        if (income.scale() > 2){
-            results.addErrorMessage("Income must have 2 decimal places", ResultType.INVALID);
-        }
-
-
-    }
 
 }

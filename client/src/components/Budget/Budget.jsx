@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-function Budget({income, budgetId}){
+function Budget({name, budgetId}){
     return(
         <div>
             <h3>Budget {budgetId}: </h3>
-            Start total: ${income}
+            Start total: {name}
             <Link className="btn btn-primary m-1" to={`/view/budget/${budgetId}`}>View</Link>
             <Link className="btn btn-primary m-1" to={`/edit/budget/${budgetId}`}>Edit</Link>
         </div>

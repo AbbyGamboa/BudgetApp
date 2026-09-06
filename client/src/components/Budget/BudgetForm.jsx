@@ -7,7 +7,7 @@ function BudgetForm({loggedInUser}){
     const{budgetId} = useParams();
 
     const initialBudget = {
-        "income": "",
+        "name": "",
     }
 
     const [budget, setBudget] = useState(initialBudget);
@@ -66,7 +66,7 @@ function BudgetForm({loggedInUser}){
             body: JSON.stringify(budget)
         })
         if (response.status >= 200 && response.status < 300) {
-            console.log(budget.income)
+
             navigate("/view/budgets")
         } else {
             const payload = await response.json()
@@ -83,8 +83,8 @@ function BudgetForm({loggedInUser}){
                 }
                 
                 
-            <label htmlFor="income">Total budget:  </label>
-            <input type="text" id="income" name="income" onChange={handleChange} value={budget.income} inputMode="decimal"/>
+            <label htmlFor="name">Budget Name: </label>
+            <input type="text" id="name" name="name" onChange={handleChange} value={budget.name}/>
 
 
             <button className="btn btn-primary m-1" type="submit">{budgetId? "Update":"Create"}</button>
