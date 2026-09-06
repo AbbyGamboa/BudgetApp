@@ -6,6 +6,7 @@ import DeleteBCConfirm from "./DeleteBCConfirm";
 import { useParams } from "react-router-dom";
 
 function BudgetCategory({loggedInUser}){
+    const navigate = useNavigate()
     const {budgetId} = useParams()
 
 
@@ -23,18 +24,23 @@ function BudgetCategory({loggedInUser}){
                     }
                 })
                 const payload = await response.json();
-                setBudgetCategories(payload)
+                    if(response.status>= 200 && response.status <= 300){
+                        setBudgetCategories(payload)
 
-                if(payload != "Budget has no categories"){
-                    let total = 0;
-                    for (const budCat of payload) {
-                        total += Number(budCat.percentage);
+                    if(payload != "Budget has no categories"){
+                        let total = 0;
+                        for (const budCat of payload) {
+                            total += Number(budCat.percentage);
+                        }
+
+                        setSum(total.toFixed(2));
+                    } else{
+                        setSum(0)
                     }
-
-                    setSum(total.toFixed(2));
                 } else{
-                    setSum(0)
+                    navigate("/view/budgets")
                 }
+                
             }
             
             doFetch()

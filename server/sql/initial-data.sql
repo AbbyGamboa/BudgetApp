@@ -10,9 +10,9 @@ insert into user (email, password) values
 		("Groceries", 1),
 		("Gym", 2);
 	
-	insert into budget(userId, name) values
-	(1, "September"), 
-	(2, "October");
+	insert into budget(userId, name, income) values
+	(1, "September", null), 
+	(2, "October", null);
 	
 	insert into budget_category(budgetId, categoryId, percentage) values 
 	(1,1,15),
