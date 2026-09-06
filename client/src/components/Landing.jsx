@@ -7,7 +7,6 @@ function Landing(){
 
     return (
         <>
-    
             <img src={background} alt="" className="w-100" style={{ height: "200px", objectFit: "cover" }}/>
             <div className="d-flex justify-content-between m-5">
                 <Article></Article>

@@ -3,3 +3,8 @@
   grid-template-columns: repeat(3, minmax(0, 1fr)); /* Automatically enforces 3 columns per row */
   gap: 16px; /* Adjust spacing between items */
 }
+
+.background-blue{
+  background-image: url(./assets/blueBackground.jpg);
+  height: 200px;
+}
