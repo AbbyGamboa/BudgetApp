@@ -101,6 +101,7 @@ function TCForm({loggedInUser, setActiveModalItem, firstTId, handleCreateClose})
         if (existing) {
             url = `http://localhost:8080/api/transactioncategory/update?tId=${firstTId}&bCId=${budgetCategoryId}`;
             method = "PUT";
+
         } else {
             url = `http://localhost:8080/api/transactioncategory?tId=${transactionId}&bCId=${budgetCategoryId}`;
             method = "POST";
@@ -123,8 +124,6 @@ function TCForm({loggedInUser, setActiveModalItem, firstTId, handleCreateClose})
         }
     }
     //work on delete transaction category:
-    async function handleDelete(){
-    }
 
     function handleNoCategory(){
         if (existing){
@@ -133,6 +132,26 @@ function TCForm({loggedInUser, setActiveModalItem, firstTId, handleCreateClose})
             handleCreateClose()
         }
         window.location.reload();
+    }
+
+    async function handleDelete() {
+        const response = await fetch(
+            `http://localhost:8080/api/transactioncategory/${firstTId}`,
+            {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${loggedInUser.token}`
+                }
+            }
+        );
+
+        if (response.ok) {
+            setActiveModalItem(null);
+            window.location.reload();
+        } else {
+            const payload = await response.json();
+            setErrors(payload);
+        }
     }
 
     return (
@@ -156,7 +175,7 @@ function TCForm({loggedInUser, setActiveModalItem, firstTId, handleCreateClose})
                 </div>
 
                 <button type="submit" className="btn btn-primary m-1">{existing? "Edit": "Add"}</button>
-                {existing && <button  className="btn btn-danger m-1">Delete</button>}
+                {existing && <button  className="btn btn-danger m-1" onClick={handleDelete}>Delete</button>}
                 <button type="button" className="btn btn-warning m-1" onClick={() => handleNoCategory()}>No thanks</button>
             
             </form>
