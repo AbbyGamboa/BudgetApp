@@ -35,8 +35,6 @@ function BudgetCategory({loggedInUser}){
                 } else{
                     setSum(0)
                 }
-                
-        
             }
             
             doFetch()
