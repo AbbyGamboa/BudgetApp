@@ -82,9 +82,6 @@ function CreateAccount({loggedInUser}){
             <label htmlFor="subtype">Type: </label>
             <input type="text" id="subtype" name="subtype" onChange={handleChange} value={account.subtype}/>
 
-            <label htmlFor="income">Total worth: </label>
-            <input type="text" id="income" name="income"/>
-
             <button className="btn btn-primary m-1" type="submit">{accountId? "Update":"Create"}</button>
             <Link className="btn btn-primary m-1" to="/view/accounts"> Cancel</Link>
         </form>
