@@ -60,7 +60,7 @@ function ViewTransactions({loggedInUser}){
         {activeModalItem && 
         <Modal show={true}>
             <Modal.Header closeButton>
-                <Modal.Title>Modal heading</Modal.Title>
+                <Modal.Title>Update Transaction</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <TransactionForm loggedInUser={loggedInUser} transactionId ={activeModalItem.transactionId} setActiveModalItem={setActiveModalItem}/>

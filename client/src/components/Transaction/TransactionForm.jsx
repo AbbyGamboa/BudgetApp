@@ -66,10 +66,10 @@ function TransactionForm({loggedInUser, transactionId, setActiveModalItem}){
             },
             body: JSON.stringify(transaction)
         })
-        console.log(response)
         if (response.status >= 200 && response.status < 300) {
             const payload = await response.json();
             setAddCat(true);
+            window.location.reload
             
         } else {
             const payload = await response.json()
@@ -105,8 +105,9 @@ function TransactionForm({loggedInUser, transactionId, setActiveModalItem}){
         </form>
 
         {
-            addCat && <TCForm loggedInUser={loggedInUser} setActiveModalItem={setActiveModalItem}></TCForm>
+            addCat && <TCForm loggedInUser={loggedInUser} setActiveModalItem={setActiveModalItem} firstTId={transactionId}></TCForm>
         }
+        
         </>
     );
 }
