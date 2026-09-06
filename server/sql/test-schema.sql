@@ -11,7 +11,7 @@ create table user(
 create table budget(
 	budgetId int primary key auto_increment, 
 	userId int, 
-	income decimal(10, 2),
+	name text,
 	 constraint fk_budget_user_id
         foreign key (userId)
         references user(userId)
@@ -32,7 +32,7 @@ create table budget_category(
 	budgetCategoryId int primary key auto_increment, 
 	budgetId int, 
 	categoryId int, 
-	percentage decimal, 
+	percentage decimal (10,2), 
 	constraint fk_budget_id
         foreign key (budgetId)
         references budget(budgetId)
@@ -80,8 +80,6 @@ create table transaction_categories(
 		on delete cascade
 );
 
-
-
 delimiter //
 create procedure set_known_good_state()
 begin
@@ -100,7 +98,7 @@ begin
 	delete from user;
     alter table user auto_increment = 1;
 
-    insert into user (email, password) values
+   insert into user (email, password) values
         ("a@a.com","a"),
         ("b@b.com","b");
 
@@ -110,9 +108,9 @@ begin
 		("Groceries", 1),
 		("Gym", 2);
 	
-	insert into budget(userId, income) values
-	(1, 4000), 
-	(2, 15000);
+	insert into budget(userId, name) values
+	(1, "September"), 
+	(2, "October");
 	
 	insert into budget_category(budgetId, categoryId, percentage) values 
 	(1,1,15),

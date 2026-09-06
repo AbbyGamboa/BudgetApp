@@ -33,7 +33,7 @@ class BudgetServiceTest {
     class findById{
         @Test
         void success(){
-            Budget budget = new Budget(1, TestDataHelper.existingUser(), BigDecimal.valueOf(4000));
+            Budget budget = new Budget(1, TestDataHelper.existingUser(), "September");
             when(repository.findById(1)).thenReturn(budget);
 
             Result<Budget> expected = new Result<>();
@@ -45,7 +45,7 @@ class BudgetServiceTest {
 
         @Test
         void failureFromMisMatchUsers(){
-            Budget budget = new Budget(1, TestDataHelper.existingUser(), BigDecimal.valueOf(4000));
+            Budget budget = new Budget(1, TestDataHelper.existingUser(), "September");
             when(repository.findById(1)).thenReturn(budget);
 
             Result<Budget> expected = new Result<>();
@@ -71,7 +71,7 @@ class BudgetServiceTest {
     class update{
         @Test
         void success(){
-            Budget updated = new Budget(1, TestDataHelper.existingUser(), BigDecimal.valueOf(4500));
+            Budget updated = new Budget(1, TestDataHelper.existingUser(), "September");
 
             when(repository.findById(1)).thenReturn(updated);
             when(repository.update(updated)).thenReturn(true);
@@ -89,8 +89,8 @@ class BudgetServiceTest {
         void cannotUpdateAnotherUserBudget(){
             User user = TestDataHelper.existingUser();
             user.setUserId(2);
-            Budget original = new Budget(1, TestDataHelper.existingUser(), BigDecimal.valueOf(4000));
-            Budget updated = new Budget(1, user, BigDecimal.valueOf(5000));
+            Budget original = new Budget(1, TestDataHelper.existingUser(),"September");
+            Budget updated = new Budget(1, user, "September");
 
             when(repository.findById(1)).thenReturn(original);
 
@@ -102,58 +102,13 @@ class BudgetServiceTest {
             assertEquals(expected, actual);
 
         }
-
-        @Test
-        void cannotMakeIncomeNegative(){
-            Budget updated = new Budget(1, TestDataHelper.existingUser(), BigDecimal.valueOf(-4500));
-
-            when(repository.findById(1)).thenReturn(updated);
-            when(repository.update(updated)).thenReturn(true);
-
-            Result<Budget> actual = service.update(updated, 1);
-
-            Result<Budget> expected = new Result<>();
-            expected.addErrorMessage("Income must be higher than 0", ResultType.INVALID);
-
-            assertEquals(expected, actual);
-        }
-
-        @Test
-        void cannotMakeIncomeZero(){
-            Budget updated = new Budget(1, TestDataHelper.existingUser(), BigDecimal.ZERO);
-
-            when(repository.findById(1)).thenReturn(updated);
-            when(repository.update(updated)).thenReturn(true);
-
-            Result<Budget> actual = service.update(updated, 1);
-
-            Result<Budget> expected = new Result<>();
-            expected.addErrorMessage("Income must be higher than 0", ResultType.INVALID);
-
-            assertEquals(expected, actual);
-        }
-
-        @Test
-        void updateToIncomeWithChange(){
-            Budget updated = new Budget(1, TestDataHelper.existingUser(), BigDecimal.valueOf(4500.06).setScale(2, RoundingMode.DOWN));
-
-            when(repository.findById(1)).thenReturn(updated);
-            when(repository.update(updated)).thenReturn(true);
-
-            Result<Budget> actual = service.update(updated, 1);
-
-            Result<Budget> expected = new Result<>();
-            expected.setpayload(updated);
-
-            assertEquals(expected, actual);
-        }
     }
 
     @Nested
     class create{
         @Test
         void success(){
-            Budget create = new Budget(3, TestDataHelper.existingUser(), BigDecimal.valueOf(75.50));
+            Budget create = new Budget(3, TestDataHelper.existingUser(), "September");
 
             when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
             when(repository.create(create)).thenReturn(create);
@@ -169,7 +124,7 @@ class BudgetServiceTest {
         void failsWhenUserDoesNotExist(){
             User doesNotExist = TestDataHelper.existingUser();
             doesNotExist.setUserId(999);
-            Budget create = new Budget(3, doesNotExist, BigDecimal.valueOf(75.50));
+            Budget create = new Budget(3, doesNotExist, "September");
 
             when(userRepository.findById(999)).thenReturn(null);
             when(repository.create(create)).thenReturn(create);
@@ -177,48 +132,6 @@ class BudgetServiceTest {
 
             Result<Budget> expected = new Result<>();
             expected.addErrorMessage("User not found", ResultType.NOT_FOUND);
-
-            assertEquals(expected, actual);
-        }
-
-        @Test
-        void failsWhenIncomeZero(){
-            Budget create = new Budget(3, TestDataHelper.existingUser(), BigDecimal.ZERO);
-
-            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
-            when(repository.create(create)).thenReturn(create);
-            Result<Budget> actual = service.create(create, 1);
-
-            Result<Budget> expected = new Result<>();
-            expected.addErrorMessage("Income must be higher than 0", ResultType.INVALID);
-
-            assertEquals(expected, actual);
-        }
-
-        @Test
-        void failsWhenIncomeNegative(){
-            Budget create = new Budget(3, TestDataHelper.existingUser(), BigDecimal.valueOf(-1));
-
-            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
-            when(repository.create(create)).thenReturn(create);
-            Result<Budget> actual = service.create(create, 1);
-
-            Result<Budget> expected = new Result<>();
-            expected.addErrorMessage("Income must be higher than 0", ResultType.INVALID);
-
-            assertEquals(expected, actual);
-        }
-
-        @Test
-        void failsWhenIncomeHasTooManyDecimalPlaces(){
-            Budget create = new Budget(3, TestDataHelper.existingUser(), BigDecimal.valueOf(10.00012));
-
-            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
-            when(repository.create(create)).thenReturn(create);
-            Result<Budget> actual = service.create(create, 1);
-
-            Result<Budget> expected = new Result<>();
-            expected.addErrorMessage("Income must have 2 decimal places", ResultType.INVALID);
 
             assertEquals(expected, actual);
         }

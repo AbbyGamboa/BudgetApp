@@ -33,7 +33,7 @@ public class TransactionCategoryMapper implements RowMapper<TransactionCategory>
         Budget budget =  new Budget();
         budget.setUser(user);
         budget.setBudgetId(rs.getInt("budgetId"));
-        budget.setName(rs.getString("name"));
+        budget.setName(rs.getString("budgetName"));
 
         BudgetCategory budgetCategory = new BudgetCategory();
         budgetCategory.setBudget(budget);

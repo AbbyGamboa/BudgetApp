@@ -82,3 +82,16 @@ select tc.transactionId, tc.budgetCategoryId, au.userId, au.email, au.password, 
             inner join categories c on bc.categoryId = c.categoryId
             left join user cu on c.userId = cu.userId;
 
+select tc.transactionId, tc.budgetCategoryId, au.userId, au.email, au.password, cu.userId as cUserId,
+            cu.email as cEmail, cu.password as cPassword, c.categoryId, c.name, b.budgetId, b.name as budgetName, bc.percentage,
+            bc.budgetCategoryId, a.accountId, a.subtype, t.description, t.date, t.merchantName, t.amount
+            from transaction_categories tc
+            inner join transaction t on tc.transactionId = t.transactionId
+            inner join account a on t.accountId = a.accountId
+            inner join user au on a.userId = au.userId
+            inner join budget_category bc on tc.budgetCategoryId = bc.budgetCategoryId
+            inner join budget b on bc.budgetId = b.budgetId
+            inner join user bu on b.userId = bu.userId
+            inner join categories c on bc.categoryId = c.categoryId
+            left join user cu on c.userId = cu.userId where au.userId = 1;
+
