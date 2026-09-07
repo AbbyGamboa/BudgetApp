@@ -46,7 +46,7 @@ function UserLanding({loggedInUser}){
      
     return(
         <>
-        <div className="rounded m-3 w-80 p-3 background-blue">
+        <div className="d-flex flex-column justify-content-end rounded m-3 w-80 p-3 background-blue">
             <h1>Welcome user {loggedInUser.email}</h1>
         </div>
 

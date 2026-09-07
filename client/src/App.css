@@ -9,3 +9,11 @@
   height: 200px;
   color:white;
 }
+
+.endingHeight{
+  height: 500px;
+  background-image: url(./assets/endingImage.avif);
+  width: 500px;
+  background-size: cover;
+
+}

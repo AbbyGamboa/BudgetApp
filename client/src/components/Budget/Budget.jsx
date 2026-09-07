@@ -29,13 +29,13 @@ function Budget({loggedInUser, name, budgetId}){
         }, [budgetId])
 
     return(
-        <div>
+        <div className="grid-item m-4 border border-black rounded p-3">
             <h4>Budget {budgetId}: </h4>
             <h4>Name: {name}</h4>
             <h4>Total: ${sum}</h4>
 
-            <Link className="btn btn-primary m-1" to={`/view/budget/${budgetId}`}>View</Link>
-            <Link className="btn btn-primary m-1" to={`/edit/budget/${budgetId}`}>Edit</Link>
+            <Link className="btn border-black m-1" to={`/view/budget/${budgetId}`}>View</Link>
+            <Link className="btn border-black m-1" to={`/edit/budget/${budgetId}`}>Edit</Link>
         </div>
     );
 }
