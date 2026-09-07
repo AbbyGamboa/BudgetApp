@@ -2,7 +2,7 @@ import ViewBudgets from "../Budget/ViewBudgets";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react"
 import BudgetChart from "../BudgetChart";
-import Transaction from "../Transaction/Transaction";
+import RecentTransactions from "../Transaction/RecentTransactions";
 
 function UserLanding({loggedInUser}){
     const[budget, setBudget] = useState()
@@ -50,11 +50,7 @@ function UserLanding({loggedInUser}){
             <h1>Welcome {loggedInUser.email} !</h1>
         </div>
 
-        <div  className=" rounded p-4 position-relative m-3">
-            <h4>Recent Transactions:</h4>
-
-            
-        </div>
+        <RecentTransactions loggedInUser={loggedInUser}></RecentTransactions>
 
         <div className="border border-blue rounded p-4 position-relative m-3">
             
