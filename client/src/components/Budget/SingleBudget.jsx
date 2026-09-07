@@ -32,17 +32,26 @@ function SingleBudget({loggedInUser}){
 
     return(
         <>
-         <div className = "d-flex flex-column justify-content-end rounded background-blue m-4 p-3">
-            
-            <h1 className="mt-auto mb-0">{budget.name}</h1>
-            <p >Budget Id: {budget.budgetId}</p>
-        </div>
         
-        {budget && (
-            <div className="border border-black rounded m-4 p-2">
-                <BudgetCategory loggedInUser={loggedInUser}></BudgetCategory>
+        
+        {budget && (<>
+            <div className = "d-flex justify-content-between rounded background-blue m-4 p-3 border">
+            <div className="mt-auto mb-0">
+                <h1 >{budget.name}</h1>
+                <p >Budget Id: {budget.budgetId}</p>
+            </div>
+            <div className="mt-auto mb-0 ">
                 <Link className="btn btn-warning" to="/view/budgets">View all Budgets</Link>
             </div>
+        </div>
+
+        
+            <div className="border border-black rounded m-4 p-2">
+                <BudgetCategory loggedInUser={loggedInUser}></BudgetCategory>
+                
+            </div>
+        </>
+            
         )}
         </>
         

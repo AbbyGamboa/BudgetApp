@@ -4,6 +4,8 @@ import Modal from 'react-bootstrap/Modal';
 import BudgetCategoryForm from "./BudgetCategoryForm";
 import DeleteBCConfirm from "./DeleteBCConfirm";
 import { useParams } from "react-router-dom";
+import BudgetChart from "../BudgetChart";
+
 
 function BudgetCategory({loggedInUser}){
     const navigate = useNavigate()
@@ -52,8 +54,8 @@ function BudgetCategory({loggedInUser}){
 
     return (
         <>
-        <h4>Total budget: ${sum}</h4>
-        <button onClick={handleShowCreate}>Add category to budget</button>
+
+        
         <Modal show={showCreate} onHide={handleCreateClose}>
             <Modal.Header closeButton>
                 <Modal.Title>Add category to budget</Modal.Title>
@@ -64,15 +66,36 @@ function BudgetCategory({loggedInUser}){
             
             
         </Modal>
-        <h1>Categories: </h1>
+         <div className="d-flex justify-content-between">
+            <h1 className="p-2">Budget breakdown: </h1>
+            <button className="btn border-black w-25" onClick={handleShowCreate}>Add category</button>
+        </div>
+        
     
-        {budgetcategories[0] === "Budget has no categories"? <div>
-            <h4>No categories found</h4></div>: budgetcategories.map(budgetCategory=>  <div key={budgetCategory.budgetCategoryId}>
-            <h4>{budgetCategory.category.name}:</h4>
-            <h4>Dedicated amount from income: ${Number(budgetCategory.percentage).toFixed(2)}</h4>
-            <button className="btn btn-primary m-1" onClick={() => setActiveModalItem(budgetCategory)}>Edit amount</button>
-            <button className="btn btn-danger" onClick={()=>setdeleteItem(budgetCategory)}>Delete</button>
-        </div>)}
+        <div className="d-flex justify-content-center">
+            {budgetcategories[0] === "Budget has no categories"? <div>
+            <h4>No categories found</h4></div>: <>
+                <div>
+                <BudgetChart budgetId={budgetId} loggedInUser={loggedInUser}></BudgetChart>
+            
+                
+                </div>
+                <div className=" w-50 p-4"> 
+                    <h3>Categories: </h3>
+                    {budgetcategories.map(budgetCat => 
+                    <div key={budgetCat.budgetCategoryId}>
+                        {budgetCat.category.name}
+                        <button className="btn btn-primary m-1" onClick={() => setActiveModalItem(budgetCat)}>Edit amount</button>
+                        <button className="btn btn-danger" onClick={()=>setdeleteItem(budgetCat)}>Delete</button>
+                    </div>
+                    )}
+                </div>
+            </>
+            
+            }
+            
+        </div>
+        
 
        {activeModalItem && 
         <Modal show={true}>

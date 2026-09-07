@@ -1,6 +1,5 @@
 import Article from "./Landing/Article";
 import background from '../assets/blueBackground.jpg';
-import { useEffect, useState } from "react";
 import LargeSection from "./Landing/LargeSection";
 
 function Landing(){

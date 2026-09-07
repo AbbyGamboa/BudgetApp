@@ -1,15 +1,11 @@
 import { PieChart } from '@mui/x-charts/PieChart';
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState} from "react";
-import { useParams } from "react-router-dom";
-import BudgetCategory from './BudgetCategory/BudgetCategory';
 
 function BudgetChart({budgetId, loggedInUser}){
     const navigate = useNavigate()
 
     const[budgetcategories, setBudgetCategories] = useState([])
-    const [activeModalItem, setActiveModalItem] = useState(null);
-    const [deleteItem, setdeleteItem] = useState(null);
     const [sum, setSum]= useState(0);
 
      useEffect(()=>{
