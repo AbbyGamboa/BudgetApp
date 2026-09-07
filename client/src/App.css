@@ -29,3 +29,7 @@
   background-size: cover;
   box-shadow: 0 0 5px grey;
 }
+
+.transactionIcon{
+  color: rgba(12, 84, 184);
+}

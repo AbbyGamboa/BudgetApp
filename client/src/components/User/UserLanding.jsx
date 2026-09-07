@@ -17,8 +17,12 @@ function UserLanding({loggedInUser}){
                             "Authorization": `Bearer ${loggedInUser.token}`
                     }
                 })
-                const payload = await response.json();
-                setBudgets(payload)
+
+                if(response.status >= 200 && response.status <= 300){
+                    const payload = await response.json();
+                    setBudgets(payload)
+                }
+                
             }
             doFetch()
         }, [])

@@ -18,13 +18,18 @@ function RecentTransactions({loggedInUser}){
     
             }
             doFetch()
-        }, [loggedInUser])
+        }, [])
 
     return (
         <div  className=" rounded p-4 position-relative m-3">
             <h4>Recent Transactions:</h4>
-            {transactions.map(transaction => <Transaction transaction={transaction}></Transaction>)}
+            <div className="grid-container">
+                {transactions.map(transaction => 
+                <div key={transaction.transactionId} className="d-flex justify-content-center p-5 border border-blue rounded" style={{width:'300px', height: '300px'}}>
+                    <Transaction transaction={transaction}></Transaction>
+                </div>)}
 
+            </div>
             
         </div>
     );
