@@ -52,6 +52,8 @@ function BudgetCategory({loggedInUser}){
     const handleShowCreate = () => setShowCreate(true);
     const handleCreateClose= () => setShowCreate(false);
 
+    const[showModel, setShowModel] = useState(false);
+
     return (
         <>
 
@@ -80,13 +82,17 @@ function BudgetCategory({loggedInUser}){
             
                 
                 </div>
-                <div className=" w-50 p-4"> 
+                <div className=" w-50 p-4 border border-blue rounded m-3"> 
                     <h3>Categories: </h3>
                     {budgetcategories.map(budgetCat => 
-                    <div key={budgetCat.budgetCategoryId}>
-                        {budgetCat.category.name}
-                        <button className="btn btn-primary m-1" onClick={() => setActiveModalItem(budgetCat)}>Edit amount</button>
-                        <button className="btn btn-danger" onClick={()=>setdeleteItem(budgetCat)}>Delete</button>
+                    <div key={budgetCat.budgetCategoryId} className="d-flex justify-content-between border border-blue rounded p-2 m-3">
+                        <h4 className="text-center p-1">{budgetCat.category.name}</h4>
+                        
+                        <div className="p-1">
+                            <i className="fa-solid fa-pen-to-square m-2 iconHover" onClick={() => setActiveModalItem(budgetCat)}></i>
+                            <i className="fa-solid fa-circle-minus m-2 deleteHover" onClick={()=>setdeleteItem(budgetCat)}></i>
+                        </div>
+                       
                     </div>
                     )}
                 </div>

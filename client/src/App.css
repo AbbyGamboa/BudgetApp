@@ -33,3 +33,16 @@
 .transactionIcon{
   color: rgba(12, 84, 184);
 }
+
+.iconHover, .deleteHover{
+  font-size: 24px;
+}
+
+
+.iconHover:hover{
+  color:rgba(12, 84, 184);
+}
+
+.deleteHover:hover{
+  color: rgb(214, 8, 8);
+}

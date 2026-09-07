@@ -47,6 +47,7 @@ function UserLanding({loggedInUser}){
         doFetch()
     }, [budgetId])
 
+
      
     return(
         <>
@@ -56,23 +57,35 @@ function UserLanding({loggedInUser}){
 
         <RecentTransactions loggedInUser={loggedInUser}></RecentTransactions>
 
-        <div className="border border-blue rounded p-4 position-relative m-3">
+        <div className="border border-blue rounded p-4 position-relative m-4">
             
-            <div className="d-flex top-1 justify-content-between end-0 p-2">
-                <h4>Budget: </h4>
-                <select name="budgetId" id="budgetId" onChange={(event)=>setBudgetId(event.target.value)}>
-                    <option value="">Select budget</option>
-                    {budgets.map(budget => <option key={budget.budgetId} value={budget.budgetId}>{budget.name}</option>)}
-                </select>
+            <div className=" d-flex justify-content-between p-2">
+                <div>
+                     <h4>Preview Budgets:</h4>
+                </div>
+               
+                <div className=" d-flex justify-content-end p-2">
+                    <h4 className="m-2">Budget: </h4>
+                    <select name="budgetId" id="budgetId" onChange={(event)=>setBudgetId(event.target.value)}>
+                        <option value="">Select budget</option>
+                        {budgets.map(budget => <option key={budget.budgetId} value={budget.budgetId}>{budget.name}</option>)}
+                    </select>
+                </div>
+                
             </div>
 
-            <div className="m-1 d-flex justify-content-between rounded p-3">
-                {budget && <div className="">
+           
+            {budget && <div className="m-1 d-flex justify-content-between rounded p-3">
+                <div>
                     <h1>{budget.name}</h1>
                     <BudgetChart loggedInUser={loggedInUser} budgetId={budgetId}></BudgetChart>
-                </div>}
+                </div>
+                <div>
+                    
+                </div>
+                
+            </div>}
 
-            </div>
             
         </div>
         </>
