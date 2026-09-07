@@ -8,6 +8,7 @@ function UserLanding({loggedInUser}){
     const[budget, setBudget] = useState()
     const[budgets, setBudgets] = useState([])
     const[budgetId, setBudgetId] = useState()
+        const[budgetcategories, setBudgetCategories] = useState([])
 
 
     useEffect(()=>{
@@ -47,6 +48,25 @@ function UserLanding({loggedInUser}){
         doFetch()
     }, [budgetId])
 
+    useEffect(()=>{
+            const doFetch = async () => {
+                const response = await fetch("http://localhost:8080/api/budgetcategory/"+budgetId, {
+                    headers:{
+                            "Authorization": `Bearer ${loggedInUser.token}`
+                    }
+                })
+                const payload = await response.json();
+                if(response.status>= 200 && response.status <= 300){
+                    setBudgetCategories(payload)
+                } else{
+                    navigate("/view/budgets")
+                }
+            }
+            
+            doFetch()
+            
+        }, [budgetId])
+
 
      
     return(
@@ -75,14 +95,12 @@ function UserLanding({loggedInUser}){
             </div>
 
            
-            {budget && <div className="m-1 d-flex justify-content-between rounded p-3">
+            {budget && <div className="m-1  rounded p-3">
                 <div>
                     <h1>{budget.name}</h1>
                     <BudgetChart loggedInUser={loggedInUser} budgetId={budgetId}></BudgetChart>
                 </div>
-                <div>
-                    
-                </div>
+                
                 
             </div>}
 

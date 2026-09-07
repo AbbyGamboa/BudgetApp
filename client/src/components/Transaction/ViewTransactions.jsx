@@ -45,7 +45,7 @@ function ViewTransactions({loggedInUser}){
         <div className="border border-blue rounded m-4 p-3">
              <div className="d-flex justify-content-between m-3">
                 <h2 >Manage Transactions: </h2>
-                <button  className="btn btn-primary m-2" onClick={handleShowCreate}>Create Transaction</button>
+                <button  className="btn border-black m-2" onClick={handleShowCreate}>Create Transaction</button>
             </div>
             
         

@@ -102,9 +102,9 @@ function ViewByDate({loggedInUser}){
                         </div>}
                     </>
                     
-                    <div>
-                        <button type="submit" className="btn btn-secondary m-1">Check</button>
-                        <button type="reset" className="btn btn-danger">Reset</button>
+                    <div >
+                        <button type="submit" className="btn btn-primary m-2">Check</button>
+                        <button type="reset" className="btn btn-danger m-2">Reset</button>
                     </div>
 
                 </div>
