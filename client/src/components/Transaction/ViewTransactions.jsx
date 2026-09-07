@@ -2,10 +2,8 @@ import { useState, useEffect } from "react";
 import { useParams, Link} from "react-router-dom";
 import Transaction from "./Transaction";
 import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
 import TransactionForm from "./TransactionForm";
 import TransactionCategory from "../TransactionCategory/TransactionCategory";
-import Headers from "../Styling/Headers";
 
 
 function ViewTransactions({loggedInUser}){
@@ -59,8 +57,8 @@ function ViewTransactions({loggedInUser}){
                 
 
                     <div className="mt-auto">
-                         <Link className="btn btn-primary m-1" to={`/view/${transaction.transactionId}`}>View</Link>
-                            <button onClick={() => setActiveModalItem(transaction)} className="btn btn-primary m-1" >Edit</button>
+
+                        <button onClick={() => setActiveModalItem(transaction)} className="btn btn-primary m-1" >Edit</button>
                     </div>
                
                 
@@ -79,9 +77,7 @@ function ViewTransactions({loggedInUser}){
             </div>
 
         </div>
-       
-        
-        
+            
         </>
     
 
