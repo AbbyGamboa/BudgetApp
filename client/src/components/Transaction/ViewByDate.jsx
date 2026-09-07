@@ -104,33 +104,34 @@ function ViewByDate({loggedInUser}){
                     </div>
 
                 </div>
-                
-                
-                
-
 
             </div>
             
             
         </form>
 
-        {!withCat && showTrans && transactions.map(transaction => <div key ={transaction.transactionId} className="flex p-5">
+        {/*This is with a category while the other is without **/        
+        !withCat && showTrans && transactions.map(transaction => <div key ={transaction.transactionId} className="flex p-5">
         <Transaction transaction={transaction}/>
         <TransactionCategory loggedInUser={loggedInUser} transactionId={transaction.transactionId}></TransactionCategory>
         <Link className="btn btn-primary" to={`/view/${transaction.transactionId}`}>View</Link>
+        
         </div>)}
 
     
         {withCat &&
             showTrans && transactions.map(transaction => <div key ={transaction.transaction.transactionId} className="flex p-5">
-        <Transaction transaction={transaction.transaction}/>
-        <TransactionCategory loggedInUser={loggedInUser} transactionId={transaction.transaction.transactionId}></TransactionCategory>
-        <Link className="btn btn-primary" to={`/view/${transaction.transactionId}`}>View</Link>
-        </div>)
+                <Transaction transaction={transaction.transaction}/>
+                <TransactionCategory loggedInUser={loggedInUser} transactionId={transaction.transaction.transactionId}></TransactionCategory>
+                <Link className="btn btn-primary" to={`/view/${transaction.transactionId}`}>View</Link>
+                
+            </div>)
+            
         }
-
+        
 
         {errors.length > 0 ?
+        
                     <div className="border border-blue rounded p-3 m-4"> 
                         <ul>{errors.map(error => <h3 key={error}>{error}</h3>)}</ul>
                     </div>

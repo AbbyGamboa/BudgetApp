@@ -81,23 +81,28 @@ function TransactionForm({loggedInUser, transactionId, setActiveModalItem, handl
     return(
         <>
         <form action="" className="flex-column align-content-center" onSubmit={handleSubmit} hidden={addCat}>
-            <h1>{transactionId? "Update": "Create"} Transaction: </h1>
+            <h2>{transactionId? "Update": "Create"} Transaction: </h2>
 
-            <div>
-                <label htmlFor="amount">*Amount: </label>
-                <input type="text" name="amount" id="amount" value={transaction.amount} onChange={handleChange} required/>
-                <label htmlFor="date">*Date: </label>
-                <input type="date" name="date" id="date" value={transaction.date} onChange={handleChange} required/>
+            <div className="d-flex justify-content-between">
+                <div>
+                    <label htmlFor="amount">*Amount: </label>
+                    <input type="text" name="amount" id="amount" value={transaction.amount} onChange={handleChange} required/>
+                </div>
+
+                <div>
+                    <label htmlFor="date">*Date: </label>
+                    <input type="date" name="date" id="date" value={transaction.date} onChange={handleChange} required/>
+                </div>
             </div>
             
             <div>
                 <label htmlFor="merchant_name">Merchant Name: </label>
-                <input type="text" name="merchant_name" id="merchant_name" value={transaction.merchant_name? transaction.merchant_name : " "} onChange={handleChange}/>
+                <input className="w-100" type="text" name="merchant_name" id="merchant_name" value={transaction.merchant_name? transaction.merchant_name : " "} onChange={handleChange}/>
             </div>
             
             <div>
                 <label htmlFor="amount">Description: </label>
-                <input type="description" name="description" id="description" value={transaction.description? transaction.description: " "} onChange={handleChange}/>
+                <input className="w-100" type="description" name="description" id="description" value={transaction.description? transaction.description: " "} onChange={handleChange}/>
             </div>
 
 

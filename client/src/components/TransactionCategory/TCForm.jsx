@@ -156,22 +156,24 @@ function TCForm({loggedInUser, setActiveModalItem, firstTId, handleCreateClose})
 
     return (
         <form onSubmit={handleTransCate}>
-                <h1>{existing? "Edit": "Add"} a category to transaction</h1>
+                <h2>{existing? "Edit": "Add"} a category</h2>
                 <p htmlFor="transactionId">Transaction: {firstTId? firstTId: transactionId}</p>
 
-                <label htmlFor="budgetId">Budget: </label>
-                <select name="budgetId" id="budgetId" onChange={(event)=> setBudgetId(event.target.value)} value={budgetId}>
-                    <option value="">Select Budget</option>
-                    {budgets.map((budget)=> <option key={budget.budgetId} value={budget.budgetId}>{budget.income}</option>)}
-                </select>
+                <div className="border border-blue p-3 d-flex m-1">
+                    <label htmlFor="budget">Budget: </label>
+                    <select name="budget" id="budget" onChange={(event)=> setBudgetId(event.target.value)} value={budgetId}>
+                        <option value="">Select Budget</option>
+                        {budgets.map((budget)=> <option key={budget.budgetId} value={budget.budgetId}>{budget.name}</option>)}
+                    </select>
+                </div>
 
-                <div>
-                <label htmlFor="budgetCategoryId">Category:</label>
-                <select name="budgetCategoryId"  id="budgetCategoryId" value={budgetCategoryId} onChange={(event)=> setBudgetCategoryId(event.target.value)}>
-                        <option value="">Select Category</option>
-                        {budgetCategories.map(budgetCategory => <option key={budgetCategory.budgetCategoryId} value={budgetCategory.budgetCategoryId}>{budgetCategory.category.name}</option>)}
-                        
-                </select>
+                <div className="border border-blue p-3 d-flex m-1">
+                    <label htmlFor="budgetCategoryId">Category:</label>
+                    <select name="budgetCategoryId"  id="budgetCategoryId" value={budgetCategoryId} onChange={(event)=> setBudgetCategoryId(event.target.value)}>
+                            <option value="">Select Category</option>
+                            {budgetCategories.map(budgetCategory => <option key={budgetCategory.budgetCategoryId} value={budgetCategory.budgetCategoryId}>{budgetCategory.category.name}</option>)}
+                            
+                    </select>
                 </div>
 
                 <button type="submit" className="btn btn-primary m-1">{existing? "Edit": "Add"}</button>

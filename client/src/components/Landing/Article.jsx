@@ -1,11 +1,11 @@
 
-function Article(){
+function Article({title, text}){
     return (
         <div className="border border-black p-3 rounded">
-            <img src="https://placehold.co/200x150" alt="" />
+            <img src="https://placehold.co/250x150" alt="" />
 
-            <h1>Title</h1>
-            <p>fill words</p>
+            <h4>{title}</h4>
+            <p>{text}</p>
         </div>
     )
 }
