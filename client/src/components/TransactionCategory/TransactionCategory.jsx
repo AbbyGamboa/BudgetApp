@@ -25,7 +25,7 @@ function TransactionCategory({loggedInUser, transactionId}){
 
     return (
         <>{
-            tranCategory && <h2>Category: {tranCategory}</h2>
+            tranCategory && <h4>Category: {tranCategory}</h4>
         }
         
         </>

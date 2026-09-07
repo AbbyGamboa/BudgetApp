@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 function Transaction({transaction}){
     return (
-        <div className="m-1">
+        <div>
             <h3>Transaction: {transaction.transactionId}</h3>
             <h4>Date: {transaction.date}</h4>
             <h4>Spent: ${Number(transaction.amount).toFixed(2)}</h4>

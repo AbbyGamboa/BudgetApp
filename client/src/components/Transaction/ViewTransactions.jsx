@@ -39,7 +39,6 @@ function ViewTransactions({loggedInUser}){
         
         <Modal show={showCreate} onHide={handleCreateClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Modal heading</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <TransactionForm loggedInUser={loggedInUser} transactionId ={undefined} setActiveModalItem={setActiveModalItem} handleCreateClose={handleCreateClose}/>
@@ -52,12 +51,18 @@ function ViewTransactions({loggedInUser}){
         
             <div className="grid-container">
                 {transactions.map(transaction => 
-                <div key ={transaction.transactionId} className="grid-item p-5">
-                <Transaction transaction={transaction}/>
-                <TransactionCategory loggedInUser = {loggedInUser} transactionId={transaction.transactionId}></TransactionCategory>
+                <div key ={transaction.transactionId} className="d-flex flex-column grid-item p-3 border border-black rounded">
+                    <div className="m-1">
+                        <Transaction transaction={transaction}/>
+                        <TransactionCategory loggedInUser = {loggedInUser} transactionId={transaction.transactionId}></TransactionCategory>
+                    </div>
+                
 
-                <Link className="btn btn-primary m-1" to={`/view/${transaction.transactionId}`}>View</Link>
-                <button onClick={() => setActiveModalItem(transaction)} className="btn btn-primary m-1" >Edit</button>
+                    <div className="mt-auto">
+                         <Link className="btn btn-primary m-1" to={`/view/${transaction.transactionId}`}>View</Link>
+                            <button onClick={() => setActiveModalItem(transaction)} className="btn btn-primary m-1" >Edit</button>
+                    </div>
+               
                 
                 </div>)}
 
@@ -68,7 +73,6 @@ function ViewTransactions({loggedInUser}){
                     </Modal.Header>
                     <Modal.Body>
                         <TransactionForm loggedInUser={loggedInUser} transactionId ={activeModalItem.transactionId} setActiveModalItem={setActiveModalItem} handleCreateClose={handleCreateClose}/>
-                        {/*<Button variant="secondary" onClick={()=>setActiveModalItem(null)}>Close </Button>*/}
                     </Modal.Body>
                     
                 </Modal>}

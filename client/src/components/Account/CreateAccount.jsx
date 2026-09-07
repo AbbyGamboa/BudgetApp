@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import Headers from "../Styling/Headers";
 
 function CreateAccount({loggedInUser}){
     const navigate = useNavigate();
@@ -72,18 +73,20 @@ function CreateAccount({loggedInUser}){
 
     return(
         <form onSubmit={handleSubmit}>
-            <h1>{accountId ? "Update" : "Create"} Account</h1>
+            <Headers title={`${accountId ? "Update" : "Create"} Account`}></Headers>
              {errors.length > 0 ?
                     <ul>{errors.map(error => <li key={error}>{error}</li>)}</ul>
                     : null
                 }
                 
-                
-            <label htmlFor="subtype">Type: </label>
-            <input type="text" id="subtype" name="subtype" onChange={handleChange} value={account.subtype}/>
+                <div className="m-4 p-3 border border-blue">
+                            <label htmlFor="subtype">Type: </label>
+                    <input type="text" id="subtype" name="subtype" onChange={handleChange} value={account.subtype}/>
 
-            <button className="btn btn-primary m-1" type="submit">{accountId? "Update":"Create"}</button>
-            <Link className="btn btn-primary m-1" to="/view/accounts"> Cancel</Link>
+                    <button className="btn border border-black m-1" type="submit">{accountId? "Update":"Create"}</button>
+                    <Link className="btn border border-black m-1" to="/view/accounts"> Cancel</Link>
+                </div>
+            
         </form>
     );
 }
