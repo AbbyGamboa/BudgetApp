@@ -153,6 +153,27 @@ public class TransactionService {
         return result;
     }
 
+    public Result<List<Transaction>> lastTransactions(int userId){
+        Result<List<Transaction>> result = new Result<>();
+
+        List<Account> accounts = accountRepository.findByUser(userId);
+        if(accounts.isEmpty()){
+            result.addErrorMessage("No accounts found for user", ResultType.NOT_FOUND);
+            return result;
+        }
+
+        List<Transaction> transactions = repository.lastTransactions(userId);
+        if(transactions.isEmpty()){
+            result.addErrorMessage("No transactions found", ResultType.NOT_FOUND);
+        }
+
+        if(result.isSuccess()){
+            result.setpayload(transactions);
+        }
+
+        return result;
+    }
+
     private void assureCorrectAccountAndUser(Result<?> result, int accountId, int userId){
         Account found = accountRepository.findById(accountId);
         if(found == null){
