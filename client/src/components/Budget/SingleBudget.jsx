@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import BudgetCategory from "../BudgetCategory/BudgetCategory";
+import Headers from "../Styling/Headers";
 
 function SingleBudget({loggedInUser}){
     const {budgetId} = useParams()
@@ -31,14 +32,17 @@ function SingleBudget({loggedInUser}){
 
     return(
         <>
-         <h1>Viewing Budget:</h1>
+         <div className = "d-flex flex-column justify-content-end rounded background-blue m-4 p-3">
+            
+            <h1 className="mt-auto mb-0">{budget.name}</h1>
+            <p >Budget Id: {budget.budgetId}</p>
+        </div>
+        
         {budget && (
-            <>
-                <p>Budget ID: {budget.budgetId}</p>
-                <p>Budget Name: {budget.name}</p>
+            <div className="border border-black rounded m-4 p-2">
                 <BudgetCategory loggedInUser={loggedInUser}></BudgetCategory>
                 <Link className="btn btn-warning" to="/view/budgets">View all Budgets</Link>
-            </>
+            </div>
         )}
         </>
         
