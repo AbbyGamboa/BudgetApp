@@ -2,6 +2,9 @@ import { useState, useEffect } from "react"
 import { useParams,useNavigate} from "react-router-dom"
 import ViewByDate from "../Transaction/ViewByDate";
 import ViewTransactions from "../Transaction/ViewTransactions";
+import Headers from "../Styling/Headers";
+import Link from "@mui/material/Link";
+
 function SingleAccount({loggedInUser}){
     const {accountId} = useParams();
     const navigate = useNavigate();
@@ -28,14 +31,18 @@ function SingleAccount({loggedInUser}){
     
     return(
         <>
-         <h1>Viewing account:</h1>
+        
         {account && (
-            <>
-                <p>Account ID: {account.accountId}</p>
-                <p>Type: {account.subtype}</p>
+            <>    
+
+                <div className = "d-flex justify-content-between rounded background-blue m-4 p-3 border">
+                    <div className="mt-auto mb-0">
+                        <h1 >Account ID: {account.accountId}</h1>
+                        <p >Type: {account.subtype}</p>
+                    </div>
+                </div>
                 <ViewTransactions loggedInUser={loggedInUser}></ViewTransactions>
-                 <ViewByDate loggedInUser={loggedInUser}></ViewByDate>
-                
+                <ViewByDate loggedInUser={loggedInUser}></ViewByDate>
             </>
         )}
         </>
