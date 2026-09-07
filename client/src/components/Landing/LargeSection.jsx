@@ -12,7 +12,7 @@ function LargeSection({loggedInUser}){
 
             <div className="w-50 p-2">
                 <div className="d-flex m-1 p-1">
-                    <div className="m-1 p-2 text-center rounded" style={{width:'50px', height:'50px', backgroundColor:'blue'}}>
+                    <div className="m-1 p-2 text-center rounded" style={{width:'50px', height:'50px', backgroundColor:'rgba(12, 84, 184)'}}>
                         <i class="fa-solid fa-hand-holding-dollar" style={{fontSize:'30px', color:'white'}}></i>
                     </div>
                     <div className="m-1">
@@ -23,7 +23,7 @@ function LargeSection({loggedInUser}){
                 </div>
 
                 <div  className="d-flex m-1 p-1">
-                    <div className="m-1 p-2 text-center rounded" style={{width:'50px', height:'50px', backgroundColor:'blue'}}>
+                    <div className="m-1 p-2 text-center rounded" style={{width:'50px', height:'50px', backgroundColor:'rgba(12, 84, 184)'}}>
                         <i class="fa-solid fa-credit-card" style={{fontSize:'30px', color:'white'}}></i>
                     </div>
                     <div className="m-1">
@@ -34,7 +34,7 @@ function LargeSection({loggedInUser}){
                 </div>
 
                 <div className="d-flex m-1 p-1">
-                    <div className="m-1 p-2 text-center rounded" style={{width:'50px', height:'50px', backgroundColor:'blue'}}>
+                    <div className="m-1 p-2 text-center rounded" style={{width:'50px', height:'50px', backgroundColor:'rgba(12, 84, 184)'}}>
                         <i class="fa-solid fa-newspaper" style={{fontSize:'30px', color:'white'}}></i>
                     </div>
                     <div className="m-1">
