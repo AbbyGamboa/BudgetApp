@@ -4,6 +4,7 @@ import Transaction from "./Transaction";
 import { Link } from "react-router-dom";
 import TransactionCategory from "../TransactionCategory/TransactionCategory";
 import ViewCategoryByUser from "../Category/ViewCategoryByUser";
+import TransactionChart from "../TransactionChart";
 
 function ViewByDate({loggedInUser}){
 
@@ -114,7 +115,14 @@ function ViewByDate({loggedInUser}){
             
         </form>
 
-        {/*This is with a category while the other is without **/        
+        {showTrans && transactions.length > 0 && (
+    <TransactionChart
+        transactions={transactions}
+        withCat={withCat}
+    />
+)}
+        
+        {/*{/*This is with a category while the other is without         
         !withCat && showTrans && transactions.map(transaction => <div key ={transaction.transactionId} className="flex p-5">
         <Transaction transaction={transaction}/>
         <TransactionCategory loggedInUser={loggedInUser} transactionId={transaction.transactionId}></TransactionCategory>
@@ -130,7 +138,7 @@ function ViewByDate({loggedInUser}){
                 
             </div>)
             
-        }
+        }*/}
         
 
         {errors.length > 0 ?
