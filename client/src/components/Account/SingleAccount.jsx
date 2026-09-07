@@ -41,8 +41,9 @@ function SingleAccount({loggedInUser}){
                         <p >Type: {account.subtype}</p>
                     </div>
                 </div>
-                <ViewTransactions loggedInUser={loggedInUser}></ViewTransactions>
                 <ViewByDate loggedInUser={loggedInUser}></ViewByDate>
+                <ViewTransactions loggedInUser={loggedInUser}></ViewTransactions>
+                
             </>
         )}
         </>

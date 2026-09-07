@@ -31,9 +31,7 @@ function ViewTransactions({loggedInUser}){
 
     return(
         <>
-        <div className="d-flex justify-content-end m-3">
-            <button  className="btn btn-primary m-2" onClick={handleShowCreate}>Create Transaction</button>
-        </div>
+       
         
         <Modal show={showCreate} onHide={handleCreateClose}>
             <Modal.Header closeButton>
@@ -45,7 +43,11 @@ function ViewTransactions({loggedInUser}){
         </Modal>
 
         <div className="border border-blue rounded m-4 p-3">
-            <h2 >Manage Transactions: </h2>
+             <div className="d-flex justify-content-between m-3">
+                <h2 >Manage Transactions: </h2>
+                <button  className="btn btn-primary m-2" onClick={handleShowCreate}>Create Transaction</button>
+            </div>
+            
         
             <div className="grid-container">
                 {transactions.map(transaction => 
