@@ -9,6 +9,9 @@ Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tI
 GET {{base_url}}/date/1?start=2025-01-01&end=2026-08-01 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg3OTI3MDc0LCJleHAiOjE3ODc5MzA2NzR9.LSChE-BPJS6LqsXN-grIcFYVgcoaEI6jV7BlY_e9z4gmxTlHmZ-0qU-CGWyw2ubj
 
+###
+GET {{base_url}}/recent HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg4ODE2NDA1LCJleHAiOjE3ODg4MjAwMDV9.xshtxMPY6MR9jTdSATRZn2uIKyWzglVeHON3AxDey-KbDxpzjhbmMkdeVqV4oR8m
 
 ###
 POST {{base_url}}/1 HTTP/1.1
