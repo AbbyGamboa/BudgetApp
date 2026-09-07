@@ -1,10 +1,13 @@
 
-function Article({title, text}){
+function Article({image, title, text}){
     return (
-        <div className="border border-black p-3 rounded">
-            <img src="https://placehold.co/250x150" alt="" />
+        <div className="border border-black p-4 rounded-4 text-center hover" style={{width:"350px", height: '320px'}}>
+            <div style={{width:"300px", height: '200px'}}>
+                <img src={image} alt="" style={{width:"100%", height:'100%'}} className="rounded-4 p-1"/>
+            </div>
+            
 
-            <h4>{title}</h4>
+            <h4 className="m-1 ">{title}</h4>
             <p>{text}</p>
         </div>
     )
