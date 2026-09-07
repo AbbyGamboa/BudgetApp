@@ -22,7 +22,6 @@ function UserLanding({loggedInUser}){
             doFetch()
         }, [])
 
-        const [sum, setSum]= useState(0);
 
     useEffect(()=>{
         if(budgetId === undefined || budgetId === ""){return;}

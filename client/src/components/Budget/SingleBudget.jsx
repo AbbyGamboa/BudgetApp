@@ -46,7 +46,7 @@ function SingleBudget({loggedInUser}){
         </div>
 
         
-            <div className="border border-black rounded m-4 p-2">
+            <div className="border border-blue rounded m-4 p-2">
                 <BudgetCategory loggedInUser={loggedInUser}></BudgetCategory>
                 
             </div>

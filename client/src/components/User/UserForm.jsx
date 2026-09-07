@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import background from '../../assets/blueBackground.jpg';
+import Headers from "../Styling/Headers";
 
 function UserForm({signup, setLoggedInUser}){
     const navigate = useNavigate();
@@ -78,15 +78,15 @@ function UserForm({signup, setLoggedInUser}){
 
     return (
         <>
-        <div className="p-4 mb-5 background-blue">
-            <h1 className="text-white">{signup? "User sign up page": "User login page"}</h1></div>
+        <Headers title={signup? "User sign up page": "User login page"}></Headers>
+       
         <ul>
             {errors.map((error,i) => <li key={i}>{error}</li>)}
         </ul>
     
 
-        <div className="d-flex justify-content-center">
-            <form onSubmit={signup? handleSubmitSignUp: handleSubmitLogin} className="border border-secondary w-75 p-2 d-flex flex-column align-items-center rounded">
+        <div className=" d-flex justify-content-center">
+            <form onSubmit={signup? handleSubmitSignUp: handleSubmitLogin} className="border border-blue w-75 p-2 d-flex flex-column align-items-center rounded">
                 <h3 className="text-center">{signup? "Sign Up Form": "Login Form"}</h3>
                 <label htmlFor="email">Email: </label>
                 <input type="email" id="email" name="email" required placeholder="ex: 123abc@gmail.com" onChange={handleChange} value={user.email}/>

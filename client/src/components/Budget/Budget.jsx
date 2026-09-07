@@ -29,7 +29,7 @@ function Budget({loggedInUser, name, budgetId}){
         }, [budgetId])
 
     return(
-        <div className="grid-item m-4 border border-black rounded p-3">
+        <div className="grid-item m-4 border border-blue rounded p-3">
             <h4>Budget {budgetId}: </h4>
             <h4>Name: {name}</h4>
             <h4>Total: ${sum}</h4>
