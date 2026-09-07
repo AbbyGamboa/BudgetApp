@@ -5,7 +5,7 @@ import studentLoans from "../assets/studentLoans.jpg";
 import creditScore from "../assets/creditScore.avif";
 import taxes from "../assets/tax.jpg";
 
-function Landing(){
+function Landing({loggedInUser}){
 
     return (
         <>
@@ -19,7 +19,7 @@ function Landing(){
                 <Article image={taxes} title={"Income and tax"} text={"Understanding your paycheck"}></Article>
             </div>
 
-            <LargeSection></LargeSection>
+            <LargeSection loggedInUser={loggedInUser}></LargeSection>
         </>
     );
 }

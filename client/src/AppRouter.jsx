@@ -23,7 +23,7 @@ function AppRouter(){
             children:[
                 {
                     path: "/", 
-                    element: <Landing></Landing>,
+                    element: <Landing loggedInUser={loggedInUser}></Landing>,
                 }, 
                 {
                     path:"/user",
