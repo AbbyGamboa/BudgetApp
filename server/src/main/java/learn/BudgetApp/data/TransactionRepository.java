@@ -11,6 +11,8 @@ public interface TransactionRepository {
 
     List<Transaction> findByAccount(int accountId);
 
+    List<Transaction> lastTransactions(int userId);
+
     Transaction create(Transaction transaction);
 
     boolean update(Transaction transaction);

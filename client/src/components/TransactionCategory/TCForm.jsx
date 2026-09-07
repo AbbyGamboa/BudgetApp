@@ -117,11 +117,7 @@ function TCForm({loggedInUser, setActiveModalItem, firstTId, handleCreateClose})
             setActiveModalItem(null)
             window.location.reload();
             
-        } else {
-            const payload = await response.json()
-            setErrors(payload)
-            
-        }
+        } 
     }
     //work on delete transaction category:
 

@@ -11,9 +11,9 @@ function TransactionCategory({loggedInUser, transactionId}){
                      "Authorization": `Bearer ${loggedInUser.token}`
                 }
             })
-            const payload = await response.json();
-
+        
             if (response.status >= 200 && response.status < 300) {
+                const payload = await response.json();
                 setTranCategory(payload.budgetCategory.category.name)
             } else{
                 setTranCategory(null);
@@ -27,7 +27,6 @@ function TransactionCategory({loggedInUser, transactionId}){
         <>{
             tranCategory && <h4>Category: {tranCategory}</h4>
         }
-        
         </>
     )
 }

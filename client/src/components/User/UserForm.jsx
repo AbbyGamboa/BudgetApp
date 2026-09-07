@@ -89,10 +89,10 @@ function UserForm({signup, setLoggedInUser}){
             <form onSubmit={signup? handleSubmitSignUp: handleSubmitLogin} className="border border-blue w-75 p-2 d-flex flex-column align-items-center rounded">
                 <h3 className="text-center">{signup? "Sign Up Form": "Login Form"}</h3>
                 <label htmlFor="email">Email: </label>
-                <input type="email" id="email" name="email" required placeholder="ex: 123abc@gmail.com" onChange={handleChange} value={user.email}/>
+                <input type="email" id="email" name="email" autoComplete="current-email" required placeholder="ex: 123abc@gmail.com" onChange={handleChange} value={user.email}/>
 
                 <label htmlFor="password">Password: </label>
-                <input type="password" id="password" name="password" required placeholder="ex: password123" onChange={handleChange} value={user.password}/>
+                <input type="password" id="password" autoComplete="current-password" name="password" required placeholder="ex: password123" onChange={handleChange} value={user.password}/>
                 
                 <button type="submit" className="btn btn-primary m-3 w-25">{signup? "Sign Up": "Login"}</button>
 

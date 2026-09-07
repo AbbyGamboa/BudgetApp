@@ -2,6 +2,7 @@ import ViewBudgets from "../Budget/ViewBudgets";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react"
 import BudgetChart from "../BudgetChart";
+import Transaction from "../Transaction/Transaction";
 
 function UserLanding({loggedInUser}){
     const[budget, setBudget] = useState()
@@ -46,12 +47,19 @@ function UserLanding({loggedInUser}){
     return(
         <>
         <div className="d-flex flex-column justify-content-end rounded m-3 w-80 p-3 background-blue">
-            <h1>Welcome user {loggedInUser.email}</h1>
+            <h1>Welcome {loggedInUser.email} !</h1>
+        </div>
+
+        <div  className=" rounded p-4 position-relative m-3">
+            <h4>Recent Transactions:</h4>
+
+            
         </div>
 
         <div className="border border-blue rounded p-4 position-relative m-3">
-            <div className="position-absolute top-1 end-0 p-2">
-                <label htmlFor="budgetId">Budget: </label>
+            
+            <div className="d-flex top-1 justify-content-between end-0 p-2">
+                <h4>Budget: </h4>
                 <select name="budgetId" id="budgetId" onChange={(event)=>setBudgetId(event.target.value)}>
                     <option value="">Select budget</option>
                     {budgets.map(budget => <option key={budget.budgetId} value={budget.budgetId}>{budget.name}</option>)}

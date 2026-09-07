@@ -9,6 +9,7 @@
   height: 200px;
   color:white;
   background-size: cover;
+  box-shadow: 0 0 5px rgb(172, 172, 172);
 }
 
 .endingHeight{
@@ -21,4 +22,10 @@
 
 .hover:hover{
   box-shadow: 0 0 10px rgb(157, 156, 156);
+}
+
+.userIcon{
+  background-image: url(./assets/UserIcon.png);
+  background-size: cover;
+  box-shadow: 0 0 5px grey;
 }

@@ -25,7 +25,7 @@ function NavBar({loggedInUser}){
             <Nav.Link href="/view/budgets">Budgets</Nav.Link>
             <Nav.Link href="/view/accounts">Accounts</Nav.Link>
             <Link className='btn btn-primary m-1' to="/user/signout">Logout</Link>
-            <Link className='rounded-circle bg-black'  style={{ width: '50px', height: '50px' }} to="/user/landing"></Link>
+            <Link className='rounded-circle userIcon'  style={{ width: '50px', height: '50px' }} to="/user/landing"></Link>
             </>
             }
             

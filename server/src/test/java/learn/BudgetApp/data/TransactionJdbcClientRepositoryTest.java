@@ -109,4 +109,15 @@ class TransactionJdbcClientRepositoryTest {
             assertFalse(actual);
         }
     }
+
+    @Nested
+    class lastTransactions{
+        @Test
+        void success(){
+            List<Transaction> expected = TestDataHelper.lastTransactions();
+            List<Transaction> actual = repository.lastTransactions(1);
+
+            assertEquals(expected, actual);
+        }
+    }
 }

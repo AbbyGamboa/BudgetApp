@@ -14,9 +14,8 @@ function ViewByDate({loggedInUser}){
     const[end, setEnd] = useState("")
     const[categoryId, setCategoryId] = useState()
 
-    async function handleOnlyDates(event){
+    async function handleOnlyDates(){
         setErrors([])
-        event.preventDefault();
 
         const response = await fetch(
             `http://localhost:8080/api/transaction/date/${accountId}?start=${start}&end=${end}`,
@@ -26,22 +25,19 @@ function ViewByDate({loggedInUser}){
                 }
             }
         );
-        console.log(response);
-        const payload = await response.json()
+    
 
         if (response.status >= 200 && response.status < 300) {
-            
+            console.log(response)
+            const payload = await response.json()
             console.log(payload.payload);
             setTransactions(payload.payload);
-        } else {
-            setErrors(payload)
-        }
+        } 
 
     }
 
-    async function handleWithCat(event){
+    async function handleWithCat(){
         setErrors([])
-        event.preventDefault();
 
         const response = await fetch(
             `http://localhost:8080/api/transactioncategory/category/${categoryId}?start=${start}&end=${end}`,
@@ -51,13 +47,11 @@ function ViewByDate({loggedInUser}){
                 }
             }
         );
-        const payload = await response.json()
 
         if (response.status >= 200 && response.status < 300) {
+            console.log(response)
+            const payload = await response.json()
             setTransactions(payload);
-            setShowTrans(true)
-        } else {
-            setErrors(payload)
         }
 
     }
@@ -67,13 +61,23 @@ function ViewByDate({loggedInUser}){
 
     const[withCat, setWithCat] = useState(false)
 
+    function submit(event){
+        event.preventDefault();
+        setShowTrans(true)
+        if(withCat){
+            handleWithCat()
+        } else{
+            handleOnlyDates()
+        }
+    }
+
     return(
         <>
-        <form onSubmit={withCat? handleWithCat:handleOnlyDates} className="flex-column" onReset={hideTrans}>
+        <form onSubmit={submit} className="flex-column" onReset={hideTrans}>
             <div className="border border-blue p-3 m-4 rounded">
                 <div className="d-flex justify-content-between">
                     <h3>View by date:</h3>
-                    <button name="withCat" id="withCat" className="btn border border-black"onClick={(event)=>setWithCat(!withCat)}>Check with{withCat?"out":""} category</button>    
+                    <button type="button" name="withCat" id="withCat" className="btn border border-black"onClick={()=>setWithCat(!withCat)}>Check with{withCat?"out":""} category</button>    
                 </div>
 
                 <div className="d-flex justify-content-between m-3">
@@ -119,11 +123,10 @@ function ViewByDate({loggedInUser}){
         </div>)}
 
     
-        {withCat &&
-            showTrans && transactions.map(transaction => <div key ={transaction.transaction.transactionId} className="flex p-5">
+        {withCat && showTrans && transactions.map(transaction => <div key ={transaction.transaction.transactionId} className="flex p-5">
                 <Transaction transaction={transaction.transaction}/>
-                <TransactionCategory loggedInUser={loggedInUser} transactionId={transaction.transaction.transactionId}></TransactionCategory>
-                <Link className="btn btn-primary" to={`/view/${transaction.transactionId}`}>View</Link>
+                <TransactionCategory loggedInUser={loggedInUser} transactionId={transaction.transactionId}></TransactionCategory>
+                <Link className="btn btn-primary" to={`/view/${transaction.transaction.transactionId}`}>View</Link>
                 
             </div>)
             

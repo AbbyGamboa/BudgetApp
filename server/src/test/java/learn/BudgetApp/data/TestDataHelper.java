@@ -49,6 +49,10 @@ public class TestDataHelper {
         return List.of(firstTransaction(), new Transaction(2, existingAccount(), BigDecimal.TEN.setScale(2, RoundingMode.DOWN), LocalDate.of(2026, 6,9), "Speedway", "Gas"));
     }
 
+    public static List<Transaction> lastTransactions(){
+        return List.of(secondTransaction(), firstTransaction());
+    }
+
     public static List<Account> allUserOneAccounts(){
         return List.of(new Account(1, TestDataHelper.existingUser(), "Checkings"));
     }
