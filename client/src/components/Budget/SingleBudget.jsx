@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import BudgetCategory from "../BudgetCategory/BudgetCategory";
-import Headers from "../Styling/Headers";
+import ViewByBudget from "../TransactionCategory/ViewByBudget";
 
 function SingleBudget({loggedInUser}){
     const {budgetId} = useParams()
@@ -11,6 +11,8 @@ function SingleBudget({loggedInUser}){
     const navigate = useNavigate();
 
     const[budget, setBudget] = useState(null)
+    const[budgetTotal, setBudgetTotal] = useState()
+    const[budgetcategories, setBudgetCategories] = useState([])
         
     useEffect(()=>{
         const doFetch = async () => {
@@ -32,8 +34,6 @@ function SingleBudget({loggedInUser}){
 
     return(
         <>
-        
-        
         {budget && (<>
             <div className = "d-flex justify-content-between rounded background-blue m-4 p-3 border">
             <div className="mt-auto mb-0">
@@ -45,11 +45,14 @@ function SingleBudget({loggedInUser}){
             </div>
         </div>
 
-        
-            <div className="border border-blue rounded m-4 p-2">
-                <BudgetCategory loggedInUser={loggedInUser}></BudgetCategory>
-                
-            </div>
+        <div className="border border-blue rounded m-4 p-2">
+            <BudgetCategory loggedInUser={loggedInUser} setBudgetTotal={setBudgetTotal} budgetcategories={budgetcategories} setBudgetCategories={setBudgetCategories}></BudgetCategory>
+            
+        </div>
+        <div className="border border-blue rounded m-4 p-3">
+            <h2 className="p-2">Your spending:</h2>
+            <ViewByBudget loggedInUser={loggedInUser} budgetTotal={budgetTotal} budget={budget} budgetcategories={budgetcategories}></ViewByBudget>
+        </div>
         </>
             
         )}

@@ -35,7 +35,7 @@ function TransactionChart({ transactions, withCat }) {
                 series={[
                     {
                         data: amounts,
-                        label: "Amount",
+                        label: "Transaction Amount",
                         showMark: true
                     }
                 ]}

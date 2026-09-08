@@ -7,12 +7,10 @@ import { useParams } from "react-router-dom";
 import BudgetChart from "../BudgetChart";
 
 
-function BudgetCategory({loggedInUser}){
+function BudgetCategory({loggedInUser, setBudgetTotal, budgetcategories, setBudgetCategories}){
     const navigate = useNavigate()
     const {budgetId} = useParams()
 
-
-    const[budgetcategories, setBudgetCategories] = useState([])
     const [activeModalItem, setActiveModalItem] = useState(null);
     const [deleteItem, setdeleteItem] = useState(null);
     const [sum, setSum]= useState(0);
@@ -35,9 +33,9 @@ function BudgetCategory({loggedInUser}){
                             total += Number(budCat.percentage);
                         }
 
-                        setSum(total.toFixed(2));
+                        setBudgetTotal(total.toFixed(2));
                     } else{
-                        setSum(0)
+                        setBudgetTotal(0)
                     }
                 } else{
                     navigate("/view/budgets")
@@ -52,12 +50,8 @@ function BudgetCategory({loggedInUser}){
     const handleShowCreate = () => setShowCreate(true);
     const handleCreateClose= () => setShowCreate(false);
 
-    const[showModel, setShowModel] = useState(false);
-
     return (
         <>
-
-        
         <Modal show={showCreate} onHide={handleCreateClose}>
             <Modal.Header closeButton>
                 <Modal.Title>Add category to budget</Modal.Title>
@@ -73,7 +67,6 @@ function BudgetCategory({loggedInUser}){
             <button className="btn border-black w-25" onClick={handleShowCreate}>Add category</button>
         </div>
         
-    
         <div className="d-flex justify-content-center">
             {budgetcategories[0] === "Budget has no categories"? <div>
             <h4>No categories found</h4></div>: <>
@@ -97,12 +90,10 @@ function BudgetCategory({loggedInUser}){
                     )}
                 </div>
             </>
-            
             }
             
         </div>
-        
-
+    
        {activeModalItem && 
         <Modal show={true}>
             <Modal.Header closeButton>
@@ -123,7 +114,6 @@ function BudgetCategory({loggedInUser}){
                 <DeleteBCConfirm deleteItem={deleteItem} setdeleteItem={setdeleteItem} loggedInUser={loggedInUser}></DeleteBCConfirm>
                 
             </Modal.Body>
-            
         </Modal>}
         </>
         

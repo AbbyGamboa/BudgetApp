@@ -19,16 +19,16 @@ function BudgetChart({budgetId, loggedInUser}){
                         if(response.status>= 200 && response.status <= 300){
                             setBudgetCategories(payload)
     
-                        if(payload != "Budget has no categories"){
-                            let total = 0;
-                            for (const budCat of payload) {
-                                total += Number(budCat.percentage);
+                            if(payload != "Budget has no categories"){
+                                let total = 0;
+                                for (const budCat of payload) {
+                                    total += Number(budCat.percentage);
+                                }
+        
+                                setSum(total.toFixed(2));
+                            } else{
+                                setSum(0)
                             }
-    
-                            setSum(total.toFixed(2));
-                        } else{
-                            setSum(0)
-                        }
                     } else{
                         navigate("/view/budgets")
                     }
