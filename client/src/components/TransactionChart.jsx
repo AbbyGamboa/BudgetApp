@@ -1,11 +1,10 @@
 import { LineChart } from "@mui/x-charts/LineChart";
 
 
-function TransactionChart({ transactions, withCat }) {
+function TransactionChart({transactions}) {
 
     // Convert your transactions into chart data
-    const chartTransactions = transactions.map(item => {
-        const transaction = withCat ? item.transaction : item;
+    const chartTransactions = transactions.map(transaction => {
 
         return {
             date: transaction.date,

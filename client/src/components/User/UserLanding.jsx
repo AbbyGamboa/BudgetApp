@@ -71,7 +71,7 @@ function UserLanding({loggedInUser}){
      
     return(
         <>
-        <div className="d-flex flex-column justify-content-end rounded m-3 w-80 p-3 background-blue">
+        <div className="d-flex flex-column justify-content-end rounded w-80 m-4 p-3 background-blue">
             <h1>Welcome {loggedInUser.email} !</h1>
         </div>
 
@@ -100,8 +100,6 @@ function UserLanding({loggedInUser}){
                     <h1>{budget.name}</h1>
                     <BudgetChart loggedInUser={loggedInUser} budgetId={budgetId}></BudgetChart>
                 </div>
-                
-                
             </div>}
 
             

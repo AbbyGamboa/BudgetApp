@@ -1,6 +1,7 @@
 import { PieChart } from '@mui/x-charts/PieChart';
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState} from "react";
+import { Link } from 'react-router-dom';
 
 function BudgetChart({budgetId, loggedInUser}){
     const navigate = useNavigate()
@@ -49,6 +50,7 @@ function BudgetChart({budgetId, loggedInUser}){
         <>
         {budgetcategories && <>
             <p>Total Budget: ${sum}</p>
+            <Link className='glow' to={`/view/budget/${budgetId}`}>View Budget</Link>
             <PieChart series={[
                 {
                     data: chartData
@@ -58,6 +60,7 @@ function BudgetChart({budgetId, loggedInUser}){
             height={300}>
             
         </PieChart>
+        
         </>}</>
     )
 }

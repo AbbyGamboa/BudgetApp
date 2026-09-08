@@ -13,7 +13,7 @@ function ViewByDate({loggedInUser}){
     const[errors, setErrors] = useState([])
     const[start, setStart] = useState("")
     const[end, setEnd] = useState("")
-    const[categoryId, setCategoryId] = useState()
+    const[categoryId, setCategoryId] = useState("")
 
     async function handleOnlyDates(){
         setErrors([])
@@ -50,9 +50,10 @@ function ViewByDate({loggedInUser}){
         );
 
         if (response.status >= 200 && response.status < 300) {
-            console.log(response)
             const payload = await response.json()
-            setTransactions(payload);
+            const transactionData = payload.map(item => item.transaction);
+
+            setTransactions(transactionData);
         }
 
     }
@@ -64,6 +65,8 @@ function ViewByDate({loggedInUser}){
 
     function submit(event){
         event.preventDefault();
+
+        setTransactions([]);
         setShowTrans(true)
         if(withCat){
             handleWithCat()
@@ -116,11 +119,10 @@ function ViewByDate({loggedInUser}){
         </form>
 
         {showTrans && transactions.length > 0 && (
-    <TransactionChart
-        transactions={transactions}
-        withCat={withCat}
-    />
-)}
+            <TransactionChart
+                transactions={transactions}
+            />
+        )}
         
         {/*{/*This is with a category while the other is without         
         !withCat && showTrans && transactions.map(transaction => <div key ={transaction.transactionId} className="flex p-5">

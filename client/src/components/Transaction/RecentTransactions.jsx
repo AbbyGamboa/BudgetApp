@@ -25,7 +25,7 @@ function RecentTransactions({loggedInUser}){
             <h4>Recent Transactions:</h4>
             <div className="grid-container">
                 {transactions.map(transaction => 
-                <div key={transaction.transactionId} className="d-flex justify-content-center p-5 border border-blue rounded" style={{width:'300px', height: '300px'}}>
+                <div key={transaction.transactionId} className="d-flex justify-content-center p-4 border border-blue rounded" style={{width:'300px', height: '300px'}}>
                     <Transaction transaction={transaction}></Transaction>
                 </div>)}
 
