@@ -32,6 +32,7 @@ function SingleBudget({loggedInUser}){
         doFetch()
     }, [budgetId])
 
+
     return(
         <>
         {budget && (<>
@@ -46,7 +47,7 @@ function SingleBudget({loggedInUser}){
         </div>
 
         <div className="border border-blue rounded m-4 p-2">
-            <BudgetCategory loggedInUser={loggedInUser} setBudgetTotal={setBudgetTotal} budgetcategories={budgetcategories} setBudgetCategories={setBudgetCategories}></BudgetCategory>
+            <BudgetCategory showButton={false} loggedInUser={loggedInUser} setBudgetTotal={setBudgetTotal} budgetcategories={budgetcategories} setBudgetCategories={setBudgetCategories}></BudgetCategory>
             
         </div>
         <div className="border border-blue rounded m-4 p-3">

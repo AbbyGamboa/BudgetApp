@@ -98,7 +98,7 @@ function UserLanding({loggedInUser}){
             {budget && <div className="m-1  rounded p-3">
                 <div>
                     <h1>{budget.name}</h1>
-                    <BudgetChart loggedInUser={loggedInUser} budgetId={budgetId}></BudgetChart>
+                    <BudgetChart showButton={true} loggedInUser={loggedInUser} budgetId={budgetId}></BudgetChart>
                 </div>
             </div>}
 

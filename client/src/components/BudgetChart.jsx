@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState} from "react";
 import { Link } from 'react-router-dom';
 
-function BudgetChart({budgetId, loggedInUser}){
+function BudgetChart({budgetId, loggedInUser, showButton}){
     const navigate = useNavigate()
 
     const[budgetcategories, setBudgetCategories] = useState([])
@@ -50,7 +50,8 @@ function BudgetChart({budgetId, loggedInUser}){
         <>
         {budgetcategories && <>
             <p>Total Budget: ${sum}</p>
-            <Link className='glow' to={`/view/budget/${budgetId}`}>View Budget</Link>
+            {showButton && <Link className='glow' to={`/view/budget/${budgetId}`}>View Budget</Link>}
+            
             <PieChart series={[
                 {
                     data: chartData

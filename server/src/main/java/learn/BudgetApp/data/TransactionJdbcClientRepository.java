@@ -41,7 +41,7 @@ public class TransactionJdbcClientRepository implements TransactionRepository{
 
     @Override
     public List<Transaction> lastTransactions(int userId) {
-        final String sql = BASE_SELECT + "where u.userId = ? order by date desc limit 3;";
+        final String sql = BASE_SELECT + "where u.userId = ? order by date desc, t.transactionId desc limit 3;";
         return jdbcClient.sql(sql).param(userId).query(new TransactionMapper()).list();
     }
 
