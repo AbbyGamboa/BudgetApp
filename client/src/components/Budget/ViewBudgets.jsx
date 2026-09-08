@@ -25,7 +25,7 @@ function ViewBudgets({loggedInUser}){
                     <h1 >Manage Budgets:</h1>
                 </div>
                 <div className="mt-auto mb-0 ">
-                    <Link to={"/add/budget"} className="btn btn-warning m-1">Create Budget</Link>
+                    <Link to={"/add/budget"} className=" m-1 glow">Create Budget</Link>
                 </div>
         
             </div>

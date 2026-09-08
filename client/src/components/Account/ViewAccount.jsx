@@ -28,7 +28,7 @@ function ViewAccount({loggedInUser}){
                 <h1 >Manage Accounts:</h1>
             </div>
             <div className="mt-auto mb-0 ">
-                <Link to="/create/account" className="btn btn-warning m-1">Create Account</Link>
+                <Link to="/create/account" className="m-2 glow">Create Account</Link>
             </div>
         </div>
 

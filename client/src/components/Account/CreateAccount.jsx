@@ -80,7 +80,7 @@ function CreateAccount({loggedInUser}){
                 }
                 
                 <div className="m-4 p-3 border border-blue">
-                            <label htmlFor="subtype">Type: </label>
+                    <label htmlFor="subtype">Type: </label>
                     <input type="text" id="subtype" name="subtype" onChange={handleChange} value={account.subtype}/>
 
                     <button className="btn border border-black m-1" type="submit">{accountId? "Update":"Create"}</button>

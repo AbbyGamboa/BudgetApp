@@ -46,3 +46,19 @@
 .deleteHover:hover{
   color: rgb(214, 8, 8);
 }
+
+.glow{
+  padding: 12px;
+  border-radius: 15px;
+  text-decoration: none;
+  color: rgba(12, 84, 184);
+  border: thin rgba(12, 84, 184) solid;
+  background-color: white;
+}
+
+.glow:hover{
+  background-color: rgba(12, 84, 184, 0.666);
+  color: white;
+  border: thin white solid;
+  box-shadow: 0 0 10px white;
+}

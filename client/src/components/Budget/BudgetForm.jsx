@@ -1,5 +1,6 @@
 import { useNavigate, useParams, Link} from "react-router-dom";
 import { useState, useEffect } from "react";
+import Headers from "../Styling/Headers";
 
 function BudgetForm({loggedInUser}){
     const navigate = useNavigate();
@@ -76,19 +77,21 @@ function BudgetForm({loggedInUser}){
     }
     return(
         <form onSubmit={handleSubmit}>
-            <h1>{budgetId? "Update": "Create"} Budget</h1>
+            <Headers title={`${budgetId ? "Update" : "Create"} Budget`}></Headers>
              {errors.length > 0 ?
                     <ul>{errors.map(error => <li key={error}>{error}</li>)}</ul>
                     : null
                 }
                 
-                
-            <label htmlFor="name">Budget Name: </label>
-            <input type="text" id="name" name="name" onChange={handleChange} value={budget.name}/>
+            <div className="m-4 p-3 border border-blue">
+                 <label htmlFor="name">Budget Name: </label>
+                <input type="text" id="name" name="name" onChange={handleChange} value={budget.name}/>
 
 
-            <button className="btn btn-primary m-1" type="submit">{budgetId? "Update":"Create"}</button>
-            <Link className="btn btn-primary m-1" to="/view/budgets"> Cancel</Link>
+                <button className="btn border border-black m-1" type="submit">{budgetId? "Update":"Create"}</button>
+                <Link className="btn border border-black m-1" to="/view/budgets"> Cancel</Link>
+            </div>
+           
         </form>
     );
 }
