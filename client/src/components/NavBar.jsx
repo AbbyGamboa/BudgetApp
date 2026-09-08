@@ -10,13 +10,11 @@ function NavBar({loggedInUser}){
       <Navbar bg="light" data-bs-theme="light">
         <Container>
 
-          <Navbar.Brand href="#home">
+          <Navbar.Brand href="/">
             <img src={logo} alt="React Logo" className="logo p-1" width={60}/>
-            1st Steps
+            1st Step
             </Navbar.Brand>
           <Nav className="ms-0">
-            <Nav.Link href="">Articles</Nav.Link>
-            
             {!loggedInUser && <>
               <Link className='btn btn-primary m-1' to="/user/signup">Sign up</Link>
               <Link className='btn btn-primary m-1' to="/user/login">Login</Link>
@@ -25,6 +23,7 @@ function NavBar({loggedInUser}){
             <Nav.Link href="/view/budgets">Budgets</Nav.Link>
             <Nav.Link href="/view/accounts">Accounts</Nav.Link>
             <Link className='btn btn-primary m-1' to="/user/signout">Logout</Link>
+            <Link className='rounded-circle userIcon'  style={{ width: '50px', height: '50px' }} to="/user/landing"></Link>
             </>
             }
             

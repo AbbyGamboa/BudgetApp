@@ -344,4 +344,42 @@ class TransactionServiceTest {
         }
     }
 
+    @Nested
+    class listTransactions{
+        @Test
+        void success(){
+            when(accountRepository.findByUser(1)).thenReturn(TestDataHelper.allUserOneAccounts());
+            when(repository.lastTransactions(1)).thenReturn(TestDataHelper.lastTransactions());
+
+            Result<List<Transaction>> expected = new Result<>();
+            expected.setpayload(TestDataHelper.lastTransactions());
+            Result<List<Transaction>> actual = service.lastTransactions(1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenUserDoesNotExist(){
+            when(accountRepository.findByUser(1)).thenReturn(List.of());
+
+            Result<List<Transaction>> expected = new Result<>();
+            expected.addErrorMessage("No accounts found for user", ResultType.NOT_FOUND);
+            Result<List<Transaction>> actual = service.lastTransactions(1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenNoTransactionsFound(){
+            when(accountRepository.findByUser(1)).thenReturn(TestDataHelper.allUserOneAccounts());
+            when(repository.lastTransactions(1)).thenReturn(List.of());
+
+            Result<List<Transaction>> expected = new Result<>();
+            expected.addErrorMessage("No transactions found", ResultType.NOT_FOUND);
+            Result<List<Transaction>> actual = service.lastTransactions(1);
+
+            assertEquals(expected, actual);
+        }
+    }
+
 }

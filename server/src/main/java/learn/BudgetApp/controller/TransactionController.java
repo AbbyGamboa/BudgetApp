@@ -58,6 +58,17 @@ public class TransactionController {
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
+    @GetMapping("/recent")
+    public ResponseEntity<?> findRecent( Authentication authentication){
+        int userId = Integer.parseInt(authentication.getName());
+
+        Result<List<Transaction>> result = service.lastTransactions(userId);
+        if (!result.isSuccess()){
+            return ErrorResponse.build(result);
+        }
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+
     @PostMapping("/{accountId}")
     public ResponseEntity<?> create(@PathVariable int accountId, @RequestBody Transaction transaction, Authentication authentication){
         int userId = Integer.parseInt(authentication.getName());

@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useParams, Link} from "react-router-dom";
 import Transaction from "./Transaction";
 import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
 import TransactionForm from "./TransactionForm";
 import TransactionCategory from "../TransactionCategory/TransactionCategory";
 
@@ -32,44 +31,69 @@ function ViewTransactions({loggedInUser}){
 
     return(
         <>
+       
         
-        <button onClick={handleShowCreate}>Create Transaction</button>
         <Modal show={showCreate} onHide={handleCreateClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Modal heading</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <TransactionForm loggedInUser={loggedInUser} transactionId ={undefined} setActiveModalItem={setActiveModalItem} handleCreateClose={handleCreateClose}/>
             </Modal.Body>
             
         </Modal>
-        <h2>Transactions: </h2>
-        
-        <div className="grid-container">
-        {transactions.map(transaction => 
-        <div key ={transaction.transactionId} className="grid-item p-5">
-        <Transaction transaction={transaction}/>
-        <TransactionCategory loggedInUser = {loggedInUser} transactionId={transaction.transactionId}></TransactionCategory>
 
-        <Link className="btn btn-primary m-1" to={`/view/${transaction.transactionId}`}>View</Link>
-        <button onClick={() => setActiveModalItem(transaction)} className="btn btn-primary m-1" >Edit</button>
-        
-        </div>)}
-
-        {activeModalItem && 
-        <Modal show={true} onHide={handleCreateClose}>
-            <Modal.Header closeButton>
-                <Modal.Title>Update Transaction</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <TransactionForm loggedInUser={loggedInUser} transactionId ={activeModalItem.transactionId} setActiveModalItem={setActiveModalItem} handleCreateClose={handleCreateClose}/>
-                {/*<Button variant="secondary" onClick={()=>setActiveModalItem(null)}>Close </Button>*/}
-            </Modal.Body>
+        <div className="border border-blue rounded m-4 p-3">
+             <div className="d-flex justify-content-between m-3">
+                <h2 >Manage Transactions: </h2>
+                <button  className="btn border-black m-2" onClick={handleShowCreate}>Create Transaction</button>
+            </div>
             
-        </Modal>}
+        
+            <div className="border border-blue rounded">
+                <table className="table table-striped table-hover align-middle table-responsive mb-4">
+                    <thead className="">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col"><i className="fa-solid fa-calendar transactionIcon me-4"></i>Date</th>
+                        <th scope="col"><i className="fa-solid fa-money-bill-1-wave me-4 transactionIcon"></i>Spent</th>
+                        <th scope="col"><i className="fa-solid fa-store me-4 transactionIcon"></i>Merchant</th>
+                        <th scope="col"><i className="fa-solid fa-pen-ruler me-4 transactionIcon"></i>Description</th>
+                        <th scope="col"><i className="fa-solid fa-table-cells-large me-4 transactionIcon"></i>Category</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody className="table-group-divider">
+                    {transactions && transactions.map(transaction => 
+                    <tr key={transaction.transactionId}>
+                        <Transaction transaction={transaction}/>
+                        <td className="px-5">
+                            <TransactionCategory loggedInUser = {loggedInUser} transactionId={transaction.transactionId}></TransactionCategory>
+                        </td>
+                        
+                    <td className="mt-auto">
+                        <Link onClick={() => setActiveModalItem(transaction)} className=""><i className="fa-solid fa-ellipsis-vertical"></i></Link>
+                    </td>
+                    </tr>
+                )}
+                </tbody>
+                </table>
+                
+                
+
+                {activeModalItem && 
+                <Modal show={true} onHide={handleCreateClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Update Transaction</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <TransactionForm loggedInUser={loggedInUser} transactionId ={activeModalItem.transactionId} setActiveModalItem={setActiveModalItem} handleCreateClose={handleCreateClose}/>
+                    </Modal.Body>
+                    
+                </Modal>}
+            </div>
+
         </div>
-        
-        
+            
         </>
     
 

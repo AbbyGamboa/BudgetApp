@@ -4,13 +4,13 @@ import Modal from 'react-bootstrap/Modal';
 import BudgetCategoryForm from "./BudgetCategoryForm";
 import DeleteBCConfirm from "./DeleteBCConfirm";
 import { useParams } from "react-router-dom";
+import BudgetChart from "../BudgetChart";
 
-function BudgetCategory({loggedInUser}){
+
+function BudgetCategory({loggedInUser, setBudgetTotal, budgetcategories, setBudgetCategories}){
     const navigate = useNavigate()
     const {budgetId} = useParams()
 
-
-    const[budgetcategories, setBudgetCategories] = useState([])
     const [activeModalItem, setActiveModalItem] = useState(null);
     const [deleteItem, setdeleteItem] = useState(null);
     const [sum, setSum]= useState(0);
@@ -23,8 +23,9 @@ function BudgetCategory({loggedInUser}){
                             "Authorization": `Bearer ${loggedInUser.token}`
                     }
                 })
-                const payload = await response.json();
-                    if(response.status>= 200 && response.status <= 300){
+                
+                if(response.status>= 200 && response.status <= 300){
+                        const payload = await response.json();
                         setBudgetCategories(payload)
 
                     if(payload != "Budget has no categories"){
@@ -33,12 +34,12 @@ function BudgetCategory({loggedInUser}){
                             total += Number(budCat.percentage);
                         }
 
-                        setSum(total.toFixed(2));
+                        setBudgetTotal(total.toFixed(2));
                     } else{
-                        setSum(0)
+                        setBudgetTotal(0)
                     }
                 } else{
-                    navigate("/view/budgets")
+                    setBudgetTotal(0)
                 }
                 
             }
@@ -52,8 +53,6 @@ function BudgetCategory({loggedInUser}){
 
     return (
         <>
-        <h4>Total budget: ${sum}</h4>
-        <button onClick={handleShowCreate}>Add category to budget</button>
         <Modal show={showCreate} onHide={handleCreateClose}>
             <Modal.Header closeButton>
                 <Modal.Title>Add category to budget</Modal.Title>
@@ -64,15 +63,38 @@ function BudgetCategory({loggedInUser}){
             
             
         </Modal>
-        <h1>Categories: </h1>
-        {budgetcategories[0] === "Budget has no categories"? <div>
-            <h4>No categories found</h4></div>: budgetcategories.map(budgetCategory=>  <div key={budgetCategory.budgetCategoryId}>
-            <h4>{budgetCategory.category.name}:</h4>
-            <h4>Dedicated amount from income: ${Number(budgetCategory.percentage).toFixed(2)}</h4>
-            <button className="btn btn-primary m-1" onClick={() => setActiveModalItem(budgetCategory)}>Edit amount</button>
-            <button className="btn btn-danger" onClick={()=>setdeleteItem(budgetCategory)}>Delete</button>
-        </div>)}
-
+         <div className="d-flex justify-content-between">
+            <h1 className="p-2">Budget breakdown: </h1>
+            <button className="btn border-black w-25" onClick={handleShowCreate}>Add category</button>
+        </div>
+        
+        <div className="d-flex justify-content-center">
+            {budgetcategories[0] === "Budget has no categories"? <div>
+            <h4>No categories found</h4></div>: <>
+                <div>
+                <BudgetChart budgetId={budgetId} loggedInUser={loggedInUser}></BudgetChart>
+            
+                
+                </div>
+                <div className=" w-50 p-4 border border-blue rounded m-3"> 
+                    <h3>Categories: </h3>
+                    {budgetcategories.map(budgetCat => 
+                    <div key={budgetCat.budgetCategoryId} className="d-flex justify-content-between border border-blue rounded p-2 m-3">
+                        <h4 className="text-center p-1">{budgetCat.category.name}</h4>
+                        
+                        <div className="p-1">
+                            <i className="fa-solid fa-pen-to-square m-2 iconHover" onClick={() => setActiveModalItem(budgetCat)}></i>
+                            <i className="fa-solid fa-circle-minus m-2 deleteHover" onClick={()=>setdeleteItem(budgetCat)}></i>
+                        </div>
+                       
+                    </div>
+                    )}
+                </div>
+            </>
+            }
+            
+        </div>
+    
        {activeModalItem && 
         <Modal show={true}>
             <Modal.Header closeButton>
@@ -93,7 +115,6 @@ function BudgetCategory({loggedInUser}){
                 <DeleteBCConfirm deleteItem={deleteItem} setdeleteItem={setdeleteItem} loggedInUser={loggedInUser}></DeleteBCConfirm>
                 
             </Modal.Body>
-            
         </Modal>}
         </>
         

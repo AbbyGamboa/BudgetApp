@@ -7,8 +7,11 @@ GET {{base_url}}/account/1 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg3OTQ3ODE1LCJleHAiOjE3ODc5NTE0MTV9.Nlve7RZVvkYwUJICXpzs08D7IsrojutIaGXZ0kHCuxtqTdYIdQWCnCsS2tFi4m1E
 ###
 GET {{base_url}}/date/1?start=2025-01-01&end=2026-08-01 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg3OTI3MDc0LCJleHAiOjE3ODc5MzA2NzR9.LSChE-BPJS6LqsXN-grIcFYVgcoaEI6jV7BlY_e9z4gmxTlHmZ-0qU-CGWyw2ubj
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg4ODkxMzkzLCJleHAiOjE3ODg4OTQ5OTN9.fNB4B4lf-M6dkrzvOgQUhrF78yFLZEpQ8wB_UbszSp1gA-3Ko3fF4BDf81J4mTZ9
 
+###
+GET {{base_url}}/recent HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg4ODE2NDA1LCJleHAiOjE3ODg4MjAwMDV9.xshtxMPY6MR9jTdSATRZn2uIKyWzglVeHON3AxDey-KbDxpzjhbmMkdeVqV4oR8m
 
 ###
 POST {{base_url}}/1 HTTP/1.1

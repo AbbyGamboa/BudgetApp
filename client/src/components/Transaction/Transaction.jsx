@@ -1,16 +1,13 @@
-import { Link } from "react-router-dom"
+
 function Transaction({transaction}){
     return (
-        <div className="m-1">
-            <h3>Transaction: {transaction.transactionId}</h3>
-            <h4>Date: {transaction.date}</h4>
-            <h4>Spent: ${Number(transaction.amount).toFixed(2)}</h4>
-            <h4>{transaction.merchant_name && `Merchant Name: ${transaction.merchant_name}`}</h4>
-            <h4>{transaction.description && `Description: ${transaction.description}`}</h4>
-        </div>
-        
-
-
+        <>
+            <th className="text-center">{transaction.transactionId}</th>
+            <td className="px-5">{transaction.date}</td>
+            <td className="px-5">${Number(transaction.amount).toFixed(2)}</td>
+            <td className="px-5">{transaction.merchant_name && <>{`${transaction.merchant_name}`}</>}</td>
+            <td className="px-5">{transaction.description && <>{`${transaction.description}`}</>}</td>
+        </>
     )
 }
 

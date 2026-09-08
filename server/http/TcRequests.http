@@ -7,8 +7,8 @@ GET {{base_url}}/get/1 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg4NjQxMjA2LCJleHAiOjE3ODg2NDQ4MDZ9.V_o0CHKrw5_sIZ5iFIDABT_g4QeoMz0J0qaujbmExjFJn4oQygjhv2arJl7diauM
 
 ###
-GET {{base_url}}/category/3?start=2025-01-01&end=2026-08-01 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg4NjQxMjA2LCJleHAiOjE3ODg2NDQ4MDZ9.V_o0CHKrw5_sIZ5iFIDABT_g4QeoMz0J0qaujbmExjFJn4oQygjhv2arJl7diauM
+GET {{base_url}}/category/2?start=2025-01-01&end=2026-08-01 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg4ODkxMzkzLCJleHAiOjE3ODg4OTQ5OTN9.fNB4B4lf-M6dkrzvOgQUhrF78yFLZEpQ8wB_UbszSp1gA-3Ko3fF4BDf81J4mTZ9
 
 ###
 POST {{base_url}}?tId=3&bCId=3 HTTP/1.1

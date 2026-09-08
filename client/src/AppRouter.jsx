@@ -1,7 +1,6 @@
 import { createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
 import Layout from "./components/Layout";
 import Landing from "./components/Landing";
-import { Link } from "react-router-dom";
 import UserForm from "./components/User/UserForm";
 import { useState } from "react";
 import UserLanding from "./components/User/UserLanding";
@@ -13,10 +12,6 @@ import CreateAccount from "./components/Account/CreateAccount";
 import SingleBudget from "./components/Budget/SingleBudget";
 import ViewBudgets from "./components/Budget/ViewBudgets";
 import BudgetForm from "./components/Budget/BudgetForm";
-import SingleTransaction from "./components/Transaction/SingleTransaction"
-import TransactionForm from "./components/Transaction/TransactionForm"
-import ViewCategoryByUser from "./components/Category/ViewCategoryByUser";
-import ConfirmDelete from "./components/Category/ConfirmDelete";
 
 function AppRouter(){
     const [loggedInUser, setLoggedInUser] = useState(JSON.parse(localStorage.getItem("loggedInUser")));
@@ -28,7 +23,7 @@ function AppRouter(){
             children:[
                 {
                     path: "/", 
-                    element: <Landing></Landing>,
+                    element: <Landing loggedInUser={loggedInUser}></Landing>,
                 }, 
                 {
                     path:"/user",
@@ -43,7 +38,7 @@ function AppRouter(){
                     },
                     {
                         path:"landing",
-                        element: <UserLanding></UserLanding>,
+                        element: <UserLanding loggedInUser={loggedInUser}></UserLanding>,
                     },
                     {
                         path: "signout",
@@ -82,10 +77,6 @@ function AppRouter(){
                     path:"/add/budget", 
                     element: loggedInUser? <BudgetForm loggedInUser={loggedInUser}></BudgetForm>:<Navigate to="/"></Navigate>,
                 }, 
-                {
-                    path:"/view/:transactionId",
-                    element: loggedInUser? <SingleTransaction loggedInUser={loggedInUser}></SingleTransaction>:<Navigate to="/"></Navigate>,
-                },
                 
             ],
         },
