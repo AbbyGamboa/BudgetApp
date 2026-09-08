@@ -1,8 +1,5 @@
 import { useParams } from "react-router-dom";
 import { useState} from "react";
-import Transaction from "./Transaction";
-import { Link } from "react-router-dom";
-import TransactionCategory from "../TransactionCategory/TransactionCategory";
 import ViewCategoryByUser from "../Category/ViewCategoryByUser";
 import TransactionChart from "../TransactionChart";
 

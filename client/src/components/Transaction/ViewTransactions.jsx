@@ -54,11 +54,11 @@ function ViewTransactions({loggedInUser}){
                     <thead className="">
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col"><i className="fa-solid fa-calendar transactionIcon ms-2 me-4"></i>Date</th>
-                        <th scope="col"><i className="fa-solid fa-money-bill-1-wave  ms-2 me-4 transactionIcon"></i>Spent</th>
-                        <th scope="col"><i className="fa-solid fa-store ms-2 me-4 transactionIcon"></i>Merchant</th>
-                        <th scope="col"><i className="fa-solid fa-pen-ruler ms-2 me-4 transactionIcon"></i>Description</th>
-                        <th scope="col"><i className="fa-solid fa-table-cells-large ms-2 me-4 transactionIcon"></i>Category</th>
+                        <th scope="col"><i className="fa-solid fa-calendar transactionIcon me-4"></i>Date</th>
+                        <th scope="col"><i className="fa-solid fa-money-bill-1-wave me-4 transactionIcon"></i>Spent</th>
+                        <th scope="col"><i className="fa-solid fa-store me-4 transactionIcon"></i>Merchant</th>
+                        <th scope="col"><i className="fa-solid fa-pen-ruler me-4 transactionIcon"></i>Description</th>
+                        <th scope="col"><i className="fa-solid fa-table-cells-large me-4 transactionIcon"></i>Category</th>
                         <th></th>
                     </tr>
                 </thead>

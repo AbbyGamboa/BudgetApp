@@ -5,7 +5,6 @@ function TransactionChart({transactions}) {
 
     // Convert your transactions into chart data
     const chartTransactions = transactions.map(transaction => {
-
         return {
             date: transaction.date,
             amount: Number(transaction.amount), 
