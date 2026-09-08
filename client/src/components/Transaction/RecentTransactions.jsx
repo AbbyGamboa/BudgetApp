@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import Transaction from './Transaction.jsx'
+import TransactionCategory from "../TransactionCategory/TransactionCategory.jsx";
+
 function RecentTransactions({loggedInUser}){
     const [transactions, setTransactions] = useState([])
 
@@ -21,15 +23,31 @@ function RecentTransactions({loggedInUser}){
         }, [])
 
     return (
-        <div  className=" rounded p-4 position-relative m-3">
+        <div  className=" rounded p-4 position-relative m-3 border border-blue">
             <h4>Recent Transactions:</h4>
-            <div className="grid-container">
-                {transactions.map(transaction => 
-                <div key={transaction.transactionId} className="d-flex justify-content-center p-4 border border-blue rounded" style={{width:'300px', height: '300px'}}>
-                    <Transaction transaction={transaction}></Transaction>
-                </div>)}
-
-            </div>
+            <table className="table table-striped table-hover align-middle mb-4">
+                <thead className="">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col"><i className="fa-solid fa-calendar transactionIcon ms-2 me-4"></i>Date</th>
+                        <th scope="col"><i className="fa-solid fa-money-bill-1-wave  ms-2 me-4 transactionIcon"></i>Spent</th>
+                        <th scope="col"><i className="fa-solid fa-store ms-2 me-4 transactionIcon"></i>Merchant</th>
+                        <th scope="col"><i className="fa-solid fa-pen-ruler ms-2 me-4 transactionIcon"></i>Description</th>
+                        <th scope="col"><i class="fa-solid fa-table-cells-large ms-2 me-4 transactionIcon"></i>Category</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {transactions.map(transaction => 
+                    <tr key={transaction.transactionId} className="">
+                        <Transaction transaction={transaction}></Transaction>
+                        <td className="px-5">
+                            <TransactionCategory loggedInUser = {loggedInUser} transactionId={transaction.transactionId}></TransactionCategory>
+                        </td>
+                        <td></td>
+                    </tr>)}
+                </tbody>
+            </table>
             
         </div>
     );

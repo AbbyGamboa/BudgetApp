@@ -49,22 +49,36 @@ function ViewTransactions({loggedInUser}){
             </div>
             
         
-            <div className="grid-container">
-                {transactions && transactions.map(transaction => 
-                <div key ={transaction.transactionId} className="d-flex flex-column grid-item p-3 border border-black rounded">
-                    <div className="m-1">
+            <div className="border border-blue rounded">
+                <table className="table table-striped table-hover align-middle table-responsive mb-4">
+                    <thead className="">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col"><i className="fa-solid fa-calendar transactionIcon ms-2 me-4"></i>Date</th>
+                        <th scope="col"><i className="fa-solid fa-money-bill-1-wave  ms-2 me-4 transactionIcon"></i>Spent</th>
+                        <th scope="col"><i className="fa-solid fa-store ms-2 me-4 transactionIcon"></i>Merchant</th>
+                        <th scope="col"><i className="fa-solid fa-pen-ruler ms-2 me-4 transactionIcon"></i>Description</th>
+                        <th scope="col"><i class="fa-solid fa-table-cells-large ms-2 me-4 transactionIcon"></i>Category</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody className="table-group-divider">
+                    {transactions && transactions.map(transaction => 
+                    <tr>
                         <Transaction transaction={transaction}/>
-                        <TransactionCategory loggedInUser = {loggedInUser} transactionId={transaction.transactionId}></TransactionCategory>
-                    </div>
+                        <td className="px-5">
+                            <TransactionCategory loggedInUser = {loggedInUser} transactionId={transaction.transactionId}></TransactionCategory>
+                        </td>
+                        
+                    <td className="mt-auto">
+                        <Link onClick={() => setActiveModalItem(transaction)} className=""><i class="fa-solid fa-ellipsis-vertical"></i></Link>
+                    </td>
+                    </tr>
+                )}
+                </tbody>
+                </table>
                 
-
-                    <div className="mt-auto">
-
-                        <button onClick={() => setActiveModalItem(transaction)} className="btn btn-primary m-1" >Edit</button>
-                    </div>
-               
                 
-                </div>)}
 
                 {activeModalItem && 
                 <Modal show={true} onHide={handleCreateClose}>
