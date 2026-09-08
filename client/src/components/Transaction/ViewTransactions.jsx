@@ -50,7 +50,7 @@ function ViewTransactions({loggedInUser}){
             
         
             <div className="grid-container">
-                {transactions.map(transaction => 
+                {transactions && transactions.map(transaction => 
                 <div key ={transaction.transactionId} className="d-flex flex-column grid-item p-3 border border-black rounded">
                     <div className="m-1">
                         <Transaction transaction={transaction}/>

@@ -10,7 +10,7 @@ function Landing({loggedInUser}){
     return (
         <>
             <div className="background-blue w-100 d-flex" style={{ height: "200px", objectFit: "cover" }}>
-                <h1 className="mt-auto mb-1 ms-5">Take your first steps today...</h1>
+                <h1 className="mt-auto mb-1 ms-5">Take your first step today...</h1>
             </div>
             
             <div className="d-flex justify-content-between m-5">

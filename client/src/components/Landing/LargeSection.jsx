@@ -5,7 +5,7 @@ function LargeSection({loggedInUser}){
             <div className="w-50 p-2 m-5">
                 <h3>Join today</h3>
 
-                <p>Start understanding your finances with 1st step.</p>
+                <p>Start understanding your finances with 1st Step.</p>
                 {!loggedInUser && <Link className='btn btn-primary m-1' to="/user/signup">Sign up</Link>}
             
             </div>

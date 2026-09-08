@@ -23,8 +23,9 @@ function BudgetCategory({loggedInUser, setBudgetTotal, budgetcategories, setBudg
                             "Authorization": `Bearer ${loggedInUser.token}`
                     }
                 })
-                const payload = await response.json();
-                    if(response.status>= 200 && response.status <= 300){
+                
+                if(response.status>= 200 && response.status <= 300){
+                        const payload = await response.json();
                         setBudgetCategories(payload)
 
                     if(payload != "Budget has no categories"){
@@ -38,7 +39,7 @@ function BudgetCategory({loggedInUser, setBudgetTotal, budgetcategories, setBudg
                         setBudgetTotal(0)
                     }
                 } else{
-                    navigate("/view/budgets")
+                    setBudgetTotal(0)
                 }
                 
             }

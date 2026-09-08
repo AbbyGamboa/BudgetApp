@@ -12,11 +12,9 @@ function NavBar({loggedInUser}){
 
           <Navbar.Brand href="/">
             <img src={logo} alt="React Logo" className="logo p-1" width={60}/>
-            1st Steps
+            1st Step
             </Navbar.Brand>
           <Nav className="ms-0">
-            <Nav.Link href="">Articles</Nav.Link>
-            
             {!loggedInUser && <>
               <Link className='btn btn-primary m-1' to="/user/signup">Sign up</Link>
               <Link className='btn btn-primary m-1' to="/user/login">Login</Link>

@@ -14,7 +14,6 @@ function ViewByBudget({loggedInUser, budgetTotal, budgetcategories}){
                 }
             })
             if (response.status === 401 || response.status === 404){
-                navigate("/view/budgets")
                 return;
             } 
             const payload = await response.json();

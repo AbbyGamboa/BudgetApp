@@ -15,8 +15,9 @@ function BudgetChart({budgetId, loggedInUser}){
                                 "Authorization": `Bearer ${loggedInUser.token}`
                         }
                     })
-                    const payload = await response.json();
+                    
                         if(response.status>= 200 && response.status <= 300){
+                            const payload = await response.json();
                             setBudgetCategories(payload)
     
                             if(payload != "Budget has no categories"){
@@ -29,9 +30,7 @@ function BudgetChart({budgetId, loggedInUser}){
                             } else{
                                 setSum(0)
                             }
-                    } else{
-                        navigate("/view/budgets")
-                    }
+                    } 
                     
                 }
                 
@@ -60,8 +59,6 @@ function BudgetChart({budgetId, loggedInUser}){
             
         </PieChart>
         </>}</>
-    
-        
     )
 }
 
