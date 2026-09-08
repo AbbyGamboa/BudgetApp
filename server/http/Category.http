@@ -1,0 +1,20 @@
+@base_url = http://localhost:8080/api/categories
+
+GET {{base_url}} HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg4MDUxMjM0LCJleHAiOjE3ODgwNTQ4MzR9.NJk9961AREjrjWNzYFMlua4OL0vLtGw2hOJYbA64EY3Om3NnOD5SaG3eOd6fiZ-O
+
+###
+GET {{base_url}}/2 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg4MTIwMTI4LCJleHAiOjE3ODgxMjM3Mjh9.J1khdOA6LJ7xsJKqx17e3OmXruTrOT1RN7JHgc15PN6vaeXmS5Dmcz8EsDuOKc1_
+###
+POST {{base_url}} HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg4MTA1NDM0LCJleHAiOjE3ODgxMDkwMzR9.gO-sN0TioT7alPzFyubsWUuOJz_A-RaVmhwhHpdXir8zDaT5qMIIsYCSRpdBUGzT
+
+{
+  "name": "Insurance"
+}
+
+###
+DELETE {{base_url}}/2 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNzg4MTIwMTI4LCJleHAiOjE3ODgxMjM3Mjh9.J1khdOA6LJ7xsJKqx17e3OmXruTrOT1RN7JHgc15PN6vaeXmS5Dmcz8EsDuOKc1_

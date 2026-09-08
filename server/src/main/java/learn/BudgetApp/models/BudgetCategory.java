@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class BudgetCategory {
-
     public int budgetCategoryId;
     public Budget budget;
     public Category category;
@@ -16,6 +15,8 @@ public class BudgetCategory {
         this.category = category;
         this.percentage = percentage;
     }
+
+    public BudgetCategory(){};
 
     public int getBudgetCategoryId() {
         return budgetCategoryId;

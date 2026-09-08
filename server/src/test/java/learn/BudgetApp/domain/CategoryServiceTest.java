@@ -1,0 +1,284 @@
+package learn.BudgetApp.domain;
+
+import learn.BudgetApp.data.CategoryRepository;
+import learn.BudgetApp.data.TestDataHelper;
+import learn.BudgetApp.data.UserRepository;
+import learn.BudgetApp.models.Category;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+
+@SpringBootTest
+class CategoryServiceTest {
+
+    @Autowired
+    CategoryService service;
+
+    @MockBean
+    CategoryRepository repository;
+
+    @MockBean
+    UserRepository userRepository;
+
+    @Nested
+    class findByUser{
+        @Test
+        void success(){
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
+            when(repository.findAllCategoriesForUser(1)).thenReturn(TestDataHelper.categoriesForUserOne());
+
+
+            Result<List<Category>> expected = new Result<>();
+            expected.setpayload(TestDataHelper.categoriesForUserOne());
+            Result<List<Category>> actual = service.findByUser(1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenUserNotFound(){
+            when(userRepository.findById(99)).thenReturn(null);
+
+            Result<List<Category>> expected = new Result<>();
+            expected.addErrorMessage("User not found", ResultType.NOT_FOUND);
+            Result<List<Category>> actual = service.findByUser(99);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenCategoryIsEmpty(){
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
+            when(repository.findAllCategoriesForUser(1)).thenReturn(List.of());
+
+
+            Result<List<Category>> expected = new Result<>();
+            expected.addErrorMessage("User has no categories", ResultType.NOT_FOUND);
+            Result<List<Category>> actual = service.findByUser(1);
+
+            assertEquals(expected, actual);
+        }
+    }
+
+    @Nested
+    class findById{
+        @Test
+        void success(){
+            when(repository.findById(1)).thenReturn(TestDataHelper.firstCategory());
+
+            Result<Category> expected = new Result<>();
+            expected.setpayload(TestDataHelper.firstCategory());
+            Result<Category> actual = service.findById(1, 1);
+
+            assertEquals(expected,actual);
+        }
+
+        @Test
+        void failsWhenCustomCategoryDoesNotBelongToUser(){
+            when(repository.findById(1)).thenReturn(TestDataHelper.customCategory());
+
+            Result<Category> expected = new Result<>();
+            expected.addErrorMessage("Cannot access other user's categories", ResultType.INVALID);
+            Result<Category> actual = service.findById(1, 2);
+
+            assertEquals(expected,actual);
+        }
+
+        @Test
+        void failsWhenCategoryNotFound(){
+            when(repository.findById(1)).thenReturn(null);
+
+            Result<Category> expected = new Result<>();
+            expected.addErrorMessage("Category not found", ResultType.NOT_FOUND);
+            Result<Category> actual = service.findById(1, 1);
+
+            assertEquals(expected,actual);
+        }
+    }
+
+    @Nested
+    class create{
+        @Test
+        void success(){
+            Category created = TestDataHelper.createCategory();
+
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
+            when(repository.findAllCategoriesForUser(1)).thenReturn(TestDataHelper.categoriesForUserOne());
+            when(repository.create(created)).thenReturn(created);
+
+            Result<Category> expected = new Result<>();
+            expected.setpayload(created);
+
+            Result<Category> actual = service.create(created, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenCategoryIsNull(){
+            Category created = null;
+            Result<Category> expected = new Result<>();
+            expected.addErrorMessage("Cannot add category", ResultType.NOT_FOUND);
+
+            Result<Category> actual = service.create(created, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenCategoryIsMissingInformation(){
+            Category createdNoName = new Category(4, null, TestDataHelper.existingUser());
+            Result<Category> expectedNoName = new Result<>();
+            expectedNoName.addErrorMessage("Name is required", ResultType.INVALID);
+
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
+
+            Result<Category> actual = service.create(createdNoName, 1);
+
+            assertEquals(expectedNoName, actual);
+
+            Category createdNoUser = new Category(4, "TEST", null);
+            Result<Category> expectedNoUser = new Result<>();
+            expectedNoUser.addErrorMessage("User is required to add category", ResultType.INVALID);
+
+            when(userRepository.findById(1)).thenReturn(null);
+            actual = service.create(createdNoUser, 1);
+
+            assertEquals(expectedNoUser, actual);
+
+        }
+
+
+        @Test
+        void failsWhenRepoFails(){
+            Category created = TestDataHelper.createCategory();
+            Result<Category> expected = new Result<>();
+            expected.addErrorMessage("Cannot add category", ResultType.INVALID);
+
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
+            when(repository.findAllCategoriesForUser(1)).thenReturn(TestDataHelper.categoriesForUserOne());
+            when(repository.create(created)).thenReturn(null);
+
+            Result<Category> actual = service.create(created, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenDuplicateCategory(){
+            Category created = TestDataHelper.createCategory();
+            Result<Category> expectedDuplicateCustom = new Result<>();
+            expectedDuplicateCustom.addErrorMessage("Cannot add duplicate of category", ResultType.INVALID);
+
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
+            when(repository.findAllCategoriesForUser(1)).thenReturn(List.of(created));
+
+            Result<Category> actual = service.create(created, 1);
+
+            assertEquals(expectedDuplicateCustom, actual);
+
+            created = TestDataHelper.firstCategory();
+            Result<Category> expectedDuplicateGeneric = new Result<>();
+            expectedDuplicateGeneric.addErrorMessage("Cannot add duplicate of category", ResultType.INVALID);
+
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
+            when(repository.findAllCategoriesForUser(1)).thenReturn(List.of(created));
+
+            actual = service.create(created, 1);
+
+            assertEquals(expectedDuplicateGeneric, actual);
+        }
+    }
+
+    @Nested
+    class delete{
+        @Test
+        void success(){
+            when(repository.findById(2)).thenReturn(TestDataHelper.customCategory());
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
+            when(repository.delete(2)).thenReturn(true);
+
+            Result<Category> expected = new Result<>();
+            expected.setpayload(TestDataHelper.customCategory());
+
+            Result<Category> actual = service.delete(2, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenCategoryNotFound(){
+            when(repository.findById(9999)).thenReturn(null);
+
+            Result<Category> expected = new Result<>();
+            expected.addErrorMessage("Category not found", ResultType.NOT_FOUND);
+
+            Result<Category> actual = service.delete(9999, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenUserNotFound(){
+            when(repository.findById(2)).thenReturn(TestDataHelper.customCategory());
+            when(userRepository.findById(999)).thenReturn(null);
+
+            Result<Category> expected = new Result<>();
+            expected.addErrorMessage("User not found", ResultType.NOT_FOUND);
+
+            Result<Category> actual = service.delete(2, 999);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenTryingToDeleteGenericVersion(){
+            when(repository.findById(1)).thenReturn(TestDataHelper.firstCategory());
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
+
+            Result<Category> expected = new Result<>();
+            expected.addErrorMessage("Cannot delete a generic category", ResultType.INVALID);
+
+            Result<Category> actual = service.delete(1, 1);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsWhenDeletingCategoryOwnedByOtherUser(){
+            when(repository.findById(2)).thenReturn(TestDataHelper.customCategory());
+            when(userRepository.findById(2)).thenReturn(TestDataHelper.secondUser());
+
+            Result<Category> expected = new Result<>();
+            expected.addErrorMessage("Cannot delete a category that belongs to someone else", ResultType.INVALID);
+
+            Result<Category> actual = service.delete(2, 2);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void failsInRepo(){
+            when(repository.findById(2)).thenReturn(TestDataHelper.customCategory());
+            when(userRepository.findById(1)).thenReturn(TestDataHelper.existingUser());
+            when(repository.delete(2)).thenReturn(false);
+
+            Result<Category> expected = new Result<>();
+            expected.addErrorMessage("Cannot delete category", ResultType.INVALID);
+
+            Result<Category> actual = service.delete(2, 1);
+
+            assertEquals(expected, actual);
+        }
+
+    }
+
+
+}

@@ -1,0 +1,121 @@
+import { useParams, useNavigate} from "react-router-dom";
+import { useState, useEffect } from "react";
+import TCForm from "../TransactionCategory/TCForm";
+
+function TransactionForm({loggedInUser, transactionId, setActiveModalItem, handleCreateClose}){
+    const navigate = useNavigate();
+
+    const{accountId} = useParams();
+    const [addCat, setAddCat] = useState(false);
+
+    const initialTransaction = {
+        "amount": "",
+        "date":"",
+        "merchantName":"", 
+        "description":""
+    }
+
+    const [transaction, setTransaction] = useState(initialTransaction);
+    const [errors, setErrors] = useState([]);
+
+    useEffect(()=> {
+        if (transactionId === undefined){
+            setTransaction(initialTransaction)
+            return;
+        }
+
+        const prepopulate = async function(){
+            const response = await fetch("http://localhost:8080/api/transaction/" + transactionId,{
+                headers:{
+                    "Authorization": `Bearer ${loggedInUser.token}`
+                }
+            })
+        
+            if(!response.ok){
+                navigate("/")
+                return;
+            }
+
+            const payload = await response.json();
+
+            setTransaction(payload.payload)
+        }
+        prepopulate()
+    }, [transactionId])
+    
+    function handleChange(event){
+        let value = event.target.value;
+        setTransaction({...transaction, [event.target.name]:value})
+    }
+
+    async function handleSubmit(event) {
+        event.preventDefault()
+        // could handle frontend validation here
+        let url = `http://localhost:8080/api/transaction/${accountId}`
+        let method = "POST"
+        if (transactionId !== undefined) {
+            url += "/edit/" + transactionId
+            method = "PUT"
+        }
+
+        const response = await fetch(url, {
+            method: method,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${loggedInUser.token}`
+            },
+            body: JSON.stringify(transaction)
+        })
+        if (response.status >= 200 && response.status < 300) {
+            const payload = await response.json();
+            setAddCat(true);
+            window.location.reload
+            
+        } else {
+            const payload = await response.json()
+            setErrors(payload)
+            
+        }
+    }
+
+    return(
+        <>
+        <form action="" className="flex-column align-content-center" onSubmit={handleSubmit} hidden={addCat}>
+            <h2>{transactionId? "Update": "Create"} Transaction: </h2>
+
+            <div className="d-flex justify-content-between">
+                <div>
+                    <label htmlFor="amount">*Amount: </label>
+                    <input type="text" name="amount" id="amount" value={transaction.amount} onChange={handleChange} required/>
+                </div>
+
+                <div>
+                    <label htmlFor="date">*Date: </label>
+                    <input type="date" name="date" id="date" value={transaction.date} onChange={handleChange} required/>
+                </div>
+            </div>
+            
+            <div>
+                <label htmlFor="merchant_name">Merchant Name: </label>
+                <input className="w-100" type="text" name="merchant_name" id="merchant_name" value={transaction.merchant_name? transaction.merchant_name : " "} onChange={handleChange}/>
+            </div>
+            
+            <div>
+                <label htmlFor="amount">Description: </label>
+                <input className="w-100" type="description" name="description" id="description" value={transaction.description? transaction.description: " "} onChange={handleChange}/>
+            </div>
+
+
+            <button type="submit" className="btn btn-primary">{transactionId? "Next": "Create"}</button>
+            <button type="button" className="btn btn-danger m-1" onClick={()=>transactionId? setActiveModalItem(null):handleCreateClose()}>Close</button>
+        </form>
+
+        {
+            addCat && <TCForm loggedInUser={loggedInUser} setActiveModalItem={setActiveModalItem} firstTId={transactionId} handleCreateClose={handleCreateClose}></TCForm>
+        }
+        
+        </>
+    );
+}
+
+export default TransactionForm;

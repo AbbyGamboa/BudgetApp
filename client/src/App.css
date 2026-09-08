@@ -1,0 +1,64 @@
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* Automatically enforces 3 columns per row */
+  gap: 16px; /* Adjust spacing between items */
+}
+
+.background-blue{
+  background-image: url(./assets/blueBackground.jpg);
+  height: 200px;
+  color:white;
+  background-size: cover;
+  box-shadow: 0 0 5px rgb(172, 172, 172);
+}
+
+.endingHeight{
+  height: 500px;
+  background-image: url(./assets/endingImage.avif);
+  width: 500px;
+  background-size: cover;
+
+}
+
+.hover:hover{
+  box-shadow: 0 0 10px rgb(157, 156, 156);
+}
+
+.userIcon{
+  background-image: url(./assets/UserIcon.png);
+  background-size: cover;
+  box-shadow: 0 0 5px grey;
+}
+
+.transactionIcon{
+  color: rgba(12, 84, 184);
+}
+
+.iconHover, .deleteHover{
+  font-size: 24px;
+}
+
+
+.iconHover:hover{
+  color:rgba(12, 84, 184);
+}
+
+.deleteHover:hover{
+  color: rgb(214, 8, 8);
+}
+
+.glow{
+  padding: 12px;
+  border-radius: 15px;
+  text-decoration: none;
+  color: rgba(12, 84, 184);
+  border: thin rgba(12, 84, 184) solid;
+  background-color: white;
+}
+
+.glow:hover{
+  background-color: rgba(12, 84, 184, 0.666);
+  color: white;
+  border: thin white solid;
+  box-shadow: 0 0 10px white;
+}

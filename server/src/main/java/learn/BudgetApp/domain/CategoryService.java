@@ -1,0 +1,153 @@
+package learn.BudgetApp.domain;
+
+import learn.BudgetApp.controller.CategoryController;
+import learn.BudgetApp.data.CategoryRepository;
+import learn.BudgetApp.data.UserRepository;
+import learn.BudgetApp.models.Category;
+import learn.BudgetApp.models.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class CategoryService {
+
+    private final CategoryRepository repository;
+    private final UserRepository userRepository;
+
+
+    public CategoryService(CategoryRepository repository, UserRepository userRepository) {
+        this.repository = repository;
+        this.userRepository = userRepository;
+    }
+
+    public Result<List<Category>> findByUser(int userId) {
+        Result<List<Category>> result = new Result<>();
+
+        User found = userRepository.findById(userId);
+        if (found == null) {
+            result.addErrorMessage("User not found", ResultType.NOT_FOUND);
+            return result;
+        }
+
+        List<Category> categories = repository.findAllCategoriesForUser(userId);
+        if(categories.isEmpty()){
+            result.addErrorMessage("User has no categories", ResultType.NOT_FOUND);
+        }
+
+        if(result.isSuccess()){
+            result.setpayload(categories);
+        }
+        return result;
+    }
+
+    public Result<Category> findById(int categoryId, int userId){
+        Result<Category> result = new Result<>();
+
+        Category category = repository.findById(categoryId);
+        if (category == null){
+            result.addErrorMessage("Category not found", ResultType.NOT_FOUND);
+            return result;
+        }
+
+        if(category.getUser() != null && category.getUser().getUserId() != userId){
+            result.addErrorMessage("Cannot access other user's categories", ResultType.INVALID);
+        }
+
+        if(result.isSuccess()){
+            result.setpayload(category);
+        }
+
+        return result;
+    }
+
+    public Result<Category> create(Category category, int userId){
+        Result<Category> result = new Result<>();
+
+        if (category == null){
+            result.addErrorMessage("Cannot add category", ResultType.NOT_FOUND);
+            return result;
+        }
+        User user = userRepository.findById(userId);
+        category.setUser(user);
+
+        validateCategory(result, category);
+
+        if(!result.isSuccess()){
+            return result;
+        }
+
+        validateCategoryIsUnique(result, category);
+
+        if (result.isSuccess()){
+            Category created = repository.create(category);
+            if (created == null) {
+                result.addErrorMessage("Cannot add category", ResultType.INVALID);
+            } else{
+                result.setpayload(created);
+            }
+        }
+
+        return result;
+    }
+
+    public Result<Category> delete(int categoryId, int userId){
+        Result<Category> result = new Result<>();
+
+        Category category = repository.findById(categoryId);
+        if (category == null){
+            result.addErrorMessage("Category not found", ResultType.NOT_FOUND);
+            return result;
+        }
+
+        User user = userRepository.findById(userId);
+        if(user == null){
+            result.addErrorMessage("User not found", ResultType.NOT_FOUND);
+            return result;
+        }
+
+        if (category.getUser() == null){
+            result.addErrorMessage("Cannot delete a generic category", ResultType.INVALID);
+            return result;
+        }
+
+        if(category.getUser().getUserId() != userId){
+            result.addErrorMessage("Cannot delete a category that belongs to someone else", ResultType.INVALID);
+        }
+
+        if(result.isSuccess()){
+            boolean delete = repository.delete(categoryId);
+            if(delete){
+                result.setpayload(category);
+            } else{
+                result.addErrorMessage("Cannot delete category", ResultType.INVALID);
+            }
+        }
+
+        return result;
+    }
+
+    public void validateCategory(Result<Category> result, Category category){
+        if (category.getName() == null){
+            result.addErrorMessage("Name is required", ResultType.INVALID);
+        }
+
+        if(category.getUser() == null){
+            result.addErrorMessage("User is required to add category", ResultType.INVALID);
+        }
+
+    }
+
+    public void validateCategoryIsUnique(Result<Category> result, Category category){
+        int currentUserId = category.getUser().getUserId();
+        List<Category> allCategoriesByUser = repository.findAllCategoriesForUser(currentUserId);
+
+        for (Category c: allCategoriesByUser){
+            // if the user has it
+            if (c.getName().toLowerCase().equals(category.getName().toLowerCase()) && (c.getUser() == category.getUser() || c.getUser() == null)){
+                result.addErrorMessage("Cannot add duplicate of category", ResultType.INVALID);
+            }
+        }
+    }
+}

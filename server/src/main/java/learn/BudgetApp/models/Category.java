@@ -13,10 +13,7 @@ public class Category {
         this.user = user;
     }
 
-    public Category(int categoryId, String name) {
-        this.categoryId = categoryId;
-        this.name = name;
-    }
+    public Category(){};
 
     public int getCategoryId() {
         return categoryId;
