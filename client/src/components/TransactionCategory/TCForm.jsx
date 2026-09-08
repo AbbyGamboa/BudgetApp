@@ -51,8 +51,10 @@ function TCForm({loggedInUser, setActiveModalItem, firstTId, handleCreateClose})
                             "Authorization": `Bearer ${loggedInUser.token}`
                     }
                 })
-                const payload = await response.json();
-                setBudgetCategories(payload)
+                if(response.status>=200 && response.status <= 300){
+                    const payload = await response.json();
+                    setBudgetCategories(payload)
+                } 
             }
             doFetch()
     

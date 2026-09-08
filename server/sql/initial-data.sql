@@ -8,15 +8,15 @@ USE budget_app;
 
 INSERT INTO user (email, password) VALUES
 ('alex.johnson@college.edu', 'password123'),
-('maya.williams@college.edu', 'password123'),
-('ethan.brown@college.edu', 'password123'),
-('sophia.davis@college.edu', 'password123'),
-('liam.miller@college.edu', 'password123'),
-('olivia.wilson@college.edu', 'password123'),
-('noah.moore@college.edu', 'password123'),
-('emma.taylor@college.edu', 'password123'),
-('james.anderson@college.edu', 'password123'),
-('ava.thomas@college.edu', 'password123');
+('maya.williams@college.edu', 'password345'),
+('ethan.brown@college.edu', 'password789'),
+('sophia.davis@college.edu', 'password222'),
+('liam.miller@college.edu', 'password111'),
+('olivia.wilson@college.edu', 'password890'),
+('noah.moore@college.edu', 'password_'),
+('emma.taylor@college.edu', 'password346'),
+('james.anderson@college.edu', 'pass_word'),
+('ava.thomas@college.edu', 'carrots');
 
 
 -- =========================================================

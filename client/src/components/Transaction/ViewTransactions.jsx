@@ -58,20 +58,20 @@ function ViewTransactions({loggedInUser}){
                         <th scope="col"><i className="fa-solid fa-money-bill-1-wave  ms-2 me-4 transactionIcon"></i>Spent</th>
                         <th scope="col"><i className="fa-solid fa-store ms-2 me-4 transactionIcon"></i>Merchant</th>
                         <th scope="col"><i className="fa-solid fa-pen-ruler ms-2 me-4 transactionIcon"></i>Description</th>
-                        <th scope="col"><i class="fa-solid fa-table-cells-large ms-2 me-4 transactionIcon"></i>Category</th>
+                        <th scope="col"><i className="fa-solid fa-table-cells-large ms-2 me-4 transactionIcon"></i>Category</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody className="table-group-divider">
                     {transactions && transactions.map(transaction => 
-                    <tr>
+                    <tr key={transaction.transactionId}>
                         <Transaction transaction={transaction}/>
                         <td className="px-5">
                             <TransactionCategory loggedInUser = {loggedInUser} transactionId={transaction.transactionId}></TransactionCategory>
                         </td>
                         
                     <td className="mt-auto">
-                        <Link onClick={() => setActiveModalItem(transaction)} className=""><i class="fa-solid fa-ellipsis-vertical"></i></Link>
+                        <Link onClick={() => setActiveModalItem(transaction)} className=""><i className="fa-solid fa-ellipsis-vertical"></i></Link>
                     </td>
                     </tr>
                 )}

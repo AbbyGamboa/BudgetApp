@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import { Link } from "react-router-dom";
 import BudgetCategory from "../BudgetCategory/BudgetCategory";
 import ViewByBudget from "../TransactionCategory/ViewByBudget";
@@ -42,7 +42,7 @@ function SingleBudget({loggedInUser}){
                 <p >Budget Id: {budget.budgetId}</p>
             </div>
             <div className="mt-auto mb-0 ">
-                <Link className="btn btn-warning" to="/view/budgets">View all Budgets</Link>
+                <Link className=" m-1 glow" to="/view/budgets">View all Budgets</Link>
             </div>
         </div>
 
