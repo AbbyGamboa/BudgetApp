@@ -6,6 +6,7 @@ function TCForm({loggedInUser, setActiveModalItem, firstTId, handleCreateClose})
     const[budgetCategoryId, setBudgetCategoryId] = useState("")
     const[budgetId, setBudgetId] = useState()
     const[budgets, setBudgets] = useState([])
+    const[errors, setErrors] = useState([])
     const [transactionId, setTransactionId] = useState(null)
     const {accountId} = useParams();
 
@@ -51,10 +52,12 @@ function TCForm({loggedInUser, setActiveModalItem, firstTId, handleCreateClose})
                             "Authorization": `Bearer ${loggedInUser.token}`
                     }
                 })
+                const payload = await response.json();
                 if(response.status>=200 && response.status <= 300){
-                    const payload = await response.json();
                     setBudgetCategories(payload)
-                } 
+                } else{
+                    setErrors(payload)
+                }
             }
             doFetch()
     
@@ -118,7 +121,6 @@ function TCForm({loggedInUser, setActiveModalItem, firstTId, handleCreateClose})
         if (response.status >= 200 && response.status < 300) {
             setActiveModalItem(null)
             window.location.reload();
-            
         } 
     }
     //work on delete transaction category:

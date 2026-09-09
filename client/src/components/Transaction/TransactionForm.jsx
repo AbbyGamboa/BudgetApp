@@ -81,6 +81,17 @@ function TransactionForm({loggedInUser, transactionId, setActiveModalItem, handl
     return(
         <>
         <form action="" className="flex-column align-content-center" onSubmit={handleSubmit} hidden={addCat}>
+            {errors.length > 0 ?
+        
+                    <div className="border border-blue rounded p-3 m-4"> 
+                        {errors.map(error => <div className="d-flex justify-content-center">
+                            <i className="fa-solid fa-triangle-exclamation text-danger p-1 larger"></i>
+                            <h3 key={error} className="text-danger">{error}</h3></div>
+                        )}
+                    </div>
+                    
+                    : null
+                }
             <h2>{transactionId? "Update": "Create"} Transaction: </h2>
 
             <div className="d-flex justify-content-between">
