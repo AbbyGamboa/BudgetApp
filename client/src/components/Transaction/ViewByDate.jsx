@@ -24,13 +24,15 @@ function ViewByDate({loggedInUser}){
             }
         );
     
-
+        const payload = await response.json()
         if (response.status >= 200 && response.status < 300) {
             console.log(response)
-            const payload = await response.json()
+            
             console.log(payload.payload);
             setTransactions(payload.payload);
-        } 
+        } else{
+            setErrors(payload)
+        }
 
     }
 
@@ -56,7 +58,10 @@ function ViewByDate({loggedInUser}){
     }
 
     const [showTrans, setShowTrans] = useState(true);
-    const hideTrans = () => setShowTrans(false);
+    function hideTrans(){
+        setShowTrans(false)
+        setErrors([])
+    }
 
     const[withCat, setWithCat] = useState(false)
 
@@ -121,29 +126,14 @@ function ViewByDate({loggedInUser}){
             />
         )}
         
-        {/*{/*This is with a category while the other is without         
-        !withCat && showTrans && transactions.map(transaction => <div key ={transaction.transactionId} className="flex p-5">
-        <Transaction transaction={transaction}/>
-        <TransactionCategory loggedInUser={loggedInUser} transactionId={transaction.transactionId}></TransactionCategory>
-        <Link className="btn btn-primary" to={`/view/${transaction.transactionId}`}>View</Link>
-        
-        </div>)}
-
-    
-        {withCat && showTrans && transactions.map(transaction => <div key ={transaction.transaction.transactionId} className="flex p-5">
-                <Transaction transaction={transaction.transaction}/>
-                <TransactionCategory loggedInUser={loggedInUser} transactionId={transaction.transactionId}></TransactionCategory>
-                <Link className="btn btn-primary" to={`/view/${transaction.transaction.transactionId}`}>View</Link>
-                
-            </div>)
-            
-        }*/}
-        
 
         {errors.length > 0 ?
         
                     <div className="border border-blue rounded p-3 m-4"> 
-                        <ul>{errors.map(error => <h3 key={error}>{error}</h3>)}</ul>
+                        {errors.map(error => <div className="d-flex justify-content-center">
+                            <i className="fa-solid fa-triangle-exclamation text-danger p-1 larger"></i>
+                            <h3 key={error} className="text-danger">{error}</h3></div>
+                        )}
                     </div>
                     
                     : null

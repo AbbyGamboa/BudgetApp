@@ -72,3 +72,7 @@
   text-shadow: 0 0 10px rgba(12, 84, 184, 0.666);
   
 }
+
+.larger{
+  font-size: 24px;
+}
