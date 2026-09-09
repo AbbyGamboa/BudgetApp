@@ -87,16 +87,19 @@ function UserForm({signup, setLoggedInUser}){
 
         <div className=" d-flex justify-content-center">
             <form onSubmit={signup? handleSubmitSignUp: handleSubmitLogin} className="border border-blue w-75 p-2 d-flex flex-column align-items-center rounded">
-                <h3 className="text-center">{signup? "Sign Up Form": "Login Form"}</h3>
-                <label htmlFor="email">Email: </label>
-                <input type="email" id="email" name="email" autoComplete="current-email" required placeholder="ex: 123abc@gmail.com" onChange={handleChange} value={user.email}/>
+                <h3 className="text-center m-3">{signup? "Sign Up": "Login"}</h3>
 
-                <label htmlFor="password">Password: </label>
-                <input type="password" id="password" autoComplete="current-password" name="password" required placeholder="ex: password123" onChange={handleChange} value={user.password}/>
+                <input className="w-50 p-3 m-1 rounded border border-blue bg-light" type="email" id="email" name="email" autoComplete="current-email" required placeholder="Email" onChange={handleChange} value={user.email}/>
+
+                <input className="w-50 p-3 m-1 rounded border border-blue bg-light" type="password" id="password" autoComplete="current-password" name="password" required placeholder="Password" onChange={handleChange} value={user.password}/>
                 
                 <button type="submit" className="btn btn-primary m-3 w-25">{signup? "Sign Up": "Login"}</button>
 
-                <p>{endParagraph} <Link to={endNavigate}>Click here</Link></p>
+                <div className="d-flex justify-content-between">
+                    <p className="p-3 me-4">{endParagraph} </p>
+                    <Link className="ms-4 p-3 textHighlight" to={endNavigate}>{signup? "Login": "Signup"}</Link>
+                </div>
+                
             </form>
         </div>
        

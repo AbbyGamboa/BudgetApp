@@ -62,3 +62,13 @@
   border: thin white solid;
   box-shadow: 0 0 10px white;
 }
+
+.textHighlight{
+  color: black;
+  text-decoration: none;
+}
+.textHighlight:hover{
+  color:rgba(12, 84, 184);
+  text-shadow: 0 0 10px rgba(12, 84, 184, 0.666);
+  
+}
